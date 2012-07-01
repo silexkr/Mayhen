@@ -1,0 +1,3 @@
+#!/bin/sh
+carton exec -Ilib -- starman --workers 1 -p 3000 app.psgi
+

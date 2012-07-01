@@ -1,0 +1,15 @@
+#!/bin/sh
+
+[ -f Makefile ] && make realclean
+[ -d logs ] && rm -rf logs/
+[ -f checkstyle-result.xml ] && rm -f checkstyle-result.xml
+[ -d cover_db ] && carton exec -Ilib -- cover -delete
+
+mkdir logs/
+
+HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local,+ignore,root \
+CATALYST_DEBUG=0 \
+carton exec -Ilib -- prove --timer --formatter TAP::Formatter::JUnit t/ > logs/tests.xml
+carton exec -Ilib -- cover -report clover
+carton exec -Ilib -- cover
+carton exec -Ilib -- measureperl-checkstyle --max_sub_lines 60 --max_sub_mccabe_complexity 13 --directory lib > checkstyle-result.xml

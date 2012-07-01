@@ -1,0 +1,7 @@
+@import "base";
+@import "partials";
+body {
+}
+.navbar-inner {
+    @include border-radius(0px);
+}
