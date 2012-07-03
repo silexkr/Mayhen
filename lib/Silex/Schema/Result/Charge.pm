@@ -41,66 +41,77 @@ __PACKAGE__->table("charge");
 =head2 id
 
   data_type: 'integer'
+  extra: {unsigned => 1}
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 applicant
+=head2 amount
+
+  data_type: 'integer'
+  default_value: 0
+  extra: {unsigned => 1}
+  is_nullable: 0
+
+??
+
+=head2 user_id
+
+  data_type: 'integer'
+  extra: {unsigned => 1}
+  is_nullable: 0
+
+?? ???
+
+=head2 content
 
   data_type: 'varchar'
-  default_value: (empty string)
+  default_value: '?? ??'
   is_nullable: 0
-  size: 32
+  size: 255
+
+?? ??
 
 =head2 title
 
   data_type: 'varchar'
-  default_value: (empty string)
+  default_value: '?? ??'
   is_nullable: 0
-  size: 128
+  size: 255
 
-=head2 content
-
-  data_type: 'text'
-  is_nullable: 0
-
-=head2 created_on
-
-  data_type: 'datetime'
-  datetime_undef_if_invalid: 1
-  default_value: '0000-00-00 00:00:00'
-  is_nullable: 0
-
-=head2 updated_on
-
-  data_type: 'datetime'
-  datetime_undef_if_invalid: 1
-  default_value: '0000-00-00 00:00:00'
-  is_nullable: 0
+?? ??
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "applicant",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 32 },
-  "title",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 128 },
-  "content",
-  { data_type => "text", is_nullable => 0 },
-  "created_on",
   {
-    data_type => "datetime",
-    datetime_undef_if_invalid => 1,
-    default_value => "0000-00-00 00:00:00",
+    data_type => "integer",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
     is_nullable => 0,
   },
-  "updated_on",
+  "amount",
   {
-    data_type => "datetime",
-    datetime_undef_if_invalid => 1,
-    default_value => "0000-00-00 00:00:00",
+    data_type => "integer",
+    default_value => 0,
+    extra => { unsigned => 1 },
     is_nullable => 0,
+  },
+  "user_id",
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
+  "content",
+  {
+    data_type => "varchar",
+    default_value => "?? ??",
+    is_nullable => 0,
+    size => 255,
+  },
+  "title",
+  {
+    data_type => "varchar",
+    default_value => "?? ??",
+    is_nullable => 0,
+    size => 255,
   },
 );
 
@@ -116,9 +127,26 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07024 @ 2012-06-22 15:06:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5mdb4gbiF8QyFzZnGR5T/A
+=head2 user
+
+Type: might_have
+
+Related object: L<Silex::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->might_have(
+  "user",
+  "Silex::Schema::Result::User",
+  { "foreign.id" => "self.user_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07024 @ 2012-07-02 21:43:08
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pvtcMNxRSSCFQx0M/Q07JA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
