@@ -37,3 +37,8 @@ ja3ck : ㅇㅇ
 	
 	$> mysql -udon -pdon dondb < schema/dondb.sql 
 	$> script/silex_web_donnenwa_server.pl
+
+### dbicdump ###
+
+    $ cpanm dbicdump
+    $ dbicdump -Ilib schema/schema.pl
