@@ -26,11 +26,25 @@ The root page (/)
 
 =cut
 
+sub auto :Private {
+    my ($self, $c) = @_;
+
+    if ($c->controller eq $c->controller('Login')) {
+        return 1;
+    }
+
+    if (!$c->user_exists) {
+        $c->res->redirect($c->uri_for('/login'));
+        return 0;
+    }
+
+    return 1;
+}
+
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    # Hello World
-#    $c->response->body( $c->welcome_message );
+    $c->res->redirect('/list');
 }
 
 =head2 default

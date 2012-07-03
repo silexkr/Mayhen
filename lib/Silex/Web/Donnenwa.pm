@@ -21,6 +21,14 @@ use Catalyst qw/
     ConfigLoader
     Static::Simple
     Unicode::Encoding
+
+    StackTrace
+
+    Authentication
+
+    Session
+    Session::Store::File
+    Session::State::Cookie
 /;
 
 extends 'Catalyst';
