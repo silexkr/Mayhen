@@ -32,9 +32,9 @@
 	    <tr>
 	      <td>che_box</td>
 	      <td><a href="[% c.uri_for('view', list.id) %]">[% list.title %]</a></td>
-	      <td>[% list.applicant %]</td>
+	      <td>[% users.user_name %] </td>
 	      <td>[% list.created_on.ymd %]</td>
-	      <td>금액 구현</td>
+	      <td>[% list.amount %]</td>
 	    </tr>
 	  [% END %]
 	</tbody>
