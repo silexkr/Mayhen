@@ -5,14 +5,14 @@ package Silex::Schema;
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 use Moose;
-use MooseX::MarkAsMethods autoclean => 1;
+use namespace::autoclean;
 extends 'DBIx::Class::Schema';
 
 __PACKAGE__->load_namespaces;
 
 
-# Created by DBIx::Class::Schema::Loader v0.07024 @ 2012-06-18 17:12:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5qVWEF6mj5Kh2+0pNQVJQw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-03 15:02:42
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4pil2pe4044PPpVujNtPBg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
