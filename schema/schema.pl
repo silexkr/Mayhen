@@ -31,8 +31,12 @@ my $DONNENWA_DB_PASSWORD = $ENV{DONNENWA_DB_PASSWORD} || 'don';
 #                         encode_args   => { algorithm => 'SHA-1', format => 'hex' },
 #                         encode_check_method => 'check_password' };
 #            }
-            if ($col_name eq 'created_at') {
+            if ($col_name eq 'created_on') {
                 return { %{ $col_info }, set_on_create => 1, inflate_datetime => 1 };
+            }
+
+            if ($col_name eq 'updated_on') {
+                return { %{ $col_info }, set_on_create => 1, set_on_update => 1, inflate_datetime => 1 };
             }
         },
     },
