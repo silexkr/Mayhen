@@ -3,17 +3,6 @@ package Silex::Web::Donnenwa::Model::DonDB;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
-__PACKAGE__->config(
-    schema_class => 'Silex::Schema',
-    
-    connect_info => {
-        dsn => 'dbi:mysql:dondb:localhost',
-        user => 'don',
-        password => 'gksdud09',
-        mysql_enable_utf8 => 1,
-    }
-);
-
 =head1 NAME
 
 Silex::Web::Donnenwa::Model::DonDB - Catalyst DBIC Schema Model
