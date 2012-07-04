@@ -13,22 +13,14 @@ Silex::Schema::Result::Charge
 use strict;
 use warnings;
 
-use Moose;
-use MooseX::NonMoose;
-use MooseX::MarkAsMethods autoclean => 1;
-extends 'DBIx::Class::Core';
-
-=head1 COMPONENTS LOADED
-
-=over 4
-
-=item * L<DBIx::Class::InflateColumn::DateTime>
-
-=back
+=head1 BASE CLASS: L<Silex::Schema::ResultBase>
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+use Moose;
+use MooseX::NonMoose;
+use namespace::autoclean;
+extends 'Silex::Schema::ResultBase';
 
 =head1 TABLE: C<charge>
 
@@ -145,8 +137,8 @@ __PACKAGE__->might_have(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07024 @ 2012-07-02 21:43:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pvtcMNxRSSCFQx0M/Q07JA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:28:58
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CFlrc67nEnspDp0+ieXbhQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
