@@ -13,22 +13,14 @@ Silex::Schema::Result::User
 use strict;
 use warnings;
 
-use Moose;
-use MooseX::NonMoose;
-use MooseX::MarkAsMethods autoclean => 1;
-extends 'DBIx::Class::Core';
-
-=head1 COMPONENTS LOADED
-
-=over 4
-
-=item * L<DBIx::Class::InflateColumn::DateTime>
-
-=back
+=head1 BASE CLASS: L<Silex::Schema::ResultBase>
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+use Moose;
+use MooseX::NonMoose;
+use namespace::autoclean;
+extends 'Silex::Schema::ResultBase';
 
 =head1 TABLE: C<user>
 
@@ -72,14 +64,19 @@ __PACKAGE__->table("user");
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
   is_nullable: 0
+  set_on_create: 1
 
 =head2 updated_on
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
   is_nullable: 0
+  set_on_create: 1
+  set_on_update: 1
 
 =cut
 
@@ -100,17 +97,22 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "created_on",
   {
-    data_type => "datetime",
+    data_type                 => "datetime",
     datetime_undef_if_invalid => 1,
-    default_value => "0000-00-00 00:00:00",
-    is_nullable => 0,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
   },
   "updated_on",
   {
-    data_type => "datetime",
+    data_type                 => "datetime",
     datetime_undef_if_invalid => 1,
-    default_value => "0000-00-00 00:00:00",
-    is_nullable => 0,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+    set_on_update             => 1,
   },
 );
 
@@ -142,7 +144,7 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 
 =head1 RELATIONS
 
-=head2 id
+=head2 
 
 Type: belongs_to
 
@@ -151,15 +153,15 @@ Related object: L<Silex::Schema::Result::Charge>
 =cut
 
 __PACKAGE__->belongs_to(
-  "id",
+  "",
   "Silex::Schema::Result::Charge",
   { user_id => "id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07024 @ 2012-07-02 21:43:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eWcLWLQoGsZ64wtdVcIgDw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:35:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TKYdsQztReAKjYrEQi4ECQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
