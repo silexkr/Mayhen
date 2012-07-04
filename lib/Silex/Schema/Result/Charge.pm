@@ -40,6 +40,8 @@ __PACKAGE__->table("charge");
 =head2 amount
 
   data_type: 'integer'
+  default_value: 0
+  extra: {unsigned => 1}
   is_nullable: 0
 
 ??
@@ -52,10 +54,11 @@ __PACKAGE__->table("charge");
 
 ?? ???
 
-=head2 comment
+=head2 content
 
   data_type: 'varchar'
-  is_nullable: 1
+  default_value: '?? ??'
+  is_nullable: 0
   size: 255
 
 ?? ??
@@ -63,7 +66,8 @@ __PACKAGE__->table("charge");
 =head2 title
 
   data_type: 'varchar'
-  is_nullable: 1
+  default_value: '?? ??'
+  is_nullable: 0
   size: 255
 
 ?? ??
@@ -79,13 +83,28 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "amount",
-  { data_type => "integer", is_nullable => 0 },
+  {
+    data_type => "integer",
+    default_value => 0,
+    extra => { unsigned => 1 },
+    is_nullable => 0,
+  },
   "user_id",
   { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
-  "comment",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  "content",
+  {
+    data_type => "varchar",
+    default_value => "?? ??",
+    is_nullable => 0,
+    size => 255,
+  },
   "title",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  {
+    data_type => "varchar",
+    default_value => "?? ??",
+    is_nullable => 0,
+    size => 255,
+  },
 );
 
 =head1 PRIMARY KEY
@@ -118,8 +137,8 @@ __PACKAGE__->might_have(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-03 15:02:43
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lk/58Now57Uy/h14a7yJXQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:28:58
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CFlrc67nEnspDp0+ieXbhQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

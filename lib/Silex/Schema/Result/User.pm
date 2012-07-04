@@ -38,10 +38,11 @@ __PACKAGE__->table("user");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 name
+=head2 user_name
 
   data_type: 'varchar'
-  is_nullable: 1
+  default_value: (empty string)
+  is_nullable: 0
   size: 255
 
 =head2 email
@@ -58,13 +59,24 @@ __PACKAGE__->table("user");
   is_nullable: 0
   size: 255
 
-=head2 created_at
+=head2 created_on
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
   inflate_datetime: 1
-  is_nullable: 1
+  is_nullable: 0
   set_on_create: 1
+
+=head2 updated_on
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
+  is_nullable: 0
+  set_on_create: 1
+  set_on_update: 1
 
 =cut
 
@@ -77,19 +89,30 @@ __PACKAGE__->add_columns(
     is_foreign_key => 1,
     is_nullable => 0,
   },
-  "name",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  "user_name",
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "email",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "password",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
-  "created_at",
+  "created_on",
   {
-    data_type => "datetime",
+    data_type                 => "datetime",
     datetime_undef_if_invalid => 1,
-    inflate_datetime => 1,
-    is_nullable => 1,
-    set_on_create => 1,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+  },
+  "updated_on",
+  {
+    data_type                 => "datetime",
+    datetime_undef_if_invalid => 1,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+    set_on_update             => 1,
   },
 );
 
@@ -137,8 +160,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-03 15:02:43
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LFBYLxkBZhQ1wTYrr8sDsQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:35:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TKYdsQztReAKjYrEQi4ECQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
