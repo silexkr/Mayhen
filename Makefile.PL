@@ -20,6 +20,13 @@ requires "DBD::mysql";
 requires "DateTime::Format::MySQL";
 requires "Data::Pageset";
 
+requires "Catalyst::Plugin::Authentication";
+requires "Catalyst::Plugin::Session";
+requires "Catalyst::Plugin::Session::Store::File";
+requires "Catalyst::Plugin::Session::State::Cookie";
+requires "Catalyst::Plugin::StackTrace";
+requires "Catalyst::Authentication::Realm::SimpleDB";
+
 requires 'Catalyst::Runtime' => '5.90012';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
