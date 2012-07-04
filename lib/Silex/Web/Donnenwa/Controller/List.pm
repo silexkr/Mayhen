@@ -27,12 +27,13 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    my %attr  = ( 'order_by' => { -desc => 'me.created_on' } );
+    my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $page    = $c->req->params->{page};
     $attr{page} = $page || 1;
 
     my $rs = $c->model('DonDB')->resultset('Charge')->search({}, \%attr);
+    my $users = $c->model('DonDB')->resultset('User')->search();
 
     my $page_info =
     Data::Pageset->new(
@@ -45,6 +46,7 @@ sub index :Path :Args(0) {
 
     $c->stash(
         lists   => [ $rs->all ],
+        users   => [ $users->all ],
         pageset => $page_info,
     );
 }

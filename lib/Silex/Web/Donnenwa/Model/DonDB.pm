@@ -7,9 +7,9 @@ __PACKAGE__->config(
     schema_class => 'Silex::Schema',
     
     connect_info => {
-        dsn               => 'dbi:mysql:auth_db:localhost',
-        user              => 'don',
-        password          => 'gksdud09',
+        dsn => 'dbi:mysql:dondb:localhost',
+        user => 'don',
+        password => 'gksdud09',
         mysql_enable_utf8 => 1,
     }
 );

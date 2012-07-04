@@ -15,6 +15,9 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div><!-- /.nav-collapse -->
+      [% IF c.user %]
+      <div id="user-info">[% c.user.user_name %] 님 <a href="/logout">로그아웃</a></div>
+      [% END %]
     </div>
   </div>
 </div>
