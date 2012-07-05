@@ -7,6 +7,7 @@ blib/
 _build/
 cover_db/
 inc/
+!root/templates/bootstrap/src/inc
 Build
 Build.bat
 .last_cover_stats
