@@ -35,7 +35,6 @@ __PACKAGE__->table("user");
   data_type: 'integer'
   extra: {unsigned => 1}
   is_auto_increment: 1
-  is_foreign_key: 1
   is_nullable: 0
 
 =head2 user_name
@@ -90,7 +89,6 @@ __PACKAGE__->add_columns(
     data_type => "integer",
     extra => { unsigned => 1 },
     is_auto_increment => 1,
-    is_foreign_key => 1,
     is_nullable => 0,
   },
   "user_name",
@@ -155,26 +153,15 @@ __PACKAGE__->set_primary_key("id");
 
 __PACKAGE__->add_unique_constraint("email", ["email"]);
 
-=head1 RELATIONS
 
-=head2 
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-05 21:03:26
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:p0U+m2Jpnb5yuCC3aKs0IA
 
-Type: belongs_to
-
-Related object: L<Silex::Schema::Result::Charge>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "",
-  "Silex::Schema::Result::Charge",
-  { user_id => "id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+__PACKAGE__->has_many(
+    charges => 'Silex::Schema::Result::Charge',
+    'user',
+    { cascading_delete => 1 }
 );
-
-
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 19:40:17
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:E5aLRgHKzumQq+LRKFPOPA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
