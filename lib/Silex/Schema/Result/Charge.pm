@@ -44,33 +44,52 @@ __PACKAGE__->table("charge");
   extra: {unsigned => 1}
   is_nullable: 0
 
-??
+ê¸ì¡
 
-=head2 user_id
+=head2 user
 
   data_type: 'integer'
   extra: {unsigned => 1}
   is_nullable: 0
 
-?? ???
+ì²­êµ¬ ìì±ì
 
 =head2 content
 
   data_type: 'varchar'
-  default_value: '?? ??'
+  default_value: 'ë´ì© ìì'
   is_nullable: 0
   size: 255
 
-?? ??
+ì²­êµ¬ ë©ëª¨
 
 =head2 title
 
   data_type: 'varchar'
-  default_value: '?? ??'
+  default_value: 'ì ëª© ìì'
   is_nullable: 0
   size: 255
 
-?? ??
+ì²­êµ¬ ì ëª©
+
+=head2 created_on
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
+  is_nullable: 0
+  set_on_create: 1
+
+=head2 updated_on
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
+  is_nullable: 0
+  set_on_create: 1
+  set_on_update: 1
 
 =cut
 
@@ -89,21 +108,40 @@ __PACKAGE__->add_columns(
     extra => { unsigned => 1 },
     is_nullable => 0,
   },
-  "user_id",
+  "user",
   { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "content",
   {
     data_type => "varchar",
-    default_value => "?? ??",
+    default_value => pack("H*","eb82b4ec9aa920ec9786ec9d8c"),
     is_nullable => 0,
     size => 255,
   },
   "title",
   {
     data_type => "varchar",
-    default_value => "?? ??",
+    default_value => pack("H*","eca09cebaaa920ec9786ec9d8c"),
     is_nullable => 0,
     size => 255,
+  },
+  "created_on",
+  {
+    data_type                 => "datetime",
+    datetime_undef_if_invalid => 1,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+  },
+  "updated_on",
+  {
+    data_type                 => "datetime",
+    datetime_undef_if_invalid => 1,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+    set_on_update             => 1,
   },
 );
 
@@ -119,26 +157,13 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
 
-=head2 user
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-05 21:14:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ISjBV4mnAIttPZ6w3xjp3Q
 
-Type: might_have
-
-Related object: L<Silex::Schema::Result::User>
-
-=cut
-
-__PACKAGE__->might_have(
-  "user",
-  "Silex::Schema::Result::User",
-  { "foreign.id" => "self.user_id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+__PACKAGE__->belongs_to(
+    user => 'Silex::Schema::Result::User'
 );
-
-
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:28:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CFlrc67nEnspDp0+ieXbhQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

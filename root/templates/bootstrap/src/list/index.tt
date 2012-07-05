@@ -30,9 +30,9 @@
 	<tbody>
 	  [% FOREACH list IN lists %]
 	    <tr>
-	      <td>che_box</td>
+	      <td><input type="checkbox"></td>
 	      <td><a href="[% c.uri_for('view', list.id) %]">[% list.title %]</a></td>
-	      <td>[% users.user_name %] </td>
+	      <td>[% list.user.user_name %] </td>
 	      <td>[% list.created_on.ymd %]</td>
 	      <td>[% list.amount %]</td>
 	    </tr>
