@@ -9,6 +9,7 @@
         <link href="[% c.uri_for('/static/css/ie.css') %]" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="[% c.uri_for('/static/scripts/require-jquery.js') %]" type="text/javascript"></script>
     <script src="[% c.uri_for('/static/scripts/write_vaili.js') %]" type="text/javascript"></script>
     <script src="[% c.uri_for('/static/scripts/bundle.js') %]" type="text/javascript"></script>
     [%- FOREACH css IN csses %]
