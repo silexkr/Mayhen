@@ -41,6 +41,37 @@ sub index :Path :Args(0) {
     }
 }
 
+sub signup :Path('/signup') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->detach('signup_POST') if $c->req->method eq 'POST';
+}
+
+sub signup_POST :Private {
+    my ( $self, $c ) = @_;
+
+    my $user_name = $c->req->param('user_name') || '';
+    my $email     = $c->req->param('email') || '';
+    my $password  = $c->req->param('password') || '';
+
+    return unless ($user_name || $email || $password);
+
+    my $created = $c->model('DonDB::User')->create({
+        user_name => $user_name,
+        email     => $email,
+        password  => $password,
+    });
+
+    $c->res->redirect($c->req->uri) unless $created;
+
+    if ($c->authenticate({ user_name => $user_name, password => $password } )) {
+        $c->res->redirect($c->uri_for($c->controller('List')->action_for('index')));
+    } else {
+        $c->stash(error_msg => "Bad username or password."); # maybe flash?
+        $c->res->redirect($c->req->uri);
+    }
+}
+
 
 =head1 AUTHOR
 
