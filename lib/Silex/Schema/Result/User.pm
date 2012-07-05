@@ -56,6 +56,10 @@ __PACKAGE__->table("user");
 
   data_type: 'varchar'
   default_value: (empty string)
+  encode_args: {algorithm => "SHA-1",format => "hex"}
+  encode_check_method: 'check_password'
+  encode_class: 'Digest'
+  encode_column: 1
   is_nullable: 0
   size: 255
 
@@ -94,7 +98,16 @@ __PACKAGE__->add_columns(
   "email",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "password",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
+  {
+    data_type           => "varchar",
+    default_value       => "",
+    encode_args         => { algorithm => "SHA-1", format => "hex" },
+    encode_check_method => "check_password",
+    encode_class        => "Digest",
+    encode_column       => 1,
+    is_nullable         => 0,
+    size                => 255,
+  },
   "created_on",
   {
     data_type                 => "datetime",
@@ -160,8 +173,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:35:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TKYdsQztReAKjYrEQi4ECQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 19:40:17
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:E5aLRgHKzumQq+LRKFPOPA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
