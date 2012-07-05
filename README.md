@@ -36,10 +36,15 @@ ja3ck : ㅇㅇ
 	mysql> grant all privileges on `dondb`.* to 'don'@'localhost' with grant option;
 	
 	$> mysql -udon -pdon dondb < schema/dondb.sql 
-	$> script/silex_web_donnenwa_server.pl
+	$> ./run
 
 ### dbicdump ###
 
     $ cpanm dbicdump
     $ dbicdump -Ilib schema/schema.pl
 
+## carton install
+
+    $ vi Makefile.PL
+    모듈 require
+    $ carton install 또는 carton install 모듈명
