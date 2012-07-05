@@ -1,0 +1,23 @@
+<div class="pagination">
+  <ul>
+    [% IF pageset.previous_set %]
+      <li class="previous"><a href="[% c.req.uri_with('page' => pageset.previous_set) %]">&laquo;</a></li>
+    [% ELSE %]
+      <li class="previous disabled"><a href="#">&laquo;</a></li>
+    [% END %]
+
+    [% FOREACH page IN pageset.pages_in_set %]
+      [% IF page == pageset.current_page %]
+	<li class="active"><a href="#">[% page %]</a></li>
+      [% ELSE %]
+	<li><a href="[% c.req.uri_with('page' => page) %]">[% page %]</a></li>
+      [% END %]
+    [% END %]
+
+    [% IF pageset.next_set %]
+      <li class="next"><a href="[% c.req.uri_with('page' => pageset.next_set) %]">&raquo;</a></li>
+    [% ELSE %]
+      <li class="next disabled"><a href="#">&raquo;</a></li>
+    [% END %]
+  </ul>
+</div>
