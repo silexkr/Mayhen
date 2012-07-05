@@ -1,0 +1,30 @@
+<form class="form-horizontal" method="POST">
+  <fieldset>
+    <legend>sign up</legend>
+    <div class="control-group">
+      <label class="control-label" for="user_name">username</label>
+      <div class="controls">
+        <input type="text" name="user_name" id="user_name">
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="email">email</label>
+      <div class="controls">
+        <input type="text" name="email" id="email">
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="password">password</label>
+      <div class="controls">
+        <input type="text" name="password" id="password">
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit" value="submit" />
+    </div>
+
+  </fieldset>
+</form>
