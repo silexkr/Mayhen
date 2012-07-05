@@ -24,13 +24,13 @@ my $DONNENWA_DB_PASSWORD = $ENV{DONNENWA_DB_PASSWORD} || 'don';
         custom_column_info => sub {
             my ($table, $col_name, $col_info) = @_;
 
-#            if ($col_name eq 'password') {
-#                return { %{ $col_info },
-#                         encode_column => 1,
-#                         encode_class  => 'Digest',
-#                         encode_args   => { algorithm => 'SHA-1', format => 'hex' },
-#                         encode_check_method => 'check_password' };
-#            }
+            if ($col_name eq 'password') {
+                return { %{ $col_info },
+                         encode_column => 1,
+                         encode_class  => 'Digest',
+                         encode_args   => { algorithm => 'SHA-1', format => 'hex' },
+                         encode_check_method => 'check_password' };
+            }
             if ($col_name eq 'created_on') {
                 return { %{ $col_info }, set_on_create => 1, inflate_datetime => 1 };
             }
