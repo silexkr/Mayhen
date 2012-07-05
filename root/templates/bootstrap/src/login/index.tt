@@ -21,3 +21,7 @@
   </table>
 </form>
 [% END %]
+
+<p>
+  <a href="/signup">signup</a>
+</p>
