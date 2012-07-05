@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `charge`;
+
 CREATE TABLE `charge` (
   id      INT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   amount  INT unsigned NOT NULL DEFAULT '0' COMMENT '금액',
@@ -14,5 +17,8 @@ CREATE TABLE `user` (
   password   varchar(255) NOT NULL DEFAULT '',
   created_on DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `user` VALUES (1,'aanoaa','aanoaa@gmail.com','1234','0000-00-00 00:00:00','0000-00-00 00:00:00');
