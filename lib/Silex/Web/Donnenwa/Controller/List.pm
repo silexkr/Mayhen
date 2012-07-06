@@ -83,8 +83,8 @@ sub view :Local :CaptureArgs(1) {
 
     my $rs = $c->model('DonDB')->resultset('Charge')->find($user_id);
     $c->stash(
-        users     => $rs;
-        user_name => $c->user->user_name;
+        users     => $rs,
+        user_name => $c->user->user_name
     );
 }
 
