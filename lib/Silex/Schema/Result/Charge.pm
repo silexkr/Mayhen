@@ -72,6 +72,25 @@ __PACKAGE__->table("charge");
 
 ?? ??
 
+=head2 created_on
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
+  is_nullable: 0
+  set_on_create: 1
+
+=head2 updated_on
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
+  inflate_datetime: 1
+  is_nullable: 0
+  set_on_create: 1
+  set_on_update: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -105,6 +124,25 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 255,
   },
+  "created_on",
+  {
+    data_type                 => "datetime",
+    datetime_undef_if_invalid => 1,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+  },
+  "updated_on",
+  {
+    data_type                 => "datetime",
+    datetime_undef_if_invalid => 1,
+    default_value             => "0000-00-00 00:00:00",
+    inflate_datetime          => 1,
+    is_nullable               => 0,
+    set_on_create             => 1,
+    set_on_update             => 1,
+  },
 );
 
 =head1 PRIMARY KEY
@@ -120,8 +158,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 16:11:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+YPPmMqETsBG5XslXCpb5Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 16:38:57
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qLsutPrNJ1WXZ7jEO5aELg
 
 __PACKAGE__->belongs_to(
     user => 'Silex::Schema::Result::User'

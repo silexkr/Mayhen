@@ -12,7 +12,7 @@
     <tr>
       <th>이름</th>
       <td>
-	<input type="text" name="applicant" id="applicant">
+	<input type="text" readonly="readonly" name="applicant" id="applicant" value="[% c.user.user_name %]">
       </td>
     </tr>
     <tr>
@@ -26,6 +26,10 @@
       <td>
 	<textarea name="content" id="content" cols=65 rows=15></textarea>
       </td>
+    </tr>
+    <tr>
+      <th>금액</th>
+      <td><input type="text" id="amount" name="amount"></td>
     </tr>
     <tr>
       <th>파일</th>
