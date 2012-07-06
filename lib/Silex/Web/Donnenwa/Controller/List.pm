@@ -33,7 +33,6 @@ sub index :Path :Args(0) {
     $attr{page} = $page || 1;
 
     my $rs = $c->model('DonDB')->resultset('Charge')->search({}, \%attr);
-    my $users = $c->model('DonDB')->resultset('User')->search();
 
     my $page_info =
     Data::Pageset->new(
@@ -46,7 +45,6 @@ sub index :Path :Args(0) {
 
     $c->stash(
         lists   => [ $rs->all ],
-        users   => [ $users->all ],
         pageset => $page_info,
     );
 }
@@ -84,7 +82,10 @@ sub view :Local :CaptureArgs(1) {
     my ( $self, $c, $user_id) = @_;
 
     my $rs = $c->model('DonDB')->resultset('Charge')->find($user_id);
-    $c->stash->{users} = $rs;
+    $c->stash(
+        users     => $rs;
+        user_name => $c->user->user_name;
+    );
 }
 
 =head1 AUTHOR
