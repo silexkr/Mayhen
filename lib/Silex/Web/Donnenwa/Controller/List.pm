@@ -103,6 +103,30 @@ sub delete :Local :CaptureArgs(1) {
     $c->res->redirect($c->uri_for('/list'));
 }
 
+sub edit :Local :CaptureArgs(1) {
+    my ( $self, $c, $edit_id ) = @_;
+
+    if ($c->req->method eq 'POST') {
+        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
+        my %row = (
+            id         => $c->req->params->{charge_id},
+            amount     => $c->req->params->{amount},
+            user       => $c->req->params->{charge_user},
+            title      => $c->req->params->{title},
+            comment    => $c->req->params->{comment},
+            updated_on => "$time",
+        );
+        $c->model('DonDB')->resultset('Charge')->update_or_create(\%row);
+        $c->res->redirect($c->uri_for("/list/view/$row{id}"));
+    }
+    else {
+        my $editer = $c->model('DonDB')->resultset('Charge')->find($edit_id);
+        $c->stash(
+            editer => $editer,
+        );
+    }
+}
+
 =head1 AUTHOR
 
 meadow,,,
