@@ -54,7 +54,7 @@ __PACKAGE__->table("charge");
 
 ?? ???
 
-=head2 content
+=head2 comment
 
   data_type: 'varchar'
   default_value: '?? ??'
@@ -91,7 +91,7 @@ __PACKAGE__->add_columns(
   },
   "user_id",
   { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
-  "content",
+  "comment",
   {
     data_type => "varchar",
     default_value => "?? ??",
@@ -119,26 +119,9 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
 
-=head2 user
-
-Type: might_have
-
-Related object: L<Silex::Schema::Result::User>
-
-=cut
-
-__PACKAGE__->might_have(
-  "user",
-  "Silex::Schema::Result::User",
-  { "foreign.id" => "self.user_id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-04 14:28:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CFlrc67nEnspDp0+ieXbhQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 13:58:38
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:boYYgmWLIMkIQBdZYG/jTg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
