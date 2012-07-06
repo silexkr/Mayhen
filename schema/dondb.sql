@@ -5,7 +5,7 @@ CREATE TABLE `charge` (
   id      INT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   amount  INT unsigned NOT NULL DEFAULT '0' COMMENT '금액',
   user_id INT unsigned NOT NULL COMMENT '청구 작성자',
-  content varchar(255) NOT NULL DEFAULT '내용 없음' COMMENT '청구 메모',
+  comment varchar(255) NOT NULL DEFAULT '내용 없음' COMMENT '청구 메모',
   title   varchar(255) NOT NULL DEFAULT '제목 없음' COMMENT '청구 제목',
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -21,4 +21,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `user` VALUES (1,'aanoaa','aanoaa@gmail.com','1234','0000-00-00 00:00:00','0000-00-00 00:00:00');
+INSERT INTO `user` VALUES (1,'aanoaa','aanoaa@gmail.com','1234',localtime ,localtime);
+INSERT INTO `user` VALUES (2,'rumidier','rumidier@gmail.com','1234',localtime ,localtime);
+INSERT INTO `user` VALUES (3,'jack','ja3ck@me.com','4383', localtime, localtime);
