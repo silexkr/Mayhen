@@ -29,7 +29,7 @@
   </tr>
 <!-- 기타 버튼 들 -->
 </table>
-<a href="[% c.uri_for('/list/edit') %]" class="btn btn-primary">수정</a>
+<a href="[% c.uri_for('/list/edit', charge.id) %]" class="btn btn-primary">수정</a>
 <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
 <a href="[% c.uri_for('/list/give') %]" class="btn btn-primary">승인</a>
 <a href="[% c.uri_for('/list/refuse') %]" class="btn btn-primary">거부</a>
