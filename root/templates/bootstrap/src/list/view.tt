@@ -16,15 +16,15 @@
   </tr>
   <tr>
     <td>작성자</td>
-    <td>[% users.applicant %]</td>
+    <td>[% user_name %]</td>
     <td>금액</td>
-    <td></td>
+    <td>[% users.amount %]</td>
     <td>날짜</td>
     <td>[% users.created_on.ymd%]</td>
   </tr>
   <tr>
     <td bgcolor=white colspan=6 style="table-layout:fixed;">
-      [% users.content %]
+      [% users.comment %]
     </td>
   </tr>
 <!-- 기타 버튼 들 -->
