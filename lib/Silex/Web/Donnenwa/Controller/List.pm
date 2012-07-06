@@ -79,13 +79,28 @@ sub write :Local :Args(0) {
 }
 
 sub view :Local :CaptureArgs(1) {
-    my ( $self, $c, $user_id) = @_;
+    my ( $self, $c, $charge_id) = @_;
 
-    my $rs = $c->model('DonDB')->resultset('Charge')->find($user_id);
+    my $charge = $c->model('DonDB')->resultset('Charge')->find($charge_id);
     $c->stash(
-        users     => $rs,
-        user_name => $c->user->user_name
+        charge     => $charge
     );
+}
+
+sub delete :Local :CaptureArgs(1) {
+    my ( $self, $c, $id) = @_;
+
+    my $charge = $c->model('DonDB')->resultset('Charge')->find({ id => $id});
+    $c->stash->{charge} = $charge;
+    if ($charge) {
+        $c->stash->{message} = '삭제되었습니다.';
+        $charge->delete;
+    } else {
+        $c->response->status(404);
+        $c->stash->{error} = '해당 청구항목이 없습니다.';
+        $c->detach;
+    }
+    $c->res->redirect($c->uri_for('/list'));
 }
 
 =head1 AUTHOR
