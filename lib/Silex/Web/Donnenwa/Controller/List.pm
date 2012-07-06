@@ -55,7 +55,7 @@ sub write :Local :Args(0) {
     my ( $self, $c ) = @_;
 
     if ($c->req->method eq 'POST') {
-        my $time = strftime "%Y-%m-%d% %H:%M:%S", localtime;
+        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
         my %row = (
             applicant  => $c->req->params->{applicant},
             title      => $c->req->params->{title},

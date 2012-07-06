@@ -1,6 +1,7 @@
 package Silex::Web::Donnenwa::Controller::Login;
 use Moose;
 use namespace::autoclean;
+use POSIX qw(strftime);
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -51,15 +52,18 @@ sub signup_POST :Private {
     my ( $self, $c ) = @_;
 
     my $user_name = $c->req->param('user_name') || '';
-    my $email     = $c->req->param('email') || '';
-    my $password  = $c->req->param('password') || '';
+    my $email     = $c->req->param('email')     || '';
+    my $password  = $c->req->param('password')  || '';
 
     return unless ($user_name || $email || $password);
 
+    my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
     my $created = $c->model('DonDB::User')->create({
         user_name => $user_name,
         email     => $email,
         password  => $password,
+        created_on => "$time",
+        updated_on => "$time",
     });
 
     $c->res->redirect($c->req->uri) unless $created;
