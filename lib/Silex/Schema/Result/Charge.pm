@@ -46,7 +46,7 @@ __PACKAGE__->table("charge");
 
 ??
 
-=head2 user_id
+=head2 user
 
   data_type: 'integer'
   extra: {unsigned => 1}
@@ -89,7 +89,7 @@ __PACKAGE__->add_columns(
     extra => { unsigned => 1 },
     is_nullable => 0,
   },
-  "user_id",
+  "user",
   { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "comment",
   {
@@ -120,8 +120,12 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 13:58:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:boYYgmWLIMkIQBdZYG/jTg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 16:11:07
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+YPPmMqETsBG5XslXCpb5Q
+
+__PACKAGE__->belongs_to(
+    user => 'Silex::Schema::Result::User'
+);
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
