@@ -89,18 +89,19 @@ sub view :Local :CaptureArgs(1) {
 
 sub delete :Local :CaptureArgs(1) {
     my ( $self, $c, $id) = @_;
+    my @target_ids = split ',', $id;
 
-    my $charge = $c->model('DonDB')->resultset('Charge')->find({ id => $id});
-    $c->stash->{charge} = $charge;
-    if ($charge) {
+    my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->delete_all;
+    my $message;
+    if ($charge) {        
         $c->stash->{message} = '삭제되었습니다.';
-        $charge->delete;
+
     } else {
         $c->response->status(404);
-        $c->stash->{error} = '해당 청구항목이 없습니다.';
+        $c->stash->{message} = '해당 청구항목이 없습니다.';
         $c->detach;
-    }
-    $c->res->redirect($c->uri_for('/list'));
+    }    
+    $c->res->redirect($c->uri_for('/list'));    
 }
 
 sub edit :Local :CaptureArgs(1) {
