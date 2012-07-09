@@ -30,7 +30,7 @@ sub index :Path :Args(0) {
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $page    = $c->req->params->{page};
-    my $status  = $c->req->param("status") || $c->flash->{"status"} || '0';
+    my $status  = $c->req->param("status") || $c->stash->{"status"} || '1';
 
     $attr{page} = $page || 1;
 
@@ -38,7 +38,6 @@ sub index :Path :Args(0) {
     my %cond = ();
 
     %cond = ( status => $status ) if $status;
-
     $rs = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
 
     my $page_info =
@@ -62,6 +61,7 @@ sub write :Local :Args(0) {
 
     if ($c->req->method eq 'POST') {
         my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
+
         my %row = (
             user       => $c->user->id,
             title      => $c->req->params->{title},
@@ -71,18 +71,8 @@ sub write :Local :Args(0) {
             updated_on => "$time",
         );
         $c->model('DonDB')->resultset('Charge')->update_or_create(\%row);
+
         $c->res->redirect($c->uri_for('/list'));
-
-        if ( $c->request->parameters->{form_submit} eq 'yes' ) {
-            if ( my $upload = $c->request->upload('upfile') ) {
-                my $filename = $upload->filename;
-                my $target = "image/upload/$filename";
-
-                unless ( $upload->link_to($target) || $upload->copy_to($target) ) {
-                    die ( "Failied to copy '$filename' to '$target' : $!");
-                }
-            }
-        }
     }
 }
 
@@ -90,6 +80,7 @@ sub view :Local :CaptureArgs(1) {
     my ( $self, $c, $charge_id) = @_;
 
     my $charge = $c->model('DonDB')->resultset('Charge')->find($charge_id);
+
     $c->stash(
         charge     => $charge
     );
@@ -103,13 +94,14 @@ sub delete :Local :CaptureArgs(1) {
 
     my $message;
     if ($charge) {        
-        $c->stash->{message} = '삭제되었습니다.';
+        $c->flash->{message} = '삭제되었습니다.';
 
     } else {
         $c->response->status(404);
-        $c->stash->{message} = '해당 청구항목이 없습니다.';
+        $c->flash->{message} = '해당 청구항목이 없습니다.';
         $c->detach;
     }    
+
     $c->res->redirect($c->uri_for('/list'));    
 }
 
@@ -118,9 +110,9 @@ sub approval :Local :CaptureArgs(1) {
     my @target_ids = split ',', $id;
 
     my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
-            => \@target_ids } })->update_all({ status => '1' });
+            => \@target_ids } })->update_all({ status => '2' });
 
-    $c->stash->{status} = '1';
+    $c->stash->{status} = '2';
     $c->res->redirect("/list");
 }
 
@@ -138,10 +130,12 @@ sub edit :Local :CaptureArgs(1) {
             updated_on => "$time",
         );
         $c->model('DonDB')->resultset('Charge')->update_or_create(\%row);
+
         $c->res->redirect($c->uri_for("/list/view/$row{id}"));
     }
     else {
         my $editer = $c->model('DonDB')->resultset('Charge')->find($edit_id);
+
         $c->stash(
             editer => $editer,
         );
