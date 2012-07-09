@@ -30,9 +30,16 @@ sub index :Path :Args(0) {
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $page    = $c->req->params->{page};
+    my $status  = $c->req->param("status");
+
     $attr{page} = $page || 1;
 
-    my $rs = $c->model('DonDB')->resultset('Charge')->search({}, \%attr);
+    my $rs;
+    my %cond = ();
+
+    %cond = ( status => $status ) if $status;
+
+    $rs = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
 
     my $page_info =
     Data::Pageset->new(
