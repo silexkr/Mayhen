@@ -9,8 +9,10 @@
   <div class="row-fluid">
     <div class="span2">
       <ul class="nav nav-tabs nav-stacked">
-	<li class="active"><a href="/list">대기</a></li>
-	<li><a href="/list/write">쓰기</a></li>
+	<li class="active"><a href="/list">전체</a></li>
+	<li><a href="/list?status=0">대기</a></li>
+	<li><a href="/list?status=1">승인</a></li>
+	<li><a href="/list?status=2">삭제</a></li>
       </ul>
     </div>
 
@@ -24,27 +26,35 @@
       </ul>
       <!-- 게시물 리스트를 보이기 위한 테이블 -->
     <table id="charge_list" class="table table-striped table-bordered">
-		<thead>
-		  <tr>
-		    <th> <input type="checkbox" id="head_checkbox"> </th>
-		    <th> 제목 </th>
-		    <th> 글쓴이 </th>
-		    <th> 날짜 </th>
-		    <th> 금액 </th>
-		  </tr>
-		</thead>
-	      <!-- 리스트 부분 시작 -->
-		<tbody>
-		  [% FOREACH list IN lists %]
-		    <tr id="[% list.id %]">
-		      <td><input type="checkbox"></td>
-		      <td><a href="[% c.uri_for('view', list.id) %]">[% list.title %]</a></td>
-		      <td>[% list.user.user_name %] </td>
-		      <td>[% list.created_on.ymd %]</td>
-		      <td>[% list.amount %]</td>
-		    </tr>
-		  [% END %]
-		</tbody>
+      <thead>
+	<tr>
+	  <th> <input type="checkbox" id="head_checkbox"> </th>
+	  <th> 제목 </th>
+	  <th> 글쓴이 </th>
+	  <th> 날짜 </th>
+	  <th> 금액 </th>
+	  <th> 상태 </th>
+	</tr>
+      </thead>
+    <!-- 리스트 부분 시작 -->
+      <tbody>
+	[% FOREACH list IN lists %]
+	  <tr id="[% list.id %]">
+	    <td><input type="checkbox"></td>
+	    <td><a href="[% c.uri_for('view', list.id) %]">[% list.title %]</a></td>
+	    <td>[% list.user.user_name %] </td>
+	    <td>[% list.created_on.ymd %]</td>
+	    <td>[% list.amount %]</td>
+	    [% IF list.status == "0" %]
+		<td>대기</td>
+	    [% ELSIF list.status == "1" %]
+		<td>승인</td>
+	    [% ELSE %]
+		<td>삭제</td>
+	    [% END %]
+	  </tr>
+	[% END %]
+      </tbody>
      </table>
       [% PROCESS 'inc/pagination.tt' %]
       <a href="/list/write" class="btn btn-primary">글쓰기</a>

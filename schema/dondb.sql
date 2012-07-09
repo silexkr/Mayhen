@@ -7,6 +7,7 @@ CREATE TABLE `charge` (
   user    INT unsigned NOT NULL COMMENT '청구 작성자',
   comment varchar(255) NOT NULL DEFAULT '내용 없음' COMMENT '청구 메모',
   title   varchar(255) NOT NULL DEFAULT '제목 없음' COMMENT '청구 제목',
+  status  INT unsigned NOT NULL DEFAULT '0',
   created_on DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   KEY `user` (`user`)
