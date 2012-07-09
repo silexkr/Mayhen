@@ -4,15 +4,15 @@
     [% message %]
 </div>
 [% END %]
-
+[% messages.0 %]
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span2">
       <ul class="nav nav-tabs nav-stacked">
 	<li class="active"><a href="/list">전체</a></li>
-	<li><a href="/list?status=0">대기</a></li>
-	<li><a href="/list?status=1">승인</a></li>
-	<li><a href="/list?status=2">삭제</a></li>
+	<li><a href="/list?status=1">대기</a></li>
+	<li><a href="/list?status=2">승인</a></li>
+	<li><a href="/list?status=3">거부</a></li>
       </ul>
     </div>
 
@@ -22,14 +22,14 @@
 		<span class="divider">/</span>
 	</li>      
 	<li class="active">
-		[% IF status == "0" %]
-			<b> 대기 </b>
-	    [% ELSIF status == "1" %]
-	    	<b> 승인 </b>
+	    [% IF status == "1" %]
+		<b> 대기 </b>
 	    [% ELSIF status == "2" %]
-			<b> 삭제 </b>
-		[% ELSE %]
-			<b> 전체 </b>
+	    	<b> 승인 </b>
+	    [% ELSIF status == "3" %]
+		<b> 대기 </b>
+	    [% ELSE %]
+		<b> 전체 </b>
 	    [% END %]	  
 	</li>
       </ul>
@@ -54,13 +54,13 @@
 	    <td>[% list.user.user_name %] </td>
 	    <td>[% list.created_on.ymd %]</td>
 	    <td>[% list.amount %]</td>
-	    [% IF list.status == "0" %]
-		<td>대기</td>
-	    [% ELSIF list.status == "1" %]
-		<td>승인</td>
-	    [% ELSE %]
-		<td>삭제</td>
-	    [% END %]
+	      [% IF list.status == "1" %]
+		  <td> 대기 </td>
+	      [% ELSIF list.status == "2" %]
+		  <td> 승인 </td>
+	      [% ELSE %]
+		  <td> 거부 </td>
+	      [% END %]
 	  </tr>
 	[% END %]
       </tbody>
