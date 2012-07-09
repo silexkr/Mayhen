@@ -30,7 +30,7 @@ sub index :Path :Args(0) {
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $page    = $c->req->params->{page};
-    my $status  = $c->req->param("status");
+    my $status  = $c->req->param("status") || $c->flash->{"status"} || '0';
 
     $attr{page} = $page || 1;
 
@@ -96,10 +96,11 @@ sub view :Local :CaptureArgs(1) {
 }
 
 sub delete :Local :CaptureArgs(1) {
-    my ( $self, $c, $id) = @_;
+    my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
     my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->delete_all;
+
     my $message;
     if ($charge) {        
         $c->stash->{message} = '삭제되었습니다.';
@@ -110,6 +111,17 @@ sub delete :Local :CaptureArgs(1) {
         $c->detach;
     }    
     $c->res->redirect($c->uri_for('/list'));    
+}
+
+sub approval :Local :CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+            => \@target_ids } })->update_all({ status => '1' });
+
+    $c->stash->{status} = '1';
+    $c->res->redirect("/list");
 }
 
 sub edit :Local :CaptureArgs(1) {
