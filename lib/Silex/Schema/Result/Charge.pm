@@ -75,7 +75,7 @@ __PACKAGE__->table("charge");
 =head2 status
 
   data_type: 'integer'
-  default_value: 0
+  default_value: 1
   extra: {unsigned => 1}
   is_nullable: 0
 
@@ -134,7 +134,7 @@ __PACKAGE__->add_columns(
   "status",
   {
     data_type => "integer",
-    default_value => 0,
+    default_value => 1,
     extra => { unsigned => 1 },
     is_nullable => 0,
   },
@@ -172,8 +172,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-09 14:56:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gzcVgvrDp+1jjY7b0VzHTg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-09 18:41:38
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:37FMg1JYmb/siUt44mG5dw
 
 __PACKAGE__->belongs_to(
     user => 'Silex::Schema::Result::User'
