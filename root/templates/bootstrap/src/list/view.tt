@@ -1,10 +1,16 @@
 <ul class="breadcrumb">
   <li>
-    <a href="/list">대기</a>
+    <a href="/list">전체</a>
     <span class="divder">/</span>
   </li>
   <li>
-    <a href="/list">목록</a>
+    [% IF charge.status == 1 %]
+      <a href="/list?status=1">대기</a>
+    [% ELSIF charge.status == 2 %]
+      <a href="/list?status=2">승인</a>
+    [% ELSE %]
+      <a href="/list?status=3">거부</a>
+    [% END %]
     <span class="divder">/</span>
   </li>
   <li class="active">상세 내역</li>
@@ -30,7 +36,13 @@
 <!-- 기타 버튼 들 -->
 </table>
 <a href="[% c.uri_for('/list/edit', charge.id) %]" class="btn btn-primary">수정</a>
+[% IF charge.status == 1 %]
+  <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+  <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
+[% ELSIF charge.status == 2 %]
+  <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
+[% ELSE %]
+  <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+[% END %]
 <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
-<a href="[% c.uri_for('/list/give') %]" class="btn btn-primary">승인</a>
-<a href="[% c.uri_for('/list/refuse') %]" class="btn btn-primary">거부</a>
 <a href="[% c.uri_for('/list') %]" class="btn btn-primary">되돌아가기</a>
