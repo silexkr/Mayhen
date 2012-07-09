@@ -24,3 +24,19 @@ $('#do_delete').click(function() {
 		window.location.replace('/list');
 	});
 });
+
+$('#do_approval').click(function() {
+  var selected_charges = [];
+  $('#charge_list tr').filter(':has(:checkbox:checked)').each(function(){
+    console.log($(this));
+    if($(this).attr('id') !== undefined)
+      selected_charges.push($(this).attr('id'))
+  });
+  console.log(selected_charges);
+  $.ajax({
+    type: 'GET',
+    url: '/list/approval/' + selected_charges
+  }).done(function(msg) {
+    window.location.replace('/list');
+  });
+});
