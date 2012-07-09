@@ -30,7 +30,7 @@ sub index :Path :Args(0) {
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $page    = $c->req->params->{page};
-    my $status  = $c->req->param("status") || $c->stash->{"status"} || '1';
+    my $status  = $c->req->param("status") || $c->stash->{"status"} || '0';
 
     $attr{page} = $page || 1;
 
@@ -113,6 +113,17 @@ sub approval :Local :CaptureArgs(1) {
             => \@target_ids } })->update_all({ status => '2' });
 
     $c->stash->{status} = '2';
+    $c->res->redirect("/list");
+}
+
+sub refuse :Local :CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+            => \@target_ids } })->update_all({ status => '3' });
+
+    $c->stash->{status} = '3';
     $c->res->redirect("/list");
 }
 

@@ -27,7 +27,7 @@
 	    [% ELSIF status == "2" %]
 	    	<b> 승인 </b>
 	    [% ELSIF status == "3" %]
-		<b> 대기 </b>
+		<b> 거부 </b>
 	    [% ELSE %]
 		<b> 전체 </b>
 	    [% END %]	  
@@ -69,7 +69,7 @@
       <a href="/list/write" class="btn btn-primary">글쓰기</a>
       <a class="btn btn-primary" id="do_delete">삭제</a>
       <a class="btn btn-primary" id="do_approval">승인</a>
-      <a class="btn btn-primary">거부</a>
+      <a class="btn btn-primary" id="do_refuse">거부</a>
     </div>
   </div>
 </div>
