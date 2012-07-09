@@ -72,6 +72,13 @@ __PACKAGE__->table("charge");
 
 ?? ??
 
+=head2 status
+
+  data_type: 'integer'
+  default_value: 0
+  extra: {unsigned => 1}
+  is_nullable: 0
+
 =head2 created_on
 
   data_type: 'datetime'
@@ -124,6 +131,13 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 255,
   },
+  "status",
+  {
+    data_type => "integer",
+    default_value => 0,
+    extra => { unsigned => 1 },
+    is_nullable => 0,
+  },
   "created_on",
   {
     data_type                 => "datetime",
@@ -158,8 +172,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 16:38:57
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qLsutPrNJ1WXZ7jEO5aELg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-09 14:56:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gzcVgvrDp+1jjY7b0VzHTg
 
 __PACKAGE__->belongs_to(
     user => 'Silex::Schema::Result::User'
