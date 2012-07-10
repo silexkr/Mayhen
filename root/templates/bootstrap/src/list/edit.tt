@@ -6,6 +6,16 @@
   <li class="active">수정</li>
 </ul>
 <!-- 입력된 값을 다음 페이지로 넘기기 위해 form을 만든다. -->
+
+[% IF messages %]
+  [% FOR message IN messages %]
+    <div class="alert">
+      <button class="close" data-dismiss="alert">x</button>
+      [% message %]
+    </div>
+  [% END %]
+[% END %]
+
 <form action="[% c.uri_for('/list/edit') %]" method="POST">
   <input type="hidden" name="charge_id" value="[% editer.id %]">
   <input type="hidden" name="charge_user" value="[% c.user.id %]">

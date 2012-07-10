@@ -6,6 +6,16 @@
   <li class="active">글쓰기</li>
 </ul>
 <!-- 입력된 값을 다음 페이지로 넘기기 위해 form을 만든다. -->
+
+[% IF messages %]
+  [% FOR message IN messages %]
+    <div class="alert">
+      <button class="close" data-dismiss="alert">x</button>
+      [% message %]
+    </div>
+  [% END %]
+[% END %]
+
 <form action="[% c.uri_for('/list/write') %]" method="POST" id="w_form" enctype="multipart/form-data">
   <table class="table table-striped table-bordered" id="write">
     <!-- 입력 부분 -->
@@ -18,18 +28,18 @@
     <tr>
       <th>제 목</th>
       <td>
-	<input type="text" name="title" id="title">
+	<input type="text" name="title" id="title" value="[% title %]">
       </td>
     </tr>
     <tr>
       <th>내용</th>
       <td>
-	<textarea name="content" id="content" cols=65 rows=15></textarea>
+	<textarea name="content" id="content" cols=65 rows=15>[% comment %]</textarea>
       </td>
     </tr>
     <tr>
       <th>금액</th>
-      <td><input type="text" id="amount" name="amount"></td>
+      <td><input type="text" id="amount" name="amount" value="[% amount %]"></td>
     </tr>
     <tr>
       <td colspan=10 align=center>
