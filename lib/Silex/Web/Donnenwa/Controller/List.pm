@@ -3,7 +3,7 @@ use Moose;
 use namespace::autoclean;
 use Data::Dumper;
 use Data::Pageset;
-use POSIX qw(strftime);
+use POSIX;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -29,17 +29,14 @@ sub index :Path :Args(0) {
 
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
-    my $page    = $c->req->params->{page};
-    my $status  = $c->req->param("status") || $c->stash->{"status"} || '0';
-#수정 필요
-
-    $attr{page} = $page || 1;
-
     my $rs;
-    my %cond = ();
+    my %cond    = ();
+    my $page    = $c->req->params->{page};
+    my $status  = $c->req->param("status") || $c->stash->{"status"} || '0'; #수정 필요
 
-    %cond = ( status => $status ) if $status;
-    $rs = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+    %cond       = ( status => $status ) if $status;
+    $rs         = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+    $attr{page} = $page || 1;
 
     my $page_info =
     Data::Pageset->new(
@@ -61,17 +58,23 @@ sub write :Local :Args(0) {
     my ( $self, $c ) = @_;
 
     if ($c->req->method eq 'POST') {
-#적용 안해주면 GMT 기준으로 보임
+        my @messages;
 
-        unless () {
+        push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
+        push @messages, 'title is required' unless ($c->req->params->{title});
+
+        if (@messages) {
+            $c->flash(
+                    messages => @messages,
+                    comment  => $c->req->params->{comment},
+                    title    => $c->req->params->{title},
+                    amount   => $c->req->params->{amount},
+            );
+
+            return $c->res->redirect($c->uri_for('/list/write'));
         }
 
-        my $user    = $c->user->id,
-        my $title   = $c->req->params->{title},
-        my $comment = $c->req->params->{content},
-        my $amount  = $c->req->params->{amount},
-
-        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
+        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime; #적용 안해주면 GMT 기준으로 보임
         my %row = (
             user       => $c->user->id,
             title      => $c->req->params->{title},
@@ -104,15 +107,15 @@ sub delete :Local :CaptureArgs(1) {
 
     my $message;
     if ($charge) {        
-        $c->flash->{message} = '삭제되었습니다.';
+        $c->flash->{messages} = '삭제되었습니다.';
 
     } else {
-        $c->response->status(404);
-        $c->flash->{message} = '해당 청구항목이 없습니다.';
+        $c->res->status(404);
+        $c->flash->{messages} = '해당 청구항목이 없습니다.';
         $c->detach;
     }    
 
-    $c->res->redirect($c->uri_for('/list'));    
+    $c->res->redirect($c->uri_for('/list'));
 }
 
 sub approval :Local :CaptureArgs(1) {
@@ -123,7 +126,7 @@ sub approval :Local :CaptureArgs(1) {
             => \@target_ids } })->update_all({ status => '2' });
 
     $c->stash->{status} = '2';
-    $c->res->redirect("/list");
+    $c->res->redirect($c->uri_for('/list'));
 }
 
 sub refuse :Local :CaptureArgs(1) {
@@ -134,13 +137,29 @@ sub refuse :Local :CaptureArgs(1) {
             => \@target_ids } })->update_all({ status => '3' });
 
     $c->stash->{status} = '3';
-    $c->res->redirect("/list");
+    $c->res->redirect($c->uri_for('/list'));
 }
 
 sub edit :Local :CaptureArgs(1) {
     my ( $self, $c, $edit_id ) = @_;
 
     if ($c->req->method eq 'POST') {
+        my @messages;
+
+        push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
+        push @messages, 'title is required' unless ($c->req->params->{title});
+
+        if (@messages) {
+            $c->flash(
+                    messages => @messages,
+                    comment  => $c->req->params->{comment},
+                    title    => $c->req->params->{title},
+                    amount   => $c->req->params->{amount},
+            );
+
+            return $c->res->redirect($c->uri_for("/list/view/$c->req->params->{charge_id}"));
+        }
+
         my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
         my %row = (
             id         => $c->req->params->{charge_id},
