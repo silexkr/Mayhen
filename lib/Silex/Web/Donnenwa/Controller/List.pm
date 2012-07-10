@@ -31,6 +31,7 @@ sub index :Path :Args(0) {
 
     my $page    = $c->req->params->{page};
     my $status  = $c->req->param("status") || $c->stash->{"status"} || '0';
+#수정 필요
 
     $attr{page} = $page || 1;
 
@@ -60,8 +61,17 @@ sub write :Local :Args(0) {
     my ( $self, $c ) = @_;
 
     if ($c->req->method eq 'POST') {
-        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
+#적용 안해주면 GMT 기준으로 보임
 
+        unless () {
+        }
+
+        my $user    = $c->user->id,
+        my $title   = $c->req->params->{title},
+        my $comment = $c->req->params->{content},
+        my $amount  = $c->req->params->{amount},
+
+        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
         my %row = (
             user       => $c->user->id,
             title      => $c->req->params->{title},
