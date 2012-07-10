@@ -10,8 +10,13 @@
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script src="[% c.uri_for('/static/scripts/require-jquery.js') %]" type="text/javascript"></script>
+    <script src="[% c.uri_for('/static/scripts/jquery_validation.js') %]" type="text/javascript"></script>
     <script src="[% c.uri_for('/static/scripts/write_vaili.js') %]" type="text/javascript"></script>
     <script src="[% c.uri_for('/static/scripts/bundle.js') %]" type="text/javascript"></script>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+
     [%- FOREACH css IN csses %]
     <link rel="stylesheet" href="[% c.uri_for('/static/css/' _ css) %]" type="text/css" />
     [%- END %]
