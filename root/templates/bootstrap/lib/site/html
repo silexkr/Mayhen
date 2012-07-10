@@ -9,20 +9,12 @@
         <link href="[% c.uri_for('/static/css/ie.css') %]" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-    <script src="[% c.uri_for('/static/scripts/require-jquery.js') %]" type="text/javascript"></script>
-    <script src="[% c.uri_for('/static/scripts/write_vaili.js') %]" type="text/javascript"></script>
     <script src="[% c.uri_for('/static/scripts/bundle.js') %]" type="text/javascript"></script>
+    <script src="[% c.uri_for('/static/scripts/jquery.validation.js') %]" type="text/javascript"></script>
+    <script src="[% c.uri_for('/static/scripts/write_validation.js') %]" type="text/javascript"></script>
+
     [%- FOREACH css IN csses %]
     <link rel="stylesheet" href="[% c.uri_for('/static/css/' _ css) %]" type="text/css" />
-    [%- END %]
-    [%- TRY %]
-    [%- SET filesuffix = '.js' %]
-    [%- SET basename = String.new(c.action.reverse).replace('/', '.') %]
-    [%- SET filename = basename _ filesuffix %]
-    [%- USE file(filename, root = c.config.root _ '/static/scripts') %]
-    <script data-main="/static/scripts/[% basename %]" src="/static/scripts/require-jquery.js"></script>
-    [%- CATCH File %]
-    [% debug('File error: ' _ error.info) %]
     [%- END %]
   </head>
   <body>
