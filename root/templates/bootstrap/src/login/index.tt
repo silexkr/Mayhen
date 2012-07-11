@@ -5,6 +5,11 @@
 [% ELSE -%]
  
 <!-- Login form -->
+
+[% IF error_msg %]
+  <div class="alert alert-error"> [% error_msg %] </div>
+[% END %]
+
 <form method="post" action="[% c.uri_for('/login') %]">
   <table>
     <tr>
@@ -16,12 +21,9 @@
       <td><input type="password" name="password" size="40" /></td>
     </tr>
     <tr>
-      <td colspan="2"><input type="submit" name="submit" value="Submit" /></td>
+      <td><input type="submit" name="submit" value="Submit" class="btn btn-primary" /></td>
+      <td><a href="/signup" class="btn btn-primary">signup</a></td>
     </tr>
   </table>
 </form>
 [% END %]
-
-<p>
-  <a href="/signup">signup</a>
-</p>

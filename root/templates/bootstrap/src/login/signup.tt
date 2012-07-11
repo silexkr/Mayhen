@@ -1,3 +1,9 @@
+[% IF messages %]
+  [% FOR message IN messages %]
+    <div class="alert alert-error"> [% message %] </div>
+  [% END %]
+[% END %]
+
 <form class="form-horizontal" method="POST">
   <fieldset>
     <legend>sign up</legend>
@@ -16,9 +22,9 @@
     </div>
 
     <div class="control-group">
-      <label class="control-label" for="password">password</label>
+      <label class="control-label" for="password">Password</label>
       <div class="controls">
-        <input type="text" name="password" id="password">
+        <input type="password" name="password" id="password">
       </div>
     </div>
 

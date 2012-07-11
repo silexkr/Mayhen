@@ -75,7 +75,7 @@ sub write :Local :Args(0) {
         }
 
         my $time = strftime "%Y-%m-%d %H:%M:%S", localtime; #적용 안해주면 GMT 기준으로 보임
-        my %row = (
+        my %row  = (
             user       => $c->user->id,
             title      => $c->req->params->{title},
             comment    => $c->req->params->{content},
