@@ -34,9 +34,9 @@ sub index :Path :Args(0) {
     my $page    = $c->req->params->{page};
     my $status  = $c->req->param("status") || $c->stash->{"status"} || '0'; #수정 필요
 
+    $attr{page} = $page || 1;
     %cond       = ( status => $status ) if $status;
     $rs         = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
-    $attr{page} = $page || 1;
 
     my $page_info =
     Data::Pageset->new(
@@ -75,7 +75,7 @@ sub write :Local :Args(0) {
         }
 
         my $time = strftime "%Y-%m-%d %H:%M:%S", localtime; #적용 안해주면 GMT 기준으로 보임
-        my %row = (
+        my %row  = (
             user       => $c->user->id,
             title      => $c->req->params->{title},
             comment    => $c->req->params->{content},
