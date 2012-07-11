@@ -105,14 +105,11 @@ sub delete :Local :CaptureArgs(1) {
 
     my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->delete_all;
 
-    my $message;
     if ($charge) {        
-        $c->flash->{messages} = '삭제되었습니다.';
+        $c->flash->{messages} = 'Success Deleted.';
 
     } else {
-        $c->res->status(404);
-        $c->flash->{messages} = '해당 청구항목이 없습니다.';
-        $c->detach;
+        $c->flash->{messages} = 'No Deleted Item.';
     }    
 
     $c->res->redirect($c->uri_for('/list'));
@@ -122,8 +119,15 @@ sub approval :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+    my $approval = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
             => \@target_ids } })->update_all({ status => '2' });
+
+    if ($approval) {
+        $c->flash->{messages} = 'Success Approval.';
+    }
+    else {
+        $c->flash->{messages} = 'No Approval Item.';
+    }
 
     $c->stash->{status} = '2';
     $c->res->redirect($c->uri_for('/list'));
@@ -133,8 +137,15 @@ sub refuse :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+    my $refuse = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
             => \@target_ids } })->update_all({ status => '3' });
+
+    if ($refuse) {
+        $c->flash->{messages} = 'Success Refuse.';
+    }
+    else {
+        $c->flash->{messages} = 'No Refuse Item.';
+    }
 
     $c->stash->{status} = '3';
     $c->res->redirect($c->uri_for('/list'));
