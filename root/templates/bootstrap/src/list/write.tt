@@ -8,12 +8,10 @@
 <!-- 입력된 값을 다음 페이지로 넘기기 위해 form을 만든다. -->
 
 [% IF messages %]
-  [% FOR message IN messages %]
-    <div class="alert">
-      <button class="close" data-dismiss="alert">x</button>
-      [% message %]
-    </div>
-  [% END %]
+  <div class="alert fade in">
+    <button class="close" data-dismiss="alert">&times;</button>
+    [% message %]
+  </div>
 [% END %]
 
 <form action="[% c.uri_for('/list/write') %]" method="POST" id="w_form" enctype="multipart/form-data">

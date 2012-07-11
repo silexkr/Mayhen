@@ -10,49 +10,34 @@ $('#head_checkbox').click(function() {
 });
 
 $('#do_delete').click(function() {
-	var selected_charges = [];
-	$('#charge_list tr').filter(':has(:checkbox:checked)').each(function(){
-		console.log($(this));		
-		if($(this).attr('id') !== undefined)
-			selected_charges.push($(this).attr('id')) 
-	});
-	console.log(selected_charges);
-	$.ajax({
-		type: 'GET',
-		url: '/list/delete/' + selected_charges
-	}).done(function(msg) {
-		window.location.replace('/list');
-	});
+  var selected_charges = [];
+
+  $('#charge_list tr').filter(':has(:checkbox:checked)').each(function(){
+    if($(this).attr('id') !== undefined)
+      selected_charges.push($(this).attr('id'))
+  });
+
+  location.href = '/list/delete/' + selected_charges;
 });
 
 $('#do_approval').click(function() {
   var selected_charges = [];
+
   $('#charge_list tr').filter(':has(:checkbox:checked)').each(function(){
-    console.log($(this));
     if($(this).attr('id') !== undefined)
       selected_charges.push($(this).attr('id'))
   });
-  console.log(selected_charges);
-  $.ajax({
-    type: 'GET',
-    url: '/list/approval/' + selected_charges
-  }).done(function(msg) {
-    window.location.replace('/list');
-  });
+
+  location.href = '/list/approval/' + selected_charges;
 });
 
 $('#do_refuse').click(function() {
   var selected_charges = [];
+
   $('#charge_list tr').filter(':has(:checkbox:checked)').each(function(){
-    console.log($(this));
     if($(this).attr('id') !== undefined)
       selected_charges.push($(this).attr('id'))
   });
-  console.log(selected_charges);
-  $.ajax({
-    type: 'GET',
-    url: '/list/refuse/' + selected_charges
-  }).done(function(msg) {
-    window.location.replace('/list');
-  });
+
+  location.href = '/list/refuse/' + selected_charges;
 });
