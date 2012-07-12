@@ -14,7 +14,7 @@
   <table>
     <tr>
       <td>Username:</td>
-      <td><input type="text" name="username" size="40" /></td>
+      <td><input type="text" id="login_username" name="username" size="40" /></td>
     </tr>
     <tr>
       <td>Password:</td>
@@ -26,4 +26,5 @@
     </tr>
   </table>
 </form>
+<script type="text/javascript" src="[% c.uri_for('/static/scripts/login.js') %]"></script>
 [% END %]
