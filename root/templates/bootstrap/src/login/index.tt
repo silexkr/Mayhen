@@ -17,7 +17,7 @@
     <div class="control-group">
       <label class="control-lavel" for="username">Username:</label>
       <div class="controls">
-        <input type="text" name="username" id="username">
+        <input type="text" name="login_username" id="username" size="40">
       </div>
     </div>
 
@@ -35,4 +35,5 @@
   </fieldset>
 </form>
 </div>
+<script type="text/javascript" src="[% c.uri_for('/static/scripts/login.js') %]"></script>
 [% END %]
