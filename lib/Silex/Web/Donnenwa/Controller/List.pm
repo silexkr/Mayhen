@@ -36,15 +36,15 @@ sub index :Path :Args(0) {
 
     $attr{page} = $page || 1;
     %cond       = ( status => $status ) if $status;
-    $rs         = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+    $total_charge         = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
 
     my $page_info =
-    Data::Pageset->new(
-        {
-            ( map { $_ => $rs->pager->$_ } qw/entries_per_page total_entries current_page/ ),
-            mode => "slide",
-            pages_per_set => 10,
-        }
+        Data::Pageset->new(
+            {
+                ( map { $_ => $total_charge->pager->$_ } qw/entries_per_page total_entries current_page/ ),
+                mode => "slide",
+                pages_per_set => 10,
+            }
     );
 
     $c->stash(

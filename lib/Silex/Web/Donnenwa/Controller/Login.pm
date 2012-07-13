@@ -64,7 +64,7 @@ sub signup_POST :Private {
 
     if (@messages) {
         $c->flash(
-            messages      => @messages,
+            messages => @messages,
         );
 
         return $c->res->redirect($c->uri_for('/signup'));
@@ -75,7 +75,7 @@ sub signup_POST :Private {
     my $name_search = $c->model('DonDB')->resultset('User')->search($cond);
     if ($name_search->count) {
         $c->flash(
-            messages      => 'Using ID again input the New ID',
+            messages => 'Using ID again input the New ID',
         );
 
         return $c->res->redirect($c->uri_for('/signup'));
