@@ -26,7 +26,7 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
     if ($c->req->method eq 'POST') {
-        my $username = $c->request->params->{username};
+        my $username = $c->request->params->{login_username};
         my $password = $c->request->params->{password};
 
         if ($username && $password) {

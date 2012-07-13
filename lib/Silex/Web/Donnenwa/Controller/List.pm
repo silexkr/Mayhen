@@ -48,7 +48,7 @@ sub index :Path :Args(0) {
     );
 
     $c->stash(
-        lists   => [ $rs->all ],
+        lists   => [ $total_charge->all ],
         status  => $status,
         pageset => $page_info,
     );
