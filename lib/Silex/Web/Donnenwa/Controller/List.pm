@@ -34,9 +34,9 @@ sub index :Path :Args(0) {
     my $page    = $c->req->params->{page};
     my $status  = $c->req->param("status") || $c->stash->{"status"} || '0'; #수정 필요
 
-    $attr{page} = $page || 1;
-    %cond       = ( status => $status ) if $status;
-    $total_charge         = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+    $attr{page}   = $page || 1;
+    %cond         = ( status => $status ) if $status;
+    my $total_charge = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
 
     my $page_info =
         Data::Pageset->new(
