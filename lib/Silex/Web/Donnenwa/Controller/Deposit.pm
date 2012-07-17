@@ -59,6 +59,23 @@ sub index :Path :Args(0) {
     );
 }
 
+sub approval :Local CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    my $approval = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+            => \@target_ids } })->update_all({ status => '5' });
+
+    if ($approval) {
+        $c->flash->{messages} = 'Success Approval Deposit.';
+    }
+    else {
+        $c->flash->{messages} = 'No Approval Deposit Item.';
+    }
+
+    $c->flash->{charger} = '5';
+    $c->res->redirect($c->uri_for('/deposit'));
+}
 
 =head1 AUTHOR
 
