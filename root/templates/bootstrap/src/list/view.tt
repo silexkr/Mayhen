@@ -45,4 +45,3 @@
   <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
 [% END %]
 <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
-<a href="[% c.uri_for('/list') %]" class="btn btn-primary">되돌아가기</a>
