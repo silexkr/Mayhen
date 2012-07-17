@@ -11,14 +11,14 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="active"><a href="[% c.uri_for('/') %]">청구관리</a></li>
-          <li><a href="#">청구정산</a></li>          
+          <li><a href="[% c.uri_for('/deposit') %]">청구정산</a></li>
         </ul>
         <ul class="nav pull-right">
             <li class="divider-vertical"></li>
             [% IF c.user_exists %]
-            <li><a href="/logout">Logout</a></li>
+              <li><a href="/logout">Logout</a></li>
             [% ELSE %]
-            <li><a href="/login">Login</a></li>
+              <li><a href="/login">Login</a></li>
             [% END %]
         </ul>
       </div><!-- /.nav-collapse -->
