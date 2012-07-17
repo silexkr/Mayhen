@@ -28,11 +28,12 @@ sub index :Path :Args(0) {
     my $cond   = {};
     my $page   = $c->req->params->{page};
     my $charger_id = $c->req->params->{charger} || '';
+    my $status  = $c->req->params->{status};
     my $attr = {};
 
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
-    $cond->{status} = '2';
+    $status ? $cond->{status} = $status : $cond->{status} = '2';
 
     my $total_charge = $c->model('DonDB')->resultset('Charge')->search($cond, $attr);
 
@@ -73,7 +74,7 @@ sub approval :Local CaptureArgs(1) {
         $c->flash->{messages} = 'No Approval Deposit Item.';
     }
 
-    $c->flash->{charger} = '5';
+    $c->flash->{status} = '5';
     $c->res->redirect($c->uri_for('/deposit'));
 }
 
