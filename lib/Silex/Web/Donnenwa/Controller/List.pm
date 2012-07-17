@@ -89,7 +89,7 @@ sub write :Local :Args(0) {
     }
 }
 
-sub view :Local :CaptureArgs(1) {
+sub view :Path('/view') :CaptureArgs(1) {
     my ( $self, $c, $charge_id) = @_;
 
     my $charge = $c->model('DonDB')->resultset('Charge')->find($charge_id);

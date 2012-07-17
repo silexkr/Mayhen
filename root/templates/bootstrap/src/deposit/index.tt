@@ -9,17 +9,17 @@
   <div class="row-fluid">
     <div class="span2">
       <ul class="nav nav-tabs nav-stacked">
-	    <li class="active"><a href="/list">전체</a></li>
-	      [% FOR charge_user IN charge_users %]
-	        <li><a href="/deposit?charger=[% charge_user.id %]">[% charge_user.user_name %]</a></li>    
-	      [% END %]
+	<li class="active"><a href="/list">전체</a></li>
+	  [% FOR charge_user IN charge_users %]
+	    <li><a href="/deposit?charger=[% charge_user.id %]">[% charge_user.user_name %]</a></li>    
+	  [% END %]
       </ul>
     </div>
 
     <div class="span10">
       <ul class="breadcrumb">
 	<li>정산
-		<span class="divider">/</span>
+	  <span class="divider">/</span>
 	</li>      
 	<li>
 	  <b> 승인 </b>
@@ -43,7 +43,7 @@
 	  [% IF list.status == "2" %]
 	    <tr id="[% list.id %]">
 	      <td><input type="checkbox"></td>
-	      <td><a href="[% c.uri_for('view', list.id) %]">[% list.title %]</a></td>
+	      <td><a href="[% c.uri_for('/view', list.id) %]">[% list.title %]</a></td>
 	      <td>[% list.user.user_name %] </td>
 	      <td>[% list.created_on.ymd %]</td>
 	      <td>[% list.amount %]</td>
