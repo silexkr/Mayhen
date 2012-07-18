@@ -9,10 +9,10 @@
   <div class="row-fluid">
     <div class="span2">
       <ul class="nav nav-tabs nav-stacked">
-	<li class="active"><a href="/list">전체</a></li>
-	<li><a href="/list?status=1">대기</a></li>
-	<li><a href="/list?status=2">승인</a></li>
-	<li><a href="/list?status=3">거부</a></li>
+	<li class="active"><a href="/list">전체 ([% total_count %])</a></li>
+	<li><a href="/list?status=1">대기 ([% charge_count %])</a></li>
+	<li><a href="/list?status=2">승인 ([% approval_count %])</a></li>
+	<li><a href="/list?status=3">거부 ([% refuse_count %])</a></li>
       </ul>
     </div>
 
@@ -23,13 +23,13 @@
 	</li>      
 	<li class="active">
 	    [% IF status == "1" %]
-		<b> 대기 </b>
+		  <b> 대기 ([% charge_count %])</b>
 	    [% ELSIF status == "2" %]
-	    	<b> 승인 </b>
+	      <b> 승인 ([% approval_count %])</b>
 	    [% ELSIF status == "3" %]
-		<b> 거부 </b>
+		  <b> 거부 ([% refuse_count %])</b>
 	    [% ELSE %]
-		<b> 전체 </b>
+		  <b> 전체 ([% total_count %])</b>
 	    [% END %]	  
 	</li>
       </ul>
