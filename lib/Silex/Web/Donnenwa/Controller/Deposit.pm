@@ -82,7 +82,7 @@ sub approval :Local CaptureArgs(1) {
     }
 
     $c->flash->{status} = '4';
-    $c->res->redirect($c->uri_for('/deposit?status=4'));
+    $c->res->redirect($c->uri_for("/deposit"));
 }
 
 =head1 AUTHOR
