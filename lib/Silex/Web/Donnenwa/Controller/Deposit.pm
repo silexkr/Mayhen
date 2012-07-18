@@ -25,14 +25,21 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $cond   = {};
-    my $page   = $c->req->params->{page};
+    my $cond       = {};
+    my $attr       = {};
+    my $page       = $c->req->params->{page};
     my $charger_id = $c->req->params->{charger} || '';
-    my $attr = {};
+    my $status     = $c->req->params->{status};
 
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
-    $cond->{status} = '2';
+
+    if ($status) {
+        $cond->{status} = $status;
+    }
+    else {
+        $cond->{status} = '2';
+    }
 
     my $total_charge = $c->model('DonDB')->resultset('Charge')->search($cond, $attr);
 
@@ -46,19 +53,37 @@ sub index :Path :Args(0) {
       );
 
     my $user_names = $c->model('DonDB')->resultset('User')->search(
-       {},
-     {
+        {},
+        {
         columns => [ qw/ user_name id / ],
-     }
+        }
     );
  
     $c->stash(
-        lists   => [ $total_charge->all ],
+        lists        => [ $total_charge->all ],
         charge_users => [ $user_names->all ],
-        pageset => $page_info,
+        status       => $status,
+        pageset      => $page_info,
     );
 }
 
+sub approval :Local CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    my $approval = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+            => \@target_ids } })->update_all({ status => '4' });
+
+    if ($approval) {
+        $c->flash->{messages} = 'Success Approval Deposit.';
+    }
+    else {
+        $c->flash->{messages} = 'No Approval Deposit Item.';
+    }
+
+    $c->flash->{status} = '4';
+    $c->res->redirect($c->uri_for('/deposit?status=4'));
+}
 
 =head1 AUTHOR
 

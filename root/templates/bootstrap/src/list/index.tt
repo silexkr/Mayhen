@@ -58,8 +58,10 @@
 		  <td> 대기 </td>
 	      [% ELSIF list.status == "2" %]
 		  <td> 승인 </td>
-	      [% ELSE %]
+	      [% ELSIF list.status == "3" %]
 		  <td> 거부 </td>
+	      [% ELSE %]
+		  <td> Error </td>
 	      [% END %]
 	  </tr>
 	[% END %]
