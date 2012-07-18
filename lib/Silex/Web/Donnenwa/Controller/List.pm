@@ -40,9 +40,15 @@ sub index :Path :Args(0) {
         %cond = ( status => $status);
     }
     else {
-        %cond = ( status => {'!=', '4'})
+        %cond = ( status => {'!=', '4'});
     }
+
     my $total_charge = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+
+    my $total_count    = $c->model('DonDB')->resultset('Charge')->search({status => {'!=', '4'}});
+    my $charge_count   = $c->model('DonDB')->resultset('Charge')->search('status', 1);
+    my $approval_count = $c->model('DonDB')->resultset('Charge')->search('status', 2);
+    my $refuse_count   = $c->model('DonDB')->resultset('Charge')->search('status', 3);
 
     my $page_info =
         Data::Pageset->new(
@@ -54,9 +60,13 @@ sub index :Path :Args(0) {
     );
 
     $c->stash(
-        lists   => [ $total_charge->all ],
-        status  => $status,
-        pageset => $page_info,
+        lists          => [ $total_charge->all ],
+        total_count    => $total_count,
+        charge_count   => $charge_count,
+        approval_count => $approval_count,
+        refuse_count   => $refuse_count,
+        status         => $status,
+        pageset        => $page_info,
     );
 }
 
@@ -71,10 +81,10 @@ sub write :Local :Args(0) {
 
         if (@messages) {
             $c->flash(
-                    messages => @messages,
-                    comment  => $c->req->params->{comment},
-                    title    => $c->req->params->{title},
-                    amount   => $c->req->params->{amount},
+                messages => @messages,
+                comment  => $c->req->params->{comment},
+                title    => $c->req->params->{title},
+                amount   => $c->req->params->{amount},
             );
 
             return $c->res->redirect($c->uri_for('/list/write'));
