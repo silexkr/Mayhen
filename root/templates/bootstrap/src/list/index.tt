@@ -68,7 +68,7 @@
       </tbody>
      </table>
       [% PROCESS 'inc/pagination.tt' %]
-      <a href="/list/write" class="btn btn-primary">글쓰기</a>
+      <a href="/list/write" class="btn btn-primary">청구서 작성</a>
       <a class="btn btn-primary" id="do_delete">삭제</a>
       <a class="btn btn-primary" id="do_approval">승인</a>
       <a class="btn btn-primary" id="do_refuse">거부</a>
