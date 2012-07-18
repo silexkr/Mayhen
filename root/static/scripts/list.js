@@ -39,6 +39,9 @@ $('#do_refuse').click(function() {
       selected_charges.push($(this).attr('id'))
   });
 
+  location.href = '/list/refuse/' + selected_charges;
+});
+
 $('#do_deposit').click(function() {
   var selected_charges = [];
 
@@ -46,5 +49,6 @@ $('#do_deposit').click(function() {
     if($(this).attr('id') !== undefined)
       selected_charges.push($(this).attr('id'))
   });
+
   location.href = '/deposit/approval/' + selected_charges;
 });
