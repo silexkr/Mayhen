@@ -46,9 +46,9 @@ sub index :Path :Args(0) {
     my $total_charge = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
 
     my $total_count    = $c->model('DonDB')->resultset('Charge')->search({status => {'!=', '4'}});
-    my $charge_count   = $c->model('DonDB')->resultset('Charge')->search('status', 1);
-    my $approval_count = $c->model('DonDB')->resultset('Charge')->search('status', 2);
-    my $refuse_count   = $c->model('DonDB')->resultset('Charge')->search('status', 3);
+    my $charge_count   = $c->model('DonDB')->resultset('Charge')->search({ status => 1 });
+    my $approval_count = $c->model('DonDB')->resultset('Charge')->search({ status => 2 });
+    my $refuse_count   = $c->model('DonDB')->resultset('Charge')->search({ status => 3 });
 
     my $page_info =
         Data::Pageset->new(
