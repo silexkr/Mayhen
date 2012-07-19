@@ -36,6 +36,7 @@ requires "Catalyst::Plugin::Session::State::Cookie";
 requires "Catalyst::Plugin::StackTrace";
 requires "Catalyst::Authentication::Realm::SimpleDB";
 requires "DBIx::Class::TimeStamp";
+requires "Data::Show";
 
 requires 'Catalyst::Runtime' => '5.90012';
 requires 'Catalyst::Plugin::ConfigLoader';

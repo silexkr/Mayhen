@@ -7,7 +7,6 @@ use DateTime::Format::Strptime;
 use namespace::autoclean;
 use utf8;
 
-
 BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
@@ -112,11 +111,17 @@ sub approval :Local CaptureArgs(1) {
 sub export :Local CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
-    my @arr = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->all;
-    my $charges = [ \@arr ];
+    my @charges;
 
-    if ($charges) {        
-        $c->stash->{'csv'} = { 'data' => $charges };
+    # set header
+    push @charges, ['제목', '청구자', '금액', '영수증날짜'];
+
+    foreach my $charge ($c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->all) {
+        push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ] ; 
+    }
+    
+    if (@charges) {        
+        $c->stash->{'csv'} = { 'data' => [ @charges ] };
         $c->flash->{messages} = 'Success Exported.';
 
     } else {
