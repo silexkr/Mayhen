@@ -7,7 +7,6 @@ use DateTime::Format::Strptime;
 use namespace::autoclean;
 use utf8;
 
-
 BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
