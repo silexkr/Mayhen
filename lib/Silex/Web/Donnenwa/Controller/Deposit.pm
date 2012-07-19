@@ -33,7 +33,7 @@ sub index :Path :Args(0) {
     my $attr       = {};
     my $page       = $c->req->params->{page};
     my $charger_id = $c->req->params->{charger} || '';
-    my $status     = $c->req->params->{status};
+    my $status     = $c->req->params->{status}  || '0';
 
     my $from = $c->req->params->{start_date}
     ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
@@ -55,7 +55,7 @@ sub index :Path :Args(0) {
         ]
     };
 
-    $status ? $cond->{status} = $status : $cond->{status} = '2';
+    $cond->{status} = $status ? $status : '2';
 
     my $total_charge = $c->model('DonDB')->resultset('Charge')->search($cond, $attr);
 
