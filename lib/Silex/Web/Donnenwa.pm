@@ -34,6 +34,12 @@ use Catalyst qw/
 extends 'Catalyst';
 
 our $VERSION = '0.01';
+use utf8;
+use Email::MIME;
+use Email::Sender::Simple 'sendmail';
+use Email::Sender::Transport::SMTP;
+use Encode qw/encode_utf8 decode_utf8 encode decode/;
+use MIME::Base64;
 
 # Configure the application.
 #
@@ -54,7 +60,36 @@ __PACKAGE__->config(
 # Start the application
 __PACKAGE__->setup();
 
+sub email_transporter {
+    my ($self) = @_;
+    return Email::Sender::Transport::SMTP->new(
+        {
+            host => 'smtp.gmail.com',
+            port => 465,
+            sasl_username => 'silex.money.ball@gmail.com',
+            sasl_password => 'action+vision',
+            ssl  => 1,
+        }
+    );
+}
 
+sub send_mail {
+    my ($self, $send_to, $subject, $body) = @_;
+
+    my $opt = {
+        transport => $self->email_transporter
+    };
+
+    my $email = Email::MIME->create(
+            header_str => [
+                From    => "silex.money.ball\@gmail.com",
+                To      => $send_to,
+                Subject => $subject
+            ],
+            body => $body
+        );
+    sendmail($email, $opt);    
+}
 =head1 NAME
 
 Silex::Web::Donnenwa - Catalyst based application
