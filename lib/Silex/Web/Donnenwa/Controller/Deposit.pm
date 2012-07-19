@@ -48,7 +48,7 @@ sub index :Path :Args(0) {
         {
         	( map { $_ => $total_charge->pager->$_} qw/entries_per_page total_entries current_page/ ),
         	mode => "slide",
-        	pages_per_set => 10, 	
+        	pages_per_set => 10,
         }
       );
 
@@ -58,7 +58,7 @@ sub index :Path :Args(0) {
         columns => [ qw/ user_name id / ],
         }
     );
- 
+
     $c->stash(
         lists        => [ $total_charge->all ],
         charge_users => [ $user_names->all ],
