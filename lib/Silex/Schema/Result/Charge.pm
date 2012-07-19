@@ -176,9 +176,11 @@ __PACKAGE__->set_primary_key("id");
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:37FMg1JYmb/siUt44mG5dw
 
 __PACKAGE__->belongs_to(
-    user => 'Silex::Schema::Result::User'
+    user => 'Silex::Schema::Result::User',
+    {
+      'foreign.id' => 'self.user'
+    }
 );
-
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;

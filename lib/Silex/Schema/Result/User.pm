@@ -171,9 +171,13 @@ __PACKAGE__->add_unique_constraint("user_name", ["user_name"]);
 
 __PACKAGE__->has_many(
     charges => 'Silex::Schema::Result::Charge',
-    'user',
-    { cascading_delete => 1}
+    {
+      'foreign.user' => 'self.id'
+    },
+    { cascading_delete => 1},
+
 );
+
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
