@@ -27,6 +27,7 @@ requires "Authen::SASL";
 requires "Email::Sender::Simple";
 requires "Email::Sender::Transport::SMTP";
 requires "Net::SMTP::SSL";
+requires "Catalyst::View::Download";
 
 requires "Catalyst::Plugin::Authentication";
 requires "Catalyst::Plugin::Session";

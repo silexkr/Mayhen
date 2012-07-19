@@ -109,6 +109,22 @@ sub approval :Local CaptureArgs(1) {
     $c->res->redirect($c->uri_for("/deposit"));
 }
 
+sub export :Local CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+    my @arr = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->all;
+    my $charges = [ \@arr ];
+
+    if ($charges) {        
+        $c->stash->{'csv'} = { 'data' => $charges };
+        $c->flash->{messages} = 'Success Exported.';
+
+    } else {
+        $c->flash->{messages} = 'Export Failed.';
+    }    
+    $c->forward('Silex::Web::Donnenwa::View::Download::CSV');    
+}
+
 =head1 AUTHOR
 
 한조
