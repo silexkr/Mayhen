@@ -24,7 +24,7 @@
     <td>작성자</td>
     <td>[% charge.user.user_name %]</td>
     <td>금액</td>
-    <td>[% charge.amount %]</td>
+    <td>[% charge.amount | comma %]</td>
     <td>날짜</td>
     <td>[% charge.created_on.ymd%]</td>
   </tr>
