@@ -11,7 +11,17 @@
       <ul class="nav nav-tabs nav-stacked">
 	<li class="active"><a href="/deposit">전체</a></li>
 	  [% FOR charge_user IN charge_users %]
-	    <li><a href="/deposit?charger=[% charge_user.id %]">[% charge_user.user_name %]</a></li>    
+	    <li>
+          <!-- 
+          template 에도 'count' method 가 있고, DBIC 에도 'count'
+          가 있어서, '_rs' 를 붙여서 해결해야 함
+          http://www.perlmonks.org/bare/?node_id=815766
+          -->
+          <a href="/deposit?charger=[% charge_user.id %]">
+            [% charge_user.user_name %]
+            ([% charge_user.charges_rs(status=2).count %])
+          </a>
+        </li>
 	  [% END %]
 	<li><a href="/deposit?status=4">입금명단</a></li>
       </ul>
