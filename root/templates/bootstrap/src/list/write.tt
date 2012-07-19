@@ -51,3 +51,4 @@
 </form>
 <script type="text/javascript" src="[% c.uri_for('/static/scripts/jquery.validation.js') %]"></script>
 <script type="text/javascript" src="[% c.uri_for('/static/scripts/write_validation.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/scripts/list.write.js') %]"></script>
