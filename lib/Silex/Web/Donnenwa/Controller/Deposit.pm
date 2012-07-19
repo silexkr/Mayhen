@@ -31,6 +31,14 @@ sub index :Path :Args(0) {
     my $charger_id = $c->req->params->{charger} || '';
     my $status     = $c->req->params->{status};
 
+    my $from = $c->req->params->{start_date}
+    ? DateTime::Format::ISO8601->parse_datetime($args->{start_date})
+    : DateTime->now->set(hour => 0, minute => 0, second => 0);
+
+    my $to   = $c->req->params->{end_date}
+    ? DateTime::Format::ISO8601->parse_datetime($args->{end_date})
+    : DateTime->now->set(hour => 23, minute => 59, second => 59);
+    
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
 

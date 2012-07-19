@@ -44,7 +44,7 @@ __PACKAGE__->table("charge");
   extra: {unsigned => 1}
   is_nullable: 0
 
-??
+ê¸ì¡
 
 =head2 user
 
@@ -52,31 +52,38 @@ __PACKAGE__->table("charge");
   extra: {unsigned => 1}
   is_nullable: 0
 
-?? ???
+ì²­êµ¬ ìì±ì
 
 =head2 comment
 
   data_type: 'varchar'
-  default_value: '?? ??'
+  default_value: 'ë´ì© ìì'
   is_nullable: 0
   size: 255
 
-?? ??
+ì²­êµ¬ ë©ëª¨
 
 =head2 title
 
   data_type: 'varchar'
-  default_value: '?? ??'
+  default_value: 'ì ëª© ìì'
   is_nullable: 0
   size: 255
 
-?? ??
+ì²­êµ¬ ì ëª©
 
 =head2 status
 
   data_type: 'integer'
   default_value: 1
   extra: {unsigned => 1}
+  is_nullable: 0
+
+=head2 usage_date
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
+  default_value: '0000-00-00 00:00:00'
   is_nullable: 0
 
 =head2 created_on
@@ -120,14 +127,14 @@ __PACKAGE__->add_columns(
   "comment",
   {
     data_type => "varchar",
-    default_value => "?? ??",
+    default_value => pack("H*","eb82b4ec9aa920ec9786ec9d8c"),
     is_nullable => 0,
     size => 255,
   },
   "title",
   {
     data_type => "varchar",
-    default_value => "?? ??",
+    default_value => pack("H*","eca09cebaaa920ec9786ec9d8c"),
     is_nullable => 0,
     size => 255,
   },
@@ -136,6 +143,13 @@ __PACKAGE__->add_columns(
     data_type => "integer",
     default_value => 1,
     extra => { unsigned => 1 },
+    is_nullable => 0,
+  },
+  "usage_date",
+  {
+    data_type => "datetime",
+    datetime_undef_if_invalid => 1,
+    default_value => "0000-00-00 00:00:00",
     is_nullable => 0,
   },
   "created_on",
@@ -172,8 +186,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-09 18:41:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:37FMg1JYmb/siUt44mG5dw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-18 18:36:52
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NHhwD2+TSWzRne/yazykng
 
 __PACKAGE__->belongs_to(
     user => 'Silex::Schema::Result::User'
