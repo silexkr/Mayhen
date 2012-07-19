@@ -5,6 +5,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 use DateTime::Format::Strptime;
 use namespace::autoclean;
+use utf8;
 
 
 BEGIN { extends 'Catalyst::Controller'; }
@@ -62,9 +63,9 @@ sub index :Path :Args(0) {
     my $page_info =
       Data::Pageset->new(
         {
-        	( map { $_ => $total_charge->pager->$_} qw/entries_per_page total_entries current_page/ ),
-        	mode => "slide",
-        	pages_per_set => 10,
+            ( map { $_ => $total_charge->pager->$_} qw/entries_per_page total_entries current_page/ ),
+            mode => "slide",
+            pages_per_set => 10,    
         }
       );
 
@@ -87,11 +88,18 @@ sub approval :Local CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $approval = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
-            => \@target_ids } })->update_all({ status => '4' });
+    my $target_charges 
+        = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } } );        
+    my $approval = $target_charges->update_all({ status => '4' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
+
+        foreach my $charge ($target_charges->all) {            
+            $c->send_mail($charge->user->email, 
+                            "@{[ $charge->title ]} 입금처리",
+                            "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
+        }           
     }
     else {
         $c->flash->{messages} = 'No Approval Deposit Item.';

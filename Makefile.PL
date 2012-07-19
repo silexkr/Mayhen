@@ -21,6 +21,12 @@ requires "DateTime::Format::MySQL";
 requires "Data::Pageset";
 requires "Template::Plugin::Comma";
 requires "DateTime::Format::ISO8601";
+requires "Email::MIME";
+requires "MIME::Base64";
+requires "Authen::SASL";
+requires "Email::Sender::Simple";
+requires "Email::Sender::Transport::SMTP";
+requires "Net::SMTP::SSL";
 
 requires "Catalyst::Plugin::Authentication";
 requires "Catalyst::Plugin::Session";
