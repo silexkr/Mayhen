@@ -1,7 +1,11 @@
 package Silex::Web::Donnenwa::Controller::Deposit;
 use Data::Dumper;
 use Moose;
+use DateTime;
+use DateTime::Format::ISO8601;
+use DateTime::Format::Strptime;
 use namespace::autoclean;
+
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -32,22 +36,26 @@ sub index :Path :Args(0) {
     my $status     = $c->req->params->{status};
 
     my $from = $c->req->params->{start_date}
-    ? DateTime::Format::ISO8601->parse_datetime($args->{start_date})
+    ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
     : DateTime->now->set(hour => 0, minute => 0, second => 0);
 
     my $to   = $c->req->params->{end_date}
-    ? DateTime::Format::ISO8601->parse_datetime($args->{end_date})
+    ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
     : DateTime->now->set(hour => 23, minute => 59, second => 59);
+
     
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
 
-    if ($status) {
-        $cond->{status} = $status;
-    }
-    else {
-        $cond->{status} = '2';
-    }
+    my $pattern = '%Y-%m-%d %H:%M:%S';
+    $cond->{created_on} = {
+        -between => [
+            $from->strftime($pattern),
+            $to->strftime($pattern)
+        ]
+    };
+
+    $status ? $cond->{status} = $status : $cond->{status} = '2';
 
     my $total_charge = $c->model('DonDB')->resultset('Charge')->search($cond, $attr);
 
