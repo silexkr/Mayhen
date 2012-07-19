@@ -19,6 +19,7 @@ requires "Catalyst::Model::DBIC::Schema";
 requires "DBD::mysql";
 requires "DateTime::Format::MySQL";
 requires "Data::Pageset";
+requires "Template::Plugin::Comma";
 
 requires "Catalyst::Plugin::Authentication";
 requires "Catalyst::Plugin::Session";

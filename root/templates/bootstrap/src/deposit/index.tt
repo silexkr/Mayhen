@@ -49,7 +49,7 @@
 	      <td><a href="[% c.uri_for('/view', list.id) %]">[% list.title %]</a></td>
 	      <td>[% list.user.user_name %] </td>
 	      <td>[% list.created_on.ymd %]</td>
-	      <td>[% list.amount %]</td>
+	      <td>[% list.amount | comma %]</td>
 	      [% IF list.status == "2" %]
 	        <td> 승인 </td>
 	      [% ELSE %]
