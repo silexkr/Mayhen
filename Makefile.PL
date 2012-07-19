@@ -20,6 +20,7 @@ requires "DBD::mysql";
 requires "DateTime::Format::MySQL";
 requires "Data::Pageset";
 requires "Template::Plugin::Comma";
+requires "DateTime::Format::ISO8601";
 
 requires "Catalyst::Plugin::Authentication";
 requires "Catalyst::Plugin::Session";
