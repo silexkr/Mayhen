@@ -44,7 +44,6 @@ sub index :Path :Args(0) {
     ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
     : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
 
-    
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
 
@@ -88,18 +87,18 @@ sub approval :Local CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $target_charges 
-        = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } } );        
+    my $target_charges
+        = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } } );
     my $approval = $target_charges->update_all({ status => '4' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
-        foreach my $charge ($target_charges->all) {            
-            $c->send_mail($charge->user->email, 
+        foreach my $charge ($target_charges->all) {
+            $c->send_mail($charge->user->email,
                             "@{[ $charge->title ]} 입금처리",
                             "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
-        }           
+        }
     }
     else {
         $c->flash->{messages} = 'No Approval Deposit Item.';
@@ -118,17 +117,17 @@ sub export :Local CaptureArgs(1) {
     push @charges, ['제목', '청구자', '금액', '영수증날짜'];
 
     foreach my $charge ($c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->all) {
-        push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ] ; 
+        push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ];
     }
-    
-    if (@charges) {        
+
+    if (@charges) {
         $c->stash->{'csv'} = { 'data' => [ @charges ] };
         $c->flash->{messages} = 'Success Exported.';
 
     } else {
         $c->flash->{messages} = 'Export Failed.';
-    }    
-    $c->forward('Silex::Web::Donnenwa::View::Download::CSV');    
+    }
+    $c->forward('Silex::Web::Donnenwa::View::Download::CSV');
 }
 
 =head1 AUTHOR

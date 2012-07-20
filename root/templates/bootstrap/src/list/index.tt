@@ -1,8 +1,7 @@
 [% IF messages %]
-<div class="alert fade in">
-    <button class="close" data-dismiss="alert">&times;</button>
+  <div class="alert">
     [% messages %]
-</div>
+  </div>
 [% END %]
 
 <div class="container-fluid">
@@ -20,7 +19,7 @@
       <ul class="breadcrumb">
 	<li>목록
 		<span class="divider">/</span>
-	</li>      
+	</li>
 	<li class="active">
 	    [% IF status == "1" %]
 		  <b> 대기 ([% charge_count %])</b>
@@ -30,7 +29,7 @@
 		  <b> 거부 ([% refuse_count %])</b>
 	    [% ELSE %]
 		  <b> 전체 ([% total_count %])</b>
-	    [% END %]	  
+	    [% END %]
 	</li>
       </ul>
       <!-- 게시물 리스트를 보이기 위한 테이블 -->
@@ -40,7 +39,8 @@
 	  <th> <input type="checkbox" id="head_checkbox"> </th>
 	  <th> 제목 </th>
 	  <th> 글쓴이 </th>
-	  <th> 날짜 </th>
+	  <th> 청구 날짜 </th>
+	  <th> 사용 날짜 </th>
 	  <th> 금액 </th>
 	  <th> 상태 </th>
 	</tr>
@@ -51,9 +51,10 @@
 	  <tr id="[% list.id %]">
 	    <td><input type="checkbox"></td>
 	    <td><a href="[% c.uri_for('/view', list.id) %]">[% list.title %]</a></td>
-	    <td>[% list.user.user_name %] </td>
-	    <td>[% list.created_on.ymd %]</td>
-	    <td>[% list.amount | comma %]</td>
+	    <td> [% list.user.user_name %] </td>
+	    <td> [% list.created_on.ymd %] </td>
+	    <td> [% list.usage_date.ymd %] </td>
+	    <td><span class="pull-right">[% list.amount | comma %]</span></td>
 	      [% IF list.status == "1" %]
 		  <td> 대기 </td>
 	      [% ELSIF list.status == "2" %]

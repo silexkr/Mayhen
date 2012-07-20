@@ -12,7 +12,7 @@
 	<li class="active"><a href="/deposit">전체</a></li>
 	  [% FOR charge_user IN charge_users %]
 	    <li>
-          <!-- 
+          <!--
           template 에도 'count' method 가 있고, DBIC 에도 'count'
           가 있어서, '_rs' 를 붙여서 해결해야 함
           http://www.perlmonks.org/bare/?node_id=815766
@@ -49,42 +49,42 @@
         <input type="submit" value="조회" class="btn btn-primary" />
       </fieldset>
     </form>
-      
+
     <table id="charge_list" class="table table-striped table-bordered">
       <thead>
 	<tr>
 	  <th> <input type="checkbox" id="head_checkbox"> </th>
 	  <th> 제목 </th>
 	  <th> 글쓴이 </th>
-	  <th> 날짜 </th>
-	  <th> 금액 </th>
+	  <th> 청구 날짜 </th>
+	  <th> 사용 날짜 </th>
+    <th> 금액 </th>
 	  <th> 상태 </th>
 	</tr>
       </thead>
     <!-- 리스트 부분 시작 -->
       <tbody>
-	[% FOREACH list IN lists %]
-	  [% IF (list.status == "2" || list.status == "4") %]
-	    <tr id="[% list.id %]">
-	      <td><input type="checkbox"></td>
-	      <td><a href="[% c.uri_for('/view', list.id) %]">[% list.title %]</a></td>
-	      <td>[% list.user.user_name %] </td>
-	      <td>[% list.created_on.ymd %]</td>
-	      <td>[% list.amount | comma %]</td>
-	      [% IF list.status == "2" %]
-	        <td> 승인 </td>
-	      [% ELSE %]
-	        <td> 입금 </td>
+	      [% FOREACH list IN lists %]
+          <tr id="[% list.id %]">
+            <td><input type="checkbox"></td>
+            <td><a href="[% c.uri_for('/view', list.id) %]">[% list.title %]</a></td>
+            <td> [% list.user.user_name %] </td>
+            <td> [% list.created_on.ymd %] </td>
+             <td> [% list.usage_date.ymd %] </td>
+	            <td> [% list.amount | comma %] </td>
+            [% IF list.status == "2" %]
+              <td> 승인 </td>
+            [% ELSE %]
+              <td> 입금 </td>
+            [% END %]
+          </tr>
 	      [% END %]
-	    </tr>
-      [% END %]
-	[% END %]
       </tbody>
      </table>
       [% PROCESS 'inc/pagination.tt' %]
       <a class="btn btn-primary" id="do_deposit">입급</a>
       <a class="btn btn-primary" id="do_refuse">거부</a>
-      <a class="btn btn-primary" id="do_export">출력</a>      
+      <a class="btn btn-primary" id="do_export">출력</a>
     </div>
   </div>
 </div>
