@@ -23,7 +23,7 @@
           </a>
         </li>
 	  [% END %]
-	<li><a href="/deposit?status=4">입금명단</a></li>
+	<li><a href="/deposit?status=4">입금처리</a></li>
       </ul>
     </div>
 
@@ -84,6 +84,7 @@
       [% PROCESS 'inc/pagination.tt' %]
       <a class="btn btn-primary" id="do_deposit">입급</a>
       <a class="btn btn-primary" id="do_refuse">거부</a>
+      <a class="btn btn-primary" id="do_export">출력</a>      
     </div>
   </div>
 </div>
