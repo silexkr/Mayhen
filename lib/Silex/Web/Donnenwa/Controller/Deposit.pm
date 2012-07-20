@@ -37,11 +37,12 @@ sub index :Path :Args(0) {
 
     my $from = $c->req->params->{start_date}
     ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
-    : DateTime->now->set(hour => 0, minute => 0, second => 0);
+    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
+
 
     my $to   = $c->req->params->{end_date}
     ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
-    : DateTime->now->set(hour => 23, minute => 59, second => 59);
+    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
 
     
     $attr->{page} = $page || 1;
