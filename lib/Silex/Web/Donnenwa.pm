@@ -40,6 +40,7 @@ use Email::Sender::Simple 'sendmail';
 use Email::Sender::Transport::SMTP;
 use Encode qw/encode_utf8 decode_utf8 encode decode/;
 use MIME::Base64;
+use Text::CSV;
 
 # Configure the application.
 #
@@ -90,6 +91,19 @@ sub send_mail {
         );
     sendmail($email, $opt);    
 }
+
+# sub get_csv {
+#     my ($self, $resultset) = @_;
+
+#     my @rows = [];
+#     # 1. get column names
+#     my @rows = grep { exists $row{$_} } $resultset->result_resource->columns;
+#     # 2. prepare csv file
+#     my $csv = Text::CSV->new( {binary => 1}) or die "Cannot use CSV: ".Text::CSV->error_diag();
+#     open my $fh, ">:encoding(utf8)", "deposit.csv" or die "depost.csv: $!";
+#     $csv->print ($fh, $_) for $resultset->all;
+#     close $fh or die "depost.csv: $!";
+# }
 =head1 NAME
 
 Silex::Web::Donnenwa - Catalyst based application

@@ -186,8 +186,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-18 18:36:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NHhwD2+TSWzRne/yazykng
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-19 20:33:05
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:N2EqrjVHPruYaHhSkIbc5Q
 
 __PACKAGE__->belongs_to(
     user => 'Silex::Schema::Result::User',
