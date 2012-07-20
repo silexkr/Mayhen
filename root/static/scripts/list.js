@@ -53,4 +53,15 @@ $(document).ready(function () {
 
     location.href = '/deposit/approval/' + selected_charges;
   });
+
+  $('#do_export').click(function() {
+    var selected_charges = [];
+
+    $('#charge_list tr').filter(':has(:checkbox:checked)').each(function(){
+      if($(this).attr('id') !== undefined)
+        selected_charges.push($(this).attr('id'))
+    });
+
+    location.href = '/deposit/export/' + selected_charges;
+  });
 });

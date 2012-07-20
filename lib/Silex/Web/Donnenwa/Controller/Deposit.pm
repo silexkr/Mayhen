@@ -37,11 +37,12 @@ sub index :Path :Args(0) {
 
     my $from = $c->req->params->{start_date}
     ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
-    : DateTime->now->set(hour => 0, minute => 0, second => 0);
+    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
+
 
     my $to   = $c->req->params->{end_date}
     ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
-    : DateTime->now->set(hour => 23, minute => 59, second => 59);
+    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
 
     
     $attr->{page} = $page || 1;
@@ -106,6 +107,28 @@ sub approval :Local CaptureArgs(1) {
 
     $c->flash->{status} = '4';
     $c->res->redirect($c->uri_for("/deposit"));
+}
+
+sub export :Local CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+    my @charges;
+
+    # set header
+    push @charges, ['제목', '청구자', '금액', '영수증날짜'];
+
+    foreach my $charge ($c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->all) {
+        push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ] ; 
+    }
+    
+    if (@charges) {        
+        $c->stash->{'csv'} = { 'data' => [ @charges ] };
+        $c->flash->{messages} = 'Success Exported.';
+
+    } else {
+        $c->flash->{messages} = 'Export Failed.';
+    }    
+    $c->forward('Silex::Web::Donnenwa::View::Download::CSV');    
 }
 
 =head1 AUTHOR
