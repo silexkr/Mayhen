@@ -27,6 +27,9 @@ requires "Authen::SASL";
 requires "Email::Sender::Simple";
 requires "Email::Sender::Transport::SMTP";
 requires "Net::SMTP::SSL";
+requires "Catalyst::View::Download";
+requires "Catalyst::View::Download::CSV";
+requires "Text::CSV";
 
 requires "Catalyst::Plugin::Authentication";
 requires "Catalyst::Plugin::Session";
@@ -35,6 +38,7 @@ requires "Catalyst::Plugin::Session::State::Cookie";
 requires "Catalyst::Plugin::StackTrace";
 requires "Catalyst::Authentication::Realm::SimpleDB";
 requires "DBIx::Class::TimeStamp";
+requires "Data::Show";
 
 requires 'Catalyst::Runtime' => '5.90012';
 requires 'Catalyst::Plugin::ConfigLoader';
