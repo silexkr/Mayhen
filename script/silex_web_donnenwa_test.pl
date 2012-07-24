@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use Catalyst::ScriptRunner;
-Catalyst::ScriptRunner->run('Silex::Web::Donnenwa', 'Test');
+Catalyst::ScriptRunner->run('Silex::Donnenwa::Web', 'Test');
 
 1;
 
