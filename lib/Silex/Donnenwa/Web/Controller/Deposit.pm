@@ -63,7 +63,7 @@ sub index :Path :Args(0) {
       Data::Pageset->new(
         {
             ( map { $_ => $total_charge->pager->$_} qw/entries_per_page total_entries current_page/ ),
-            mode => "slide",
+            mode => "slide",    
             pages_per_set => 10,
         }
       );
