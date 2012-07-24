@@ -94,11 +94,11 @@ sub approval :Local CaptureArgs(1) {
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
-        foreach my $charge ($target_charges->all) {
-            $c->send_mail($charge->user->email,
-                "@{[ $charge->title ]} 입금처리",
-                "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
-        }
+    #    foreach my $charge ($target_charges->all) {
+    #        $c->send_mail($charge->user->email,
+    #            "@{[ $charge->title ]} 입금처리",
+    #            "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
+    #    }
     }
     else {
         $c->flash->{messages} = 'No Approval Deposit Item.';
@@ -106,6 +106,23 @@ sub approval :Local CaptureArgs(1) {
 
     $c->flash->{status} = '4';
     $c->res->redirect($c->uri_for("/deposit"));
+}
+
+sub cancel :Local :CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    my $refuse = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+            => \@target_ids } })->update_all({ status => '1' });
+
+    if ($refuse) {
+        $c->flash->{messages} = 'Success Cancel.';
+    }
+    else {
+        $c->flash->{messages} = 'No Cancel Item.';
+    }
+
+    $c->res->redirect($c->uri_for('/deposit'));
 }
 
 sub export :Local CaptureArgs(1) {
