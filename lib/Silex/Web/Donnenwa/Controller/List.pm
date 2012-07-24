@@ -79,31 +79,40 @@ sub write :Local :Args(0) {
 
         push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
         push @messages, 'title is required' unless ($c->req->params->{title});
+        push @messages, 'usage_date is required' unless ($c->req->params->{usage_date});
 
         if (@messages) {
             $c->flash(
                 messages => @messages,
-                comment  => $c->req->params->{comment},
+                comment  => $c->req->params->{content},
                 title    => $c->req->params->{title},
                 amount   => $c->req->params->{amount},
+                usage_date => $c->req->params->{usage_date},
             );
 
             return $c->res->redirect($c->uri_for('/list/write'));
         }
 
         my $time = strftime "%Y-%m-%d %H:%M:%S", localtime; #적용 안해주면 GMT 기준으로 보임
+        my $usage_date = $c->req->params->{usage_date}
+           ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{usage_date})
+           : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
+
+        my $pattern = '%Y-%m-%d %H:%M:%S';
         my %row  = (
             user       => $c->user->id,
             title      => $c->req->params->{title},
             comment    => $c->req->params->{content},
             amount     => $c->req->params->{amount},
+            usage_date => $usage_date->strftime($pattern),
             created_on => "$time",
             updated_on => "$time",
         );
+
         if($c->model('DonDB')->resultset('Charge')->update_or_create(\%row)) {
-            # $c->send_mail("supermania\@gmail.com", 
-            #                 "[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
-            #                 "다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.");
+            $c->send_mail("supermania\@gmail.com",
+                            "[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
+                            "다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.");
         }
 
         $c->res->redirect($c->uri_for('/list'));
@@ -126,12 +135,12 @@ sub delete :Local :CaptureArgs(1) {
 
     my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->delete_all;
 
-    if ($charge) {        
+    if ($charge) {
         $c->flash->{messages} = 'Success Deleted.';
 
     } else {
         $c->flash->{messages} = 'No Deleted Item.';
-    }    
+    }
 
     $c->res->redirect($c->uri_for('/list'));
 }

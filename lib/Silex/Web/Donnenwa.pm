@@ -19,7 +19,6 @@ use Catalyst::Runtime 5.80;
 use Catalyst qw/
     -Debug
     ConfigLoader
-    Static::Simple
     Unicode::Encoding
 
     StackTrace
