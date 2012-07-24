@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::Controller::Root;
+package Silex::Donnenwa::Web::Controller::Root;
 use Moose;
 use namespace::autoclean;
 
@@ -12,7 +12,7 @@ __PACKAGE__->config(namespace => '');
 
 =head1 NAME
 
-Silex::Web::Donnenwa::Controller::Root - Root Controller for Silex::Web::Donnenwa
+Silex::Donnenwa::Web::Controller::Root - Root Controller for Silex::Donnenwa::Web
 
 =head1 DESCRIPTION
 

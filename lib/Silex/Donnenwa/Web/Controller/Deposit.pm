@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::Controller::Deposit;
+package Silex::Donnenwa::Web::Controller::Deposit;
 use Data::Dumper;
 use Moose;
 use DateTime;
@@ -11,7 +11,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-Silex::Web::Donnenwa::Controller::Deposit - Catalyst Controller
+Silex::Donnenwa::Web::Controller::Deposit - Catalyst Controller
 
 =head1 DESCRIPTION
 
@@ -127,7 +127,7 @@ sub export :Local CaptureArgs(1) {
     } else {
         $c->flash->{messages} = 'Export Failed.';
     }
-    $c->forward('Silex::Web::Donnenwa::View::Download::CSV');
+    $c->forward('Silex::Donnenwa::Web::View::Download::CSV');
 }
 
 =head1 AUTHOR

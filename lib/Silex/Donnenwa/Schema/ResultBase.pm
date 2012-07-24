@@ -1,4 +1,4 @@
-package Silex::Schema::ResultBase;
+package Silex::Donnenwa::Schema::ResultBase;
 use Moose;
 use MooseX::NonMoose;
 use namespace::autoclean;

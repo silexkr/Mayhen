@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::Controller::Logout;
+package Silex::Donnenwa::Web::Controller::Logout;
 use Moose;
 use namespace::autoclean;
 
@@ -6,7 +6,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-Silex::Web::Donnenwa::Controller::Logout - Catalyst Controller
+Silex::Donnenwa::Web::Controller::Logout - Catalyst Controller
 
 =head1 DESCRIPTION
 

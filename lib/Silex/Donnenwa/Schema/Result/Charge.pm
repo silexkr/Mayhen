@@ -1,26 +1,26 @@
 use utf8;
-package Silex::Schema::Result::Charge;
+package Silex::Donnenwa::Schema::Result::Charge;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-Silex::Schema::Result::Charge
+Silex::Donnenwa::Schema::Result::Charge
 
 =cut
 
 use strict;
 use warnings;
 
-=head1 BASE CLASS: L<Silex::Schema::ResultBase>
+=head1 BASE CLASS: L<Silex::Donnenwa::Schema::ResultBase>
 
 =cut
 
 use Moose;
 use MooseX::NonMoose;
 use namespace::autoclean;
-extends 'Silex::Schema::ResultBase';
+extends 'Silex::Donnenwa::Schema::ResultBase';
 
 =head1 TABLE: C<charge>
 
@@ -186,11 +186,11 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-19 20:33:05
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:N2EqrjVHPruYaHhSkIbc5Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-23 22:31:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:483d31b3K59uWQqxO33shA
 
 __PACKAGE__->belongs_to(
-    user => 'Silex::Schema::Result::User',
+    user => 'Silex::Donnenwa::Schema::Result::User',
     {
       'foreign.id' => 'self.user'
     }

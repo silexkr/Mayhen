@@ -5,7 +5,7 @@ BEGIN {
 }
 
 use Catalyst::ScriptRunner;
-Catalyst::ScriptRunner->run('Silex::Web::Donnenwa', 'Server');
+Catalyst::ScriptRunner->run('Silex::Donnenwa::Web', 'Server');
 
 1;
 

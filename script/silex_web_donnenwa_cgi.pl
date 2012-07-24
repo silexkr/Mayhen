@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use Catalyst::ScriptRunner;
-Catalyst::ScriptRunner->run('Silex::Web::Donnenwa', 'CGI');
+Catalyst::ScriptRunner->run('Silex::Donnenwa::Web', 'CGI');
 
 1;
 
