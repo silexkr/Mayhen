@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa;
+package Silex::Donnenwa::Web;
 use Moose;
 use namespace::autoclean;
 
@@ -51,7 +51,7 @@ use Text::CSV;
 # local deployment.
 
 __PACKAGE__->config(
-    name => 'Silex::Web::Donnenwa',
+    name => 'Silex::Donnenwa::Web',
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
     enable_catalyst_header => 1, # Send X-Catalyst header
@@ -105,7 +105,7 @@ sub send_mail {
 # }
 =head1 NAME
 
-Silex::Web::Donnenwa - Catalyst based application
+Silex::Donnenwa::Web - Catalyst based application
 
 =head1 SYNOPSIS
 
@@ -117,7 +117,7 @@ Silex::Web::Donnenwa - Catalyst based application
 
 =head1 SEE ALSO
 
-L<Silex::Web::Donnenwa::Controller::Root>, L<Catalyst>
+L<Silex::Donnenwa::Web::Controller::Root>, L<Catalyst>
 
 =head1 AUTHOR
 

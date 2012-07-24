@@ -1,5 +1,5 @@
 use utf8;
-package Silex::Schema;
+package Silex::Donnenwa::Schema;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,8 +11,8 @@ extends 'DBIx::Class::Schema';
 __PACKAGE__->load_namespaces;
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-03 15:02:42
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4pil2pe4044PPpVujNtPBg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-23 22:31:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:D1ynvCqD5AsUl17aF+xd/w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -3,7 +3,7 @@ my $DONNENWA_DB_USER     = $ENV{DONNENWA_DB_USER}     || 'don';
 my $DONNENWA_DB_PASSWORD = $ENV{DONNENWA_DB_PASSWORD} || 'don';
 
 {
-    schema_class => "Silex::Schema",
+    schema_class => "Silex::Donnenwa::Schema",
     connect_info => {
         dsn               => "dbi:mysql:$DONNENWA_DB:127.0.0.1",
         user              => $DONNENWA_DB_USER,
@@ -18,7 +18,7 @@ my $DONNENWA_DB_PASSWORD = $ENV{DONNENWA_DB_PASSWORD} || 'don';
         use_moose          => 1,
         only_autoclean     => 1,
         col_collision_map  => 'column_%s',
-        result_base_class => 'Silex::Schema::ResultBase',
+        result_base_class => 'Silex::Donnenwa::Schema::ResultBase',
         overwrite_modifications => 1,
         datetime_undef_if_invalid => 1,
         custom_column_info => sub {

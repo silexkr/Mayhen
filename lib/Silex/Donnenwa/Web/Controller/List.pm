@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::Controller::List;
+package Silex::Donnenwa::Web::Controller::List;
 use Moose;
 use namespace::autoclean;
 use Data::Dumper;
@@ -10,7 +10,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-Silex::Web::Donnenwa::Controller::List - Catalyst Controller
+Silex::Donnenwa::Web::Controller::List - Catalyst Controller
 
 =head1 DESCRIPTION
 
