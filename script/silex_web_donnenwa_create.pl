@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Catalyst::ScriptRunner;
-Catalyst::ScriptRunner->run('Silex::Web::Donnenwa', 'Create');
+Catalyst::ScriptRunner->run('Silex::Donnenwa::Web', 'Create');
 
 1;
 

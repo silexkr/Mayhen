@@ -1,5 +1,5 @@
-package Silex::Web::Donnenwa::View::Bootstrap;
-# ABSTRACT: Silex::Web::Donnenwa::View::Bootstrap
+package Silex::Donnenwa::Web::View::Bootstrap;
+# ABSTRACT: Silex::Donnenwa::Web::View::Bootstrap
 
 use strict;
 use base 'Catalyst::View::TT';

@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::View::Download::CSV;
+package Silex::Donnenwa::Web::View::Download::CSV;
 use Moose;
 use namespace::autoclean;
 
@@ -6,7 +6,7 @@ extends 'Catalyst::View::Download::CSV';
 
 =head1 NAME
 
-Silex::Web::Donnenwa::View::Download::CSV - Catalyst View
+Silex::Donnenwa::Web::View::Download::CSV - Catalyst View
 
 =head1 DESCRIPTION
 

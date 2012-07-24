@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::Controller::Deposit;
+package Silex::Donnenwa::Web::Controller::Deposit;
 use Data::Dumper;
 use Moose;
 use DateTime;
@@ -11,7 +11,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-Silex::Web::Donnenwa::Controller::Deposit - Catalyst Controller
+Silex::Donnenwa::Web::Controller::Deposit - Catalyst Controller
 
 =head1 DESCRIPTION
 
@@ -94,11 +94,11 @@ sub approval :Local CaptureArgs(1) {
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
-        foreach my $charge ($target_charges->all) {
-            $c->send_mail($charge->user->email,
-                            "@{[ $charge->title ]} 입금처리",
-                            "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
-        }
+#        foreach my $charge ($target_charges->all) {
+#            $c->send_mail($charge->user->email,
+#                            "@{[ $charge->title ]} 입금처리",
+#                            "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
+#        }
     }
     else {
         $c->flash->{messages} = 'No Approval Deposit Item.';
@@ -127,7 +127,7 @@ sub export :Local CaptureArgs(1) {
     } else {
         $c->flash->{messages} = 'Export Failed.';
     }
-    $c->forward('Silex::Web::Donnenwa::View::Download::CSV');
+    $c->forward('Silex::Donnenwa::Web::View::Download::CSV');
 }
 
 =head1 AUTHOR

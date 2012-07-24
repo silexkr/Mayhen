@@ -1,26 +1,26 @@
 use utf8;
-package Silex::Schema::Result::User;
+package Silex::Donnenwa::Schema::Result::User;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-Silex::Schema::Result::User
+Silex::Donnenwa::Schema::Result::User
 
 =cut
 
 use strict;
 use warnings;
 
-=head1 BASE CLASS: L<Silex::Schema::ResultBase>
+=head1 BASE CLASS: L<Silex::Donnenwa::Schema::ResultBase>
 
 =cut
 
 use Moose;
 use MooseX::NonMoose;
 use namespace::autoclean;
-extends 'Silex::Schema::ResultBase';
+extends 'Silex::Donnenwa::Schema::ResultBase';
 
 =head1 TABLE: C<user>
 
@@ -166,11 +166,11 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 __PACKAGE__->add_unique_constraint("user_name", ["user_name"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-06 13:58:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:itPa2Gf8IG8eUvxbh/+mrA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-23 22:31:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZtZ1PE7OayszPLGqODvJ7A
 
 __PACKAGE__->has_many(
-    charges => 'Silex::Schema::Result::Charge',
+    charges => 'Silex::Donnenwa::Schema::Result::Charge',
     {
       'foreign.user' => 'self.id'
     },

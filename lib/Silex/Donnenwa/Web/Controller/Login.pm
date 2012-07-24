@@ -1,4 +1,4 @@
-package Silex::Web::Donnenwa::Controller::Login;
+package Silex::Donnenwa::Web::Controller::Login;
 use Moose;
 use namespace::autoclean;
 use POSIX qw(strftime);
@@ -7,7 +7,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-Silex::Web::Donnenwa::Controller::Login - Catalyst Controller
+Silex::Donnenwa::Web::Controller::Login - Catalyst Controller
 
 =head1 DESCRIPTION
 
