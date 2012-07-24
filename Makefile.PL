@@ -27,6 +27,7 @@ requires 'Catalyst::View::Download::CSV';
 requires 'Catalyst::View::TT';
 requires 'Config::General';
 requires 'DBD::mysql';
+requires 'DBIx::Class::EncodedColumn';
 requires 'DBIx::Class::TimeStamp';
 requires 'Data::Pageset';
 requires 'Data::Show';
