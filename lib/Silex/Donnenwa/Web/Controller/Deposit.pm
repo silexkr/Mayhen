@@ -94,11 +94,11 @@ sub approval :Local CaptureArgs(1) {
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
-#        foreach my $charge ($target_charges->all) {
-#            $c->send_mail($charge->user->email,
-#                            "@{[ $charge->title ]} 입금처리",
-#                            "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
-#        }
+        foreach my $charge ($target_charges->all) {
+            $c->send_mail($charge->user->email,
+                            "@{[ $charge->title ]} 입금처리",
+                            "요청하신 청구건 [  @{[ $charge->title ]} ] 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
+        }
     }
     else {
         $c->flash->{messages} = 'No Approval Deposit Item.';
