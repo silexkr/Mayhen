@@ -25,6 +25,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `user` VALUES (1,'aanoaa','aanoaa@gmail.com','1234',localtime ,localtime);
-INSERT INTO `user` VALUES (2,'rumidier','rumidier@gmail.com','1234',localtime ,localtime);
-INSERT INTO `user` VALUES (3,'jack','ja3ck@me.com','4383', localtime, localtime);
+INSERT INTO `user` VALUES (1,'aanoaa','aanoaa@gmail.com',sha('1234'),localtime ,localtime);
+INSERT INTO `user` VALUES (2,'rumidier','rumidier@gmail.com',sha('1234'),localtime ,localtime);
+INSERT INTO `user` VALUES (3,'jack','ja3ck@me.com',sha('4383'), localtime, localtime);
