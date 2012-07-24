@@ -30,7 +30,7 @@
   </tr>
   <tr>
     <td bgcolor=white colspan=6 style="table-layout:fixed;">
-      [% charge.comment %]
+      [% charge.comment | replace("\n", "<br/>") %]
     </td>
   </tr>
 <!-- 기타 버튼 들 -->
