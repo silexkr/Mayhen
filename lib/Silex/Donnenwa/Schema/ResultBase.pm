@@ -6,6 +6,7 @@ use namespace::autoclean;
 extends 'DBIx::Class::Core';
 
 __PACKAGE__->load_components(qw/
+    EncodedColumn
     InflateColumn::DateTime
     TimeStamp
 /);

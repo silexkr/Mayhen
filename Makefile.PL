@@ -9,45 +9,44 @@ use Module::Install::Catalyst; # Complain loudly if you don't have
 name 'Silex-Web-Donnenwa';
 all_from 'lib/Silex/Web/Donnenwa.pm';
 
-requires "Starman";
-requires "Devel::Cover";
-requires "Perl::Metrics::Lite";
-requires "TAP::Formatter::JUnit";
-requires 'Catalyst::Plugin::Unicode::Encoding';
-requires "Catalyst::View::TT";
-requires "Catalyst::Model::DBIC::Schema";
-requires "DBD::mysql";
-requires "DateTime::Format::MySQL";
-requires "Data::Pageset";
-requires "Template::Plugin::Comma";
-requires "DateTime::Format::ISO8601";
-requires "Email::MIME";
-requires "MIME::Base64";
-requires "Authen::SASL";
-requires "Email::Sender::Simple";
-requires "Email::Sender::Transport::SMTP";
-requires "Net::SMTP::SSL";
-requires "Catalyst::View::Download";
-requires "Catalyst::View::Download::CSV";
-requires "Text::CSV";
-
-requires "Catalyst::Plugin::Authentication";
-requires "Catalyst::Plugin::Session";
-requires "Catalyst::Plugin::Session::Store::File";
-requires "Catalyst::Plugin::Session::State::Cookie";
-requires "Catalyst::Plugin::StackTrace";
-requires "Catalyst::Authentication::Realm::SimpleDB";
-requires "DBIx::Class::TimeStamp";
-requires "Data::Show";
-
-requires 'Catalyst::Runtime' => '5.90012';
-requires 'Catalyst::Plugin::ConfigLoader';
-requires 'Catalyst::Plugin::Static::Simple';
+requires 'Authen::SASL';
 requires 'Catalyst::Action::RenderView';
+requires 'Catalyst::Authentication::Realm::SimpleDB';
+requires 'Catalyst::Model::DBIC::Schema';
+requires 'Catalyst::Plugin::Authentication';
+requires 'Catalyst::Plugin::ConfigLoader';
+requires 'Catalyst::Plugin::Session';
+requires 'Catalyst::Plugin::Session::State::Cookie';
+requires 'Catalyst::Plugin::Session::Store::File';
+requires 'Catalyst::Plugin::StackTrace';
+requires 'Catalyst::Plugin::Static::Simple';
+requires 'Catalyst::Plugin::Unicode::Encoding';
+requires 'Catalyst::Runtime' => '5.90012';
+requires 'Catalyst::View::Download';
+requires 'Catalyst::View::Download::CSV';
+requires 'Catalyst::View::TT';
+requires 'Config::General';
+requires 'DBD::mysql';
+requires 'DBIx::Class::EncodedColumn';
+requires 'DBIx::Class::TimeStamp';
+requires 'Data::Pageset';
+requires 'Data::Show';
+requires 'DateTime::Format::ISO8601';
+requires 'DateTime::Format::MySQL';
+requires 'Devel::Cover';
+requires 'Email::MIME';
+requires 'Email::Sender::Simple';
+requires 'Email::Sender::Transport::SMTP';
+requires 'MIME::Base64';
 requires 'Moose';
+requires 'Net::SMTP::SSL';
+requires 'Perl::Metrics::Lite';
+requires 'Starman';
+requires 'TAP::Formatter::JUnit';
+requires 'Template::Plugin::Comma';
+requires 'Text::CSV';
 requires 'namespace::autoclean';
-requires 'Config::General'; # This should reflect the config file format you've chosen
-                 # See Catalyst::Plugin::ConfigLoader for supported formats
+
 test_requires 'Test::More' => '0.88';
 catalyst;
 
