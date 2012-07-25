@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[% meta.title or site.title or c.config.name %]</title>
+    <title>Donnenwa</title>
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->    
+    <![endif]-->
     <link href="[% c.uri_for('/static/css/screen.css') %]" media="screen, projection" rel="stylesheet" type="text/css" />
     <link href="[% c.uri_for('/static/css/print.css') %]" media="print" rel="stylesheet" type="text/css" />
     <!--[if lt IE 8]>
@@ -17,7 +17,7 @@
     [%- END %]
     <script type="text/javascript" src="/static/scripts/lib/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-alert.js"></script>
-    <script type="text/javascript" src="/static/scripts/lib/bootstrap-button.js"></script>    
+    <script type="text/javascript" src="/static/scripts/lib/bootstrap-button.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-tooltip.js"></script>
   </head>
