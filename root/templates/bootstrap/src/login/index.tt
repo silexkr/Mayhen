@@ -3,7 +3,7 @@
 [% IF c.user_exists -%]
 <h1><a href="[% c.uri_for('/logout') %]">logout</a></h1>
 [% ELSE -%]
- 
+
 <!-- Login form -->
 
 [% IF error_msg %]
