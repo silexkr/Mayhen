@@ -23,4 +23,3 @@ L<Catalyst::Helper::View::TTSilex>
 =cut
 
 1;
-
