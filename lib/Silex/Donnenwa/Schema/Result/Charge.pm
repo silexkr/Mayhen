@@ -190,9 +190,9 @@ __PACKAGE__->set_primary_key("id");
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:483d31b3K59uWQqxO33shA
 
 __PACKAGE__->belongs_to(
-    users => 'Silex::Donnenwa::Schema::Result::User',
+    user => 'Silex::Donnenwa::Schema::Result::User',
     {
-      'foreign.id' => 'self.user_id'
+      'foreign.id' => 'self.user'
     }
 );
 
