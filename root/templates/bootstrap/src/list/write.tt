@@ -10,7 +10,7 @@
 [% IF messages %]
   <div class="alert fade in">
     <button class="close" data-dismiss="alert">&times;</button>
-    [% message %]
+    [% messages %]
   </div>
 [% END %]
 
