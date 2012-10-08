@@ -26,6 +26,22 @@ Catalyst Controller.
 
 =cut
 
+has charge_api => (
+    is => 'rw',
+    isa => 'Silex::Donnenwa::DonAPI::Charge',
+);
+
+has us_api => (
+    is => 'rw',
+    isa => 'Silex::Donnenwa::DonAPI::User',
+);
+
+sub auto :Private {
+    my ($self, $c) = @_;
+    $self->charge_api($c->model('API')->find('Charge'));
+    $self->us_api($c->model('API')->find('User'));
+}
+
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
@@ -57,7 +73,7 @@ sub index :Path :Args(0) {
 
     $cond->{status} = $status ? $status : '2';
 
-    my $total_charge = $c->model('DonDB')->resultset('Charge')->search($cond, $attr);
+    my $total_charge = $self->charge_api->search($cond, $attr);
 
     my $page_info =
       Data::Pageset->new(
@@ -68,10 +84,10 @@ sub index :Path :Args(0) {
         }
       );
 
-    my $user_names = $c->model('DonDB')->resultset('User')->search(
+    my $user_names = $self->us_api->search(
         {},
         {
-        columns => [ qw/ user_name id / ],
+            columns => [ qw/ user_name id / ],
         }
     );
 
@@ -88,19 +104,18 @@ sub approval :Local CaptureArgs(1) {
     my @target_ids = split ',', $id;
 
     my $target_charges
-        = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } } );
+        = $self->charge_api->search({ id => { -in => \@target_ids } } );
     my $approval = $target_charges->update_all({ status => '4' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
         foreach my $charge ($target_charges->all) {
-    #        $c->send_mail($charge->user->email,
             my $amount_commify = reverse @{ [ $charge->amount ]};
             $amount_commify    =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
             $amount_commify    = reverse $amount_commify;
 
-            $c->send_mail("rumidier\@naver.com",
+            $c->send_mail($charge->user->email,
                 "@{[ $charge->title ]} 입금처리",
                 "요청하신 청구건 [  @{[ $charge->title ]} ]( $amount_commify )원 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
         }
@@ -117,7 +132,7 @@ sub cancel :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $refuse = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+    my $refuse = $self->charge_api->search({ id => { -in
             => \@target_ids } })->update_all({ status => '1' });
 
     if ($refuse) {
@@ -138,7 +153,7 @@ sub export :Local CaptureArgs(1) {
     # set header
     push @charges, ['제목', '청구자', '금액', '영수증날짜'];
 
-    foreach my $charge ($c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->all) {
+    foreach my $charge ($self->charge_api->search({ id => { -in => \@target_ids } })->all) {
         push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ];
     }
 
