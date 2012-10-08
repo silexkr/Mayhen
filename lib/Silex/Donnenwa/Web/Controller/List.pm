@@ -8,6 +8,18 @@ use utf8;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
+has api => (
+  is => 'rw',
+  isa => 'Silex::Donnenwa::DonAPI::Charge',
+);
+
+sub auto :Private {
+    my ( $self, $c ) = @_;
+
+    $self->api($c->model('API')->find('Charge'));
+    return 1;
+}
+
 =head1 NAME
 
 Silex::Donnenwa::Web::Controller::List - Catalyst Controller
@@ -44,12 +56,13 @@ sub index :Path :Args(0) {
         %cond = ( status => {'!=', '4'});
     }
 
-    my $total_charge = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+    my $total_charge = $self->api->search(\%cond, \%attr);
 
-    my $total_count    = $c->model('DonDB')->resultset('Charge')->search({status => {'!=', '4'}});
-    my $charge_count   = $c->model('DonDB')->resultset('Charge')->search({ status => 1 });
-    my $approval_count = $c->model('DonDB')->resultset('Charge')->search({ status => 2 });
-    my $refuse_count   = $c->model('DonDB')->resultset('Charge')->search({ status => 3 });
+    my $total_count    = $self->api->search({status => {'!=', '4'}});
+    my $charge_count   = $self->api->search({ status => 1 });
+    my $approval_count = $self->api->search({ status => 2 });
+    my $refuse_count   = $self->api->search({ status => 3 });
+
 
     my $page_info =
         Data::Pageset->new(
@@ -93,23 +106,7 @@ sub write :Local :Args(0) {
             return $c->res->redirect($c->uri_for('/list/write'));
         }
 
-        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime; #적용 안해주면 GMT 기준으로 보임
-        my $usage_date = $c->req->params->{usage_date}
-           ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{usage_date})
-           : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
-
-        my $pattern = '%Y-%m-%d %H:%M:%S';
-        my %row  = (
-            user       => $c->user->id,
-            title      => $c->req->params->{title},
-            comment    => $c->req->params->{content},
-            amount     => $c->req->params->{amount},
-            usage_date => $usage_date->strftime($pattern),
-            created_on => "$time",
-            updated_on => "$time",
-        );
-
-        if(my $charge = $c->model('DonDB')->resultset('Charge')->update_or_create(\%row)) {
+        if(my $charge = $self->api->create($c->req->params, $c->user->id)) {
             my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
             $c->send_mail("supermania\@gmail.com",
                 "[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
@@ -121,13 +118,11 @@ sub write :Local :Args(0) {
     }
 }
 
-sub view :Path('/view') :CaptureArgs(1) {
-    my ( $self, $c, $charge_id) = @_;
-
-    my $charge = $c->model('DonDB')->resultset('Charge')->find($charge_id);
+sub view :Local :CaptureArgs(1) {
+    my ( $self, $c, $charge_id ) = @_;
 
     $c->stash(
-        charge     => $charge
+        charge     => $self->api->find({ id => $charge_id }),
     );
 }
 
@@ -135,7 +130,7 @@ sub delete :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $charge = $c->model('DonDB')->resultset('Charge')->search({ id => { -in => \@target_ids } })->delete_all;
+    my $charge = $self->api->get_search({ id => { -in => \@target_ids } })->delete_all;
 
     if ($charge) {
         $c->flash->{messages} = 'Success Deleted.';
@@ -151,7 +146,7 @@ sub approval :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $approval = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+    my $approval = $self->api->search({ id => { -in
             => \@target_ids } })->update_all({ status => '2' });
 
     if ($approval) {
@@ -169,7 +164,7 @@ sub refuse :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $refuse = $c->model('DonDB')->resultset('Charge')->search({ id => { -in
+    my $refuse = $self->api->search({ id => { -in
             => \@target_ids } })->update_all({ status => '3' });
 
     if ($refuse) {
@@ -203,21 +198,12 @@ sub edit :Local :CaptureArgs(1) {
             return $c->res->redirect($c->uri_for("/list/view/$c->req->params->{charge_id}"));
         }
 
-        my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
-        my %row = (
-            id         => $c->req->params->{charge_id},
-            amount     => $c->req->params->{amount},
-            user       => $c->req->params->{charge_user},
-            title      => $c->req->params->{title},
-            comment    => $c->req->params->{comment},
-            updated_on => "$time",
-        );
-        $c->model('DonDB')->resultset('Charge')->update_or_create(\%row);
+        $self->api->update($c->req->params);
 
-        $c->res->redirect($c->uri_for("/list/view/$row{id}"));
+        $c->res->redirect($c->uri_for("/list/view",$c->req->params->{charge_id}));
     }
     else {
-        my $editer = $c->model('DonDB')->resultset('Charge')->find($edit_id);
+        my $editer = $self->api->find({ id => $edit_id });
 
         $c->stash(
             editer => $editer,
