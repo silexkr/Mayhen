@@ -8,6 +8,18 @@ use utf8;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
+has api => (
+  is => 'rw',
+  isa => 'Silex::Donnenwa::DonAPI::Charge',
+);
+
+sub auto :Private {
+    my ( $self, $c ) = @_;
+
+    $self->api($c->model('API')->find('Charge'));
+    return 1;
+}
+
 =head1 NAME
 
 Silex::Donnenwa::Web::Controller::List - Catalyst Controller
@@ -44,12 +56,13 @@ sub index :Path :Args(0) {
         %cond = ( status => {'!=', '4'});
     }
 
-    my $total_charge = $c->model('DonDB')->resultset('Charge')->search(\%cond, \%attr);
+    my $total_charge = $self->api->get_search(\%cond, \%attr);
 
-    my $total_count    = $c->model('DonDB')->resultset('Charge')->search({status => {'!=', '4'}});
-    my $charge_count   = $c->model('DonDB')->resultset('Charge')->search({ status => 1 });
-    my $approval_count = $c->model('DonDB')->resultset('Charge')->search({ status => 2 });
-    my $refuse_count   = $c->model('DonDB')->resultset('Charge')->search({ status => 3 });
+    my $total_count    = $self->api->get_search({status => {'!=', '4'}});
+    my $charge_count   = $self->api->get_search({ status => 1 });
+    my $approval_count = $self->api->get_search({ status => 2 });
+    my $refuse_count   = $self->api->get_search({ status => 3 });
+
 
     my $page_info =
         Data::Pageset->new(
