@@ -44,7 +44,6 @@ sub update {
 
 	my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
 	my %row = (
-	    
 	    amount     => $args->{amount},
 	    user       => $args->{charge_user},
 	    title      => $args->{title},
