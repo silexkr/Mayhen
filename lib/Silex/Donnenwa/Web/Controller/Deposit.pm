@@ -38,8 +38,11 @@ has us_api => (
 
 sub auto :Private {
     my ($self, $c) = @_;
+
     $self->charge_api($c->model('API')->find('Charge'));
     $self->us_api($c->model('API')->find('User'));
+
+    $c->stash( nav_active => "deposit" );
 }
 
 sub index :Path :Args(0) {
@@ -48,7 +51,7 @@ sub index :Path :Args(0) {
     my $cond       = {};
     my $attr       = {};
     my $page       = $c->req->params->{page};
-    my $charger_id = $c->req->params->{charger} || '';
+    my $charger_id = $c->req->params->{charger} || '0';
     my $status     = $c->req->params->{status}  || '0';
 
     my $from = $c->req->params->{start_date}
@@ -92,10 +95,11 @@ sub index :Path :Args(0) {
     );
 
     $c->stash(
-        lists        => [ $total_charge->all ],
-        charge_users => [ $user_names->all ],
-        status       => $status,
-        pageset      => $page_info,
+        lists          => [ $total_charge->all ],
+        charge_users   => [ $user_names->all ],
+        deposit_status => $charger_id,
+        status         => $status,
+        pageset        => $page_info,
     );
 }
 

@@ -8,27 +8,10 @@
   <div class="row-fluid">
     <div class="span2">
 			<ul class="nav nav-tabs nav-stacked">
-				[% IF status == "1" %]
-					<li><a href="/list">전체 ([% total_count %])</a></li>
-					<li class="active"><a href="/list?status=1">대기 ([% charge_count %])</a></li>
-					<li><a href="/list?status=2">승인 ([% approval_count %])</a></li>
-					<li><a href="/list?status=3">거부 ([% refuse_count %])</a></li>
-				[% ELSIF status == "2" %]
-					<li><a href="/list">전체 ([% total_count %])</a></li>
-					<li><a href="/list?status=1">대기 ([% charge_count %])</a></li>
-					<li class="active"><a href="/list?status=2">승인 ([% approval_count %])</a></li>
-					<li><a href="/list?status=3">거부 ([% refuse_count %])</a></li>
-				[% ELSIF status == "3" %]
-					<li><a href="/list">전체 ([% total_count %])</a></li>
-					<li><a href="/list?status=1">대기 ([% charge_count %])</a></li>
-					<li><a href="/list?status=2">승인 ([% approval_count %])</a></li>
-					<li class="active"><a href="/list?status=3">거부 ([% refuse_count %])</a></li>
-				[% ELSE %]
-					<li class="active"><a href="/list">전체 ([% total_count %])</a></li>
-					<li><a href="/list?status=1">대기 ([% charge_count %])</a></li>
-					<li><a href="/list?status=2">승인 ([% approval_count %])</a></li>
-					<li><a href="/list?status=3">거부 ([% refuse_count %])</a></li>
-				[% END %]
+					<li class="[% status == 0 ? 'active' : '' %]"><a href="/list">전체 ([% total_count %])</a></li>
+					<li class="[% status == 1 ? 'active' : '' %]"><a href="/list?status=1">대기 ([% charge_count %])</a></li>
+					<li class="[% status == 2 ? 'active' : '' %]"><a href="/list?status=2">승인 ([% approval_count %])</a></li>
+					<li class="[% status == 3 ? 'active' : '' %]"><a href="/list?status=3">거부 ([% refuse_count %])</a></li>
 			</ul>
     </div>
 

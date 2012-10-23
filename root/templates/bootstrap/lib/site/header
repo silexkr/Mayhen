@@ -10,8 +10,8 @@
       <a class="brand" href="[% c.uri_for('/') %]">Donnenwa</a>
       <div class="nav-collapse">
         <ul class="nav">
-          <li class="active"><a href="[% c.uri_for('/') %]">청구관리</a></li>
-          <li><a href="[% c.uri_for('/deposit') %]">청구정산</a></li>
+          <li class="[% nav_active == 'list' ? 'active' : '' %]"><a href="[% c.uri_for('/') %]">청구관리</a></li>
+          <li class="[% nav_active == 'deposit' ? 'active' : '' %]"><a href="[% c.uri_for('/deposit') %]">청구정산</a></li>
         </ul>
         <ul class="nav pull-right">
             <li class="divider-vertical"></li>
