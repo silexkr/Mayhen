@@ -50,7 +50,7 @@
 	[% FOREACH list IN lists %]
 	  <tr id="[% list.id %]">
 	    <td><input type="checkbox"></td>
-	    <td><a href="[% c.uri_for('/view', list.id) %]">[% list.title %]</a></td>
+	    <td><a href="[% c.uri_for('/list/view', list.id) %]">[% list.title %]</a></td>
 	    <td> [% list.user.user_name %] </td>
 	    <td> [% list.created_on.ymd %] </td>
 	    <td> [% list.usage_date.ymd %] </td>
