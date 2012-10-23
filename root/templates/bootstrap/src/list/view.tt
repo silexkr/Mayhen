@@ -39,9 +39,11 @@
 [% IF charge.status == 1 %]
   <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
   <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
+  <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
 [% ELSIF charge.status == 2 %]
   <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
+  <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
 [% ELSE %]
   <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+  <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
 [% END %]
-<a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
