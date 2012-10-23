@@ -17,6 +17,8 @@ sub auto :Private {
     my ( $self, $c ) = @_;
 
     $self->api($c->model('API')->find('Charge'));
+    $c->stash( nav_active => "list" );
+
     return 1;
 }
 
