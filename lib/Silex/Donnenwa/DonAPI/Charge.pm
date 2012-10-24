@@ -42,12 +42,16 @@ sub create {
 sub update {
 	my ( $self, $args ) = @_;
 
-	my $time = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	my $time       = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	my $usage_date = DateTime::Format::ISO8601->parse_datetime($args->{usage_date});
+	my $pattern    = '%Y-%m-%d %H:%M:%S';
+
 	my %row = (
 	    amount     => $args->{amount},
 	    user       => $args->{charge_user},
 	    title      => $args->{title},
 	    comment    => $args->{comment},
+	    usage_date => $usage_date->strftime($pattern),
 	    updated_on => "$time",
 	);
 
