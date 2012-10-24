@@ -15,11 +15,14 @@
     [%- FOREACH css IN csses %]
     <link rel="stylesheet" href="[% c.uri_for('/static/css/' _ css) %]" type="text/css" />
     [%- END %]
+    <link href="[% c.uri_for('/static/css/datepicker.css') %]" rel="stylesheet" type="text/css" />
+
     <script type="text/javascript" src="/static/scripts/lib/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-alert.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-button.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="/static/scripts/lib/bootstrap-datepicker.js"></script>
   </head>
   <body>
     [% content %]
