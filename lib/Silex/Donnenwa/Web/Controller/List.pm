@@ -189,13 +189,15 @@ sub edit :Local :CaptureArgs(1) {
 
         push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
         push @messages, 'title is required' unless ($c->req->params->{title});
+        push @messages, 'usage_date is required' unless ($c->req->params->{usage_date});
 
         if (@messages) {
             $c->flash(
-                    messages => @messages,
-                    comment  => $c->req->params->{comment},
-                    title    => $c->req->params->{title},
-                    amount   => $c->req->params->{amount},
+                    messages   => @messages,
+                    comment    => $c->req->params->{comment},
+                    title      => $c->req->params->{title},
+                    amount     => $c->req->params->{amount},
+                    usage_date => $c->req->params->{usage_date},
             );
 
             return $c->res->redirect($c->uri_for("/list/view/$c->req->params->{charge_id}"));

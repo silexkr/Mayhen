@@ -44,6 +44,10 @@
       <td><input type="text" id="amount" name="amount" value="[% editer.amount %]"></td>
     </tr>
     <tr>
+      <th>사용날짜</th>
+      <td><input type="text" class="usage_date" id="usage_date" name="usage_date" value="[% editer.usage_date.ymd %]"></td>
+    </tr>
+    <tr>
       <td colspan=10 align=center>
 	<input type=submit class="btn btn-primary" value="글 저장하기">
 	<a href="[% c.uri_for('/view', editer.id) %]" class="btn btn-primary">되돌아가기</a>
@@ -52,4 +56,4 @@
     <!-- 입력 부분 끝 -->
   </table>
 </form>
-
+<script type="text/javascript" src="[% c.uri_for('/static/scripts/list.write.js') %]"></script>
