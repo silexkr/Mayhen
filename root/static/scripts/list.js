@@ -75,4 +75,13 @@ $(document).ready(function () {
 
     location.href = '/deposit//' + selected_charges;
   });
+
+  window.prettyPrint && prettyPrint();
+    $('#start_date').datepicker({
+      format: 'yyyy-mm-dd'
+  });
+  window.prettyPrint && prettyPrint();
+    $('#end_date').datepicker({
+      format: 'yyyy-mm-dd'
+  });
 });
