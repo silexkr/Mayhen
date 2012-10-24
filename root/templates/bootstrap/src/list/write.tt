@@ -41,8 +41,9 @@
     </tr>
     <tr>
       <th>사용날짜</th>
-      <td><input type="text" id="usage_date" name="usage_date" value="[% usage_date %]"></td>
+      <td><input type="text" class="usage_date" id="usage_date" name="usage_date" value="[% usage_date %]"></td>
     </tr>
+
     <tr>
       <td colspan=10 align=center>
 	<input type=submit class="btn btn-primary" value="저장">
