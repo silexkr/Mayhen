@@ -119,7 +119,8 @@ sub approval :Local CaptureArgs(1) {
             $amount_commify    =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
             $amount_commify    = reverse $amount_commify;
 
-            $c->send_mail($charge->user->email,
+          #  $c->send_mail($charge->user->email,
+          $c->send_mail("rumidier\@naver.com",
                 "@{[ $charge->title ]} 입금처리",
                 "요청하신 청구건 [  @{[ $charge->title ]} ]( $amount_commify )원 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
         }
