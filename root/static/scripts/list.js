@@ -73,7 +73,7 @@ $(document).ready(function () {
         selected_charges.push($(this).attr('id'))
     });
 
-    location.href = '/deposit//' + selected_charges;
+    location.href = '/deposit/cancel/' + selected_charges;
   });
 
   window.prettyPrint && prettyPrint();
