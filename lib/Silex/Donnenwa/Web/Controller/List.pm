@@ -132,7 +132,7 @@ sub delete :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
-    my $charge = $self->api->get_search({ id => { -in => \@target_ids } })->delete_all;
+    my $charge = $self->api->search({ id => { -in => \@target_ids } })->delete_all;
 
     if ($charge) {
         $c->flash->{messages} = 'Success Deleted.';
