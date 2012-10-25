@@ -107,6 +107,8 @@ sub approval :Local CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
+    return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
+
     my $target_charges
         = $self->charge_api->search({ id => { -in => \@target_ids } } );
     my $approval = $target_charges->update_all({ status => '4' });
@@ -136,6 +138,8 @@ sub cancel :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
+    return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
+
     my $refuse = $self->charge_api->search({ id => { -in
             => \@target_ids } })->update_all({ status => '1' });
 
@@ -152,10 +156,11 @@ sub cancel :Local :CaptureArgs(1) {
 sub export :Local CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
-    my @charges;
 
-    # set header
-    push @charges, ['제목', '청구자', '금액', '영수증날짜'];
+    return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
+
+    my @charges;
+    push @charges, ['제목', '청구자', '금액', '영수증날짜']; # set header
 
     foreach my $charge ($self->charge_api->search({ id => { -in => \@target_ids } })->all) {
         push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ];

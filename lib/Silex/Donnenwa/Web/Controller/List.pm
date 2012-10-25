@@ -132,6 +132,8 @@ sub delete :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
+    return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
+
     my $charge = $self->api->search({ id => { -in => \@target_ids } })->delete_all;
 
     if ($charge) {
@@ -147,6 +149,8 @@ sub delete :Local :CaptureArgs(1) {
 sub approval :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
+
+    return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
 
     my $approval = $self->api->search({ id => { -in
             => \@target_ids } })->update_all({ status => '2' });
@@ -165,6 +169,8 @@ sub approval :Local :CaptureArgs(1) {
 sub refuse :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
+
+    return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
 
     my $refuse = $self->api->search({ id => { -in
             => \@target_ids } })->update_all({ status => '3' });
