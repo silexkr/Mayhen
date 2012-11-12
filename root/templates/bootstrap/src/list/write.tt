@@ -1,6 +1,6 @@
 <ul class="breadcrumb">
   <li>
-    <a href="/list">대기</a>
+    <a href="[% c.uri_for('/list') %]">대기</a>
     <span class="divider">/</span>
   </li>
   <li class="active">청구서 작성</li>

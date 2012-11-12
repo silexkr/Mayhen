@@ -1,15 +1,15 @@
 <ul class="breadcrumb">
   <li>
-    <a href="/list">전체</a>
+    <a href="[% c.uri_for('/list') %]">전체</a>
     <span class="divder">/</span>
   </li>
   <li>
     [% IF charge.status == 1 %]
-      <a href="/list?status=1">대기</a>
+      <a href="[% c.uri_for('/list', status=1) %]">대기</a>
     [% ELSIF charge.status == 2 %]
-      <a href="/list?status=2">승인</a>
+      <a hrel="[% c.uri_for('/list', status=2) %]">승인</a>
     [% ELSE %]
-      <a href="/list?status=3">거부</a>
+      <a href="[% c.uri_for('/list', status=3) %]">거부</a>
     [% END %]
     <span class="divder">/</span>
   </li>
