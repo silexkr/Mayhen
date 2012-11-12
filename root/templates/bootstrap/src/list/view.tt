@@ -18,7 +18,7 @@
 <!-- 게시물 상세 내역을 보이기 위한 테이블 -->
 <table class="table table-striped table-bordered">
   <tr>
-    <td colspan=8>[% charge.title %]</td>
+    <td colspan="8">[% charge.title %]</td>
   </tr>
   <tr>
     <td>작성자</td>
@@ -31,7 +31,7 @@
     <td>[% charge.usage_date.ymd%]</td>
   </tr>
   <tr>
-    <td bgcolor=white colspan=8 style="table-layout:fixed;">
+    <td bgcolor="white" colspan="8" style="table-layout:fixed;">
       [% charge.comment | replace("\n", "<br/>") %]
     </td>
   </tr>
