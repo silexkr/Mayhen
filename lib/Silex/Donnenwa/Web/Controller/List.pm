@@ -47,7 +47,7 @@ sub index :Path :Args(0) {
     my $rs;
     my %cond    = ();
     my $page    = $c->req->params->{page};
-    my $status  = $c->req->param("status") || $c->stash->{"status"} || '0'; #수정 필요
+    my $status  = $c->req->params->{status} || $c->stash->{"status"} || '0'; #수정 필요
 
     $attr{page} = $page || 1;
 
@@ -60,7 +60,7 @@ sub index :Path :Args(0) {
 
     my $total_charge = $self->api->search(\%cond, \%attr);
 
-    my $total_count    = $self->api->search({status => {'!=', '4'}});
+    my $total_count    = $self->api->search({ status => {'!=', '4'} });
     my $charge_count   = $self->api->search({ status => 1 });
     my $approval_count = $self->api->search({ status => 2 });
     my $refuse_count   = $self->api->search({ status => 3 });
@@ -110,7 +110,8 @@ sub write :Local :Args(0) {
 
         if(my $charge = $self->api->create($c->req->params, $c->user->id)) {
             my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
-            $c->send_mail("supermania\@gmail.com",
+            #$c->send_mail("supermania\@gmail.com",
+            $c->send_mail("rumidier\@naver.com",
                 "[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
                 "다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.
                 $uri");
