@@ -53,9 +53,9 @@ sub signup :Path('/signup') :Args(0) {
 sub signup_POST :Private {
     my ( $self, $c ) = @_;
 
-    my $user_name = $c->req->param('user_name') || '';
-    my $email     = $c->req->param('email')     || '';
-    my $password  = $c->req->param('password')  || '';
+    my $user_name = $c->req->params->{user_name} || '';
+    my $email     = $c->req->params->{email}     || '';
+    my $password  = $c->req->params->{password}  || '';
 
     my @messages;
     push @messages, 'Input the user name'     unless $user_name;
