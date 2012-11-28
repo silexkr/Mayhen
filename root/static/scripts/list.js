@@ -2,86 +2,30 @@
 (function() {
 
   $(function() {
-    $('#head_checkbox').click(function() {
-      var cb, cbs, i, _i, _len, _results;
-      cbs = $(":checkbox");
-      _results = [];
-      for (i = _i = 0, _len = cbs.length; _i < _len; i = ++_i) {
-        cb = cbs[i];
-        if (cbs[i].type === "checkbox") {
-          _results.push(cbs[i].checked = $(this).is(':checked'));
+    $('#head_checkobx').click(function() {
+      var flag;
+      flag = $(this).is(':checked');
+      return $(':checkbox').each(function() {
+        if (flag) {
+          return $(this).attr('checked', 'checked');
         } else {
-          _results.push(void 0);
+          return $(this).removeAttr('checked');
         }
-      }
-      return _results;
+      });
     });
-    $('#do_delete').click(function() {
-      var selected_charges;
+    $('.btn').click(function() {
+      var select_id, selected_charges;
+      select_id = $(this).attr("id").substring(3);
       selected_charges = [];
       $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
         if ($(this).attr('id') !== void 0) {
           return selected_charges.push($(this).attr('id'));
         }
       });
-      return location.href = '/list/delete/' + selected_charges;
-    });
-    $('#do_approval').click(function() {
-      var selected_charges;
-      selected_charges = [];
-      $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
-        if ($(this).attr('id') !== void 0) {
-          return selected_charges.push($(this).attr('id'));
-        }
-      });
-      return location.href = '/list/approval/' + selected_charges;
-    });
-    $('#do_refuse').click(function() {
-      var selected_charges;
-      selected_charges = [];
-      $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
-        if ($(this).attr('id') !== void 0) {
-          return selected_charges.push($(this).attr('id'));
-        }
-      });
-      return location.href = '/list/refuse/' + selected_charges;
-    });
-    $('#do_deposit').click(function() {
-      var selected_charges;
-      selected_charges = [];
-      $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
-        if ($(this).attr('id') !== void 0) {
-          return selected_charges.push($(this).attr('id'));
-        }
-      });
-      return location.href = '/list/deposit/' + selected_charges;
-    });
-    $('#do_export').click(function() {
-      var selected_charges;
-      selected_charges = [];
-      $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
-        if ($(this).attr('id') !== void 0) {
-          return selected_charges.push($(this).attr('id'));
-        }
-      });
-      return location.href = '/list/export/' + selected_charges;
-    });
-    $('#do_cancel').click(function() {
-      var selected_charges;
-      selected_charges = [];
-      $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
-        if ($(this).attr('id') !== void 0) {
-          return selected_charges.push($(this).attr('id'));
-        }
-      });
-      return location.href = '/list/cancel/' + selected_charges;
+      return location.href = "/list/" + select_id + "/" + selected_charges;
     });
     window.prettyPrint && prettyPrint();
-    $('#start_date').datepicker({
-      format: 'yyyy-mm-dd'
-    });
-    window.prettyPrint && prettyPrint();
-    return $('#end_date').datepicker({
+    return $('#start_date, #end_date').datepicker({
       format: 'yyyy-mm-dd'
     });
   });
