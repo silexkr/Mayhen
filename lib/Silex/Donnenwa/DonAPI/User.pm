@@ -10,4 +10,12 @@ sub search {
 	return $self->resultset('User')->search($cond, $attr);
 }
 
+sub mobile_user {
+    my ( $self, $args ) = @_;
+
+    my ($name, $password) = split /:/,$args;
+
+    return ($name, $password);
+}
+
 1;
