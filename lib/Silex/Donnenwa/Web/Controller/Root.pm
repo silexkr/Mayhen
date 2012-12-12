@@ -1,8 +1,14 @@
 package Silex::Donnenwa::Web::Controller::Root;
 use Moose;
 use namespace::autoclean;
+use MIME::Base64;
 
 BEGIN { extends 'Catalyst::Controller' }
+
+has api => (
+    is  => 'rw',
+    isa => 'Silex::Donnenwa::DonAPI::User',
+);
 
 #
 # Sets the actions in this controller to be registered with no prefix
@@ -28,6 +34,30 @@ The root page (/)
 
 sub auto :Private {
     my ($self, $c) = @_;
+    $self->api($c->model('API')->find('User'));
+
+    my $mobile_user = $c->req->header('Authorization');
+
+    if ($mobile_user) {
+## $auth is 'cnVtaWRpZXI6MTIzNA==
+## MIME::Base64::encode
+        my $user_info = decode_base64($mobile_user);
+        my ( $username, $password ) = $self->api->mobile_user($user_info);
+
+        if ($username && $password) {
+            if ($c->authenticate({ user_name => $username, password => $password })) {
+                return 1;
+            }
+            else {
+## mobile은 수정 해주어야함
+                $c->stash(error_msg => "Bad username or password.");
+            }
+        }
+        else {
+## mobile은 수정 해주어야함
+            $c->stash(error_msg => "Empty username or password.") unless ($c->user_exists);
+        }
+    }
 
     if ($c->controller eq $c->controller('Login')) {
         return 1;
