@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 use Data::Dumper;
 use Data::Pageset;
+use JSON::XS;
 use POSIX;
 use utf8;
 
@@ -58,6 +59,7 @@ sub index :Path :Args(0) {
         %cond = ( status => {'!=', '4'});
     }
 
+    $attr{result_class} = 'DBIx::Class::ResultClass::HashRefInflator';
     my $total_charge = $self->api->search(\%cond, \%attr);
 
     my $total_count    = $self->api->search({ status => {'!=', '4'} });
@@ -84,6 +86,11 @@ sub index :Path :Args(0) {
         status         => $status,
         pageset        => $page_info,
     );
+    my $mobile_user = $c->req->header('Authorization');
+
+    if ($mobile_user) {
+        $c->forward('View::JSON');
+    }
 }
 
 sub write :Local :Args(0) {
