@@ -54,8 +54,6 @@ sub auto :Private {
             }
         }
         else {
-## mobile은 수정 해주어야함
-            $c->stash(error_msg => "Empty username or password.") unless ($c->user_exists);
         }
     }
 
