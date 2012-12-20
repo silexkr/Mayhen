@@ -59,7 +59,6 @@ sub index :Path :Args(0) {
         %cond = ( status => {'!=', '4'});
     }
 
-    $attr{result_class} = 'DBIx::Class::ResultClass::HashRefInflator';
     my $total_charge = $self->api->search(\%cond, \%attr);
 
     my $total_count    = $self->api->search({ status => {'!=', '4'} });
@@ -131,8 +130,9 @@ sub write :Local :Args(0) {
 sub view :Local :CaptureArgs(1) {
     my ( $self, $c, $charge_id ) = @_;
 
+    my $charge = $self->api->find({ id => $charge_id });
     $c->stash(
-        charge     => $self->api->find({ id => $charge_id }),
+        charge     => $charge,
     );
 }
 
