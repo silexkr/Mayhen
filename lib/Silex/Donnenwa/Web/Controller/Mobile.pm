@@ -1,6 +1,8 @@
 package Silex::Donnenwa::Web::Controller::Mobile;
 
 use utf8;
+use Digest::MD5 qw(md5_hex);
+use DateTime;
 use Moose;
 use namespace::autoclean;
 
@@ -41,13 +43,15 @@ sub index :Path :Args(0) {
             {
                 id         => $item->id,
                 title      => $item->title,
-                amount     => $item->amount,
+                amount     => sprintf("%d원", $item->amount),
                 comment    => $item->comment,
                 username   => $item->user->user_name,
-                email      => $item->user->email,
-                status     => $item->status,
-                created_on => $item->created_on->datetime,
-                usage_date => $item->usage_date->datetime,
+                email      => "http://www.gravatar.com/avatar/".md5_hex(lc $item->user->email),
+                created_on => sprintf("%d년 %d월 %d일",
+                                $item->created_on->year,
+                                $item->created_on->month,
+                                $item->created_on->day
+                            ),
             },
         );
     }
@@ -70,12 +74,22 @@ sub view :Local :Args(1) {
         {
             id         => $rs->id,
             title      => $rs->title,
-            amount     => $rs->amount,
+            amount     => sprintf("%d원", $rs->amount),
             comment    => $rs->comment,
+            status     => $rs->status eq '1' ? '대기' :
+                          $rs->status eq '2' ? '승인' :
+                          '거부',
             username   => $rs->user->user_name,
-            email      => $rs->status,
-            created_on => $rs->created_on->datetime,
-            usage_date => $rs->usage_date->datetime,
+            created_on => sprintf("%d년 %d월 %d일",
+                              $rs->created_on->year,
+                              $rs->created_on->month,
+                              $rs->created_on->day
+                          ),
+            usage_date => sprintf("%d년 %d월 %d일",
+                            $rs->usage_date->year,
+                            $rs->usage_date->month,
+                            $rs->usage_date->day
+                        ),
         }
     );
     $c->stash( results => \@results );
