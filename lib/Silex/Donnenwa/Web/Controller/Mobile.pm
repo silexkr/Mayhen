@@ -13,9 +13,15 @@ has api => (
   isa => 'Silex::Donnenwa::DonAPI::Charge',
 );
 
+has user_api => (
+  is  => 'rw',
+  isa => 'Silex::Donnenwa::DonAPI::User',
+);
+
 sub auto :Private {
     my ( $self, $c ) = @_;
     $self->api($c->model('API')->find('Charge'));
+    $self->user_api($c->model('API')->find('User'));
     return 1;
 }
 
@@ -93,6 +99,28 @@ sub view :Local :Args(1) {
         }
     );
     $c->stash( results => \@results );
+
+    $c->forward('View::JSON');
+}
+
+sub write :Local :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $email = $c->req->params->{email};
+    my $id = $self->user_api->find(
+        {email => $email},
+        {columns => [qw/id/]},
+    );
+
+    my $items = {};
+    $items->{title}      = $c->req->params->{title};
+    $items->{amount}     = $c->req->params->{amount};
+    $items->{content}    = $c->req->params->{content};
+    $items->{usage_date} = $c->req->params->{usage_date};
+
+    if(my $charge = $self->api->create($items, $id)) {
+# 저장이 되었을대 이메일 발송 해야하며 성공 메세지 전달 해야함
+    }
 
     $c->forward('View::JSON');
 }
