@@ -49,8 +49,10 @@ sub auto :Private {
                 return 1;
             }
             else {
-## mobile은 수정 해주어야함
-                $c->stash(error_msg => "Bad username or password.");
+                $c->stash->{error} = 'Unauthorized';
+                $c->res->code(401);
+                $c->forward('View::JSON');
+                return 0;
             }
         }
         else {
