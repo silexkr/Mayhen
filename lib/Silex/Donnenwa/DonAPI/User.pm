@@ -10,6 +10,12 @@ sub search {
 	return $self->resultset('User')->search($cond, $attr);
 }
 
+sub find {
+	my ( $self, $cond, $attr ) = @_;
+
+	return $self->resultset('User')->find($cond, $attr);
+}
+
 sub mobile_user {
     my ( $self, $args ) = @_;
 
