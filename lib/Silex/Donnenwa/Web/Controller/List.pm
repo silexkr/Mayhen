@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 use Data::Dumper;
 use Data::Pageset;
+use JSON::XS;
 use POSIX;
 use utf8;
 
@@ -84,6 +85,11 @@ sub index :Path :Args(0) {
         status         => $status,
         pageset        => $page_info,
     );
+    my $mobile_user = $c->req->header('Authorization');
+
+    if ($mobile_user) {
+        $c->forward('View::JSON');
+    }
 }
 
 sub write :Local :Args(0) {
@@ -124,8 +130,9 @@ sub write :Local :Args(0) {
 sub view :Local :CaptureArgs(1) {
     my ( $self, $c, $charge_id ) = @_;
 
+    my $charge = $self->api->find({ id => $charge_id });
     $c->stash(
-        charge     => $self->api->find({ id => $charge_id }),
+        charge     => $charge,
     );
 }
 

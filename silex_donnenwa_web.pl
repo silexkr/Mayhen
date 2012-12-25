@@ -46,7 +46,6 @@
         }
     },
     'View::JSON' => {
-        expose_stash => 'json'
     },
     session => {
         flash_to_stash => 1,

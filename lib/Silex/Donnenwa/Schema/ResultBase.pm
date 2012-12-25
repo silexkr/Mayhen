@@ -11,6 +11,10 @@ __PACKAGE__->load_components(qw/
     TimeStamp
 /);
 
+sub TO_JSON {
+      return { $_[0]->get_inflated_columns };
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

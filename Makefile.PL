@@ -37,6 +37,7 @@ requires 'Devel::Cover';
 requires 'Email::MIME';
 requires 'Email::Sender::Simple';
 requires 'Email::Sender::Transport::SMTP';
+requires 'Catalyst::View::JSON';
 requires 'MIME::Base64';
 requires 'Moose';
 requires 'Net::SMTP::SSL';
