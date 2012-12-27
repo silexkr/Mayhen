@@ -42,10 +42,10 @@ sub auto :Private {
 ## $auth is 'cnVtaWRpZXI6MTIzNA==
 ## MIME::Base64::encode
         my $user_info = decode_base64((split / /, $mobile_user)[1]);
-        my ( $username, $password ) = $self->api->mobile_user($user_info);
+        my ( $useremail, $password ) = $self->api->mobile_user($user_info);
 
-        if ($username && $password) {
-            if ($c->authenticate({ user_name => $username, password => $password })) {
+        if ($useremail && $password) {
+            if ($c->authenticate({ email => $useremail, password => $password })) {
                 return 1;
             }
             else {
