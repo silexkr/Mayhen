@@ -103,7 +103,7 @@ sub index :Path :Args(0) {
     );
 }
 
-sub approval :Local CaptureArgs(1) {
+sub approval :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
 
