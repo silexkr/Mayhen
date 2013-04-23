@@ -54,25 +54,28 @@ sub index :Path :Args(0) {
     my $charger_id = $c->req->params->{charger} || '0';
     my $status     = $c->req->params->{status}  || '0';
 
-    my $from = $c->req->params->{start_date}
-    ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
-    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
+
+    if ($c->req->params->{start_date} && $c->req->params->{end_date}) {
+        my $from = $c->req->params->{start_date}
+        ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
+        : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
 
 
-    my $to   = $c->req->params->{end_date}
-    ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
-    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
+        my $to   = $c->req->params->{end_date}
+        ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
+        : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
 
+
+        my $pattern = '%Y-%m-%d %H:%M:%S';
+        $cond->{created_on} = {
+            -between => [
+                $from->strftime($pattern),
+                $to->strftime($pattern)
+            ]
+        };
+    }
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
-
-    my $pattern = '%Y-%m-%d %H:%M:%S';
-    $cond->{created_on} = {
-        -between => [
-            $from->strftime($pattern),
-            $to->strftime($pattern)
-        ]
-    };
 
     $cond->{status} = $status ? $status : '2';
 
