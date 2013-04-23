@@ -84,7 +84,6 @@
       [% PROCESS 'inc/pagination.tt' %]
       <a class="btn btn-primary" id="do_deposit">입급</a>
       <a class="btn btn-primary" id="do_cancel">승인 취소</a>
-      <a class="btn btn-primary" id="do_export">출력</a>
     </div>
   </div>
 </div>
