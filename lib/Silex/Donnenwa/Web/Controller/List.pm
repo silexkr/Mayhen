@@ -85,11 +85,6 @@ sub index :Path :Args(0) {
         status         => $status,
         pageset        => $page_info,
     );
-    my $mobile_user = $c->req->header('Authorization');
-
-    if ($mobile_user) {
-        $c->forward('View::JSON');
-    }
 }
 
 sub write :Local :Args(0) {
