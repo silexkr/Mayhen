@@ -26,11 +26,30 @@ sub create {
 	   : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
 
 	my $pattern = '%Y-%m-%d %H:%M:%S';
+    my $mini_class =  {};
+
+    $mini_class = {
+        '1'  => '식비',
+        '2'  => '월급',
+        '3'  => '월세',
+        '4'  => '통신비',
+        '5'  => '지식,문화',
+        '6'  => '생활용품',
+        '7'  => '세금',
+        '8'  => '의료,건강',
+        '9'  => '여가,유흥',
+        '10' => '경조사비',
+        '11' => '교통비',
+        '12' => '기타',
+    };
+
 	my %row  = (
 	    user       => $user_id,
 	    title      => $args->{title},
-	    comment    => $args->{content},
 	    amount     => $args->{amount},
+        class      => $args->{class},
+        mini_class => $args->{mini_class},
+        memo       => $mini_class->{$args->{mini_class}},
 	    usage_date => $usage_date->strftime($pattern),
 	    created_on => "$time",
 	    updated_on => "$time",
