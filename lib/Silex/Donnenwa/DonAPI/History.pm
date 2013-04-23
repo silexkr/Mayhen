@@ -49,7 +49,7 @@ sub create {
 	    amount     => $args->{amount},
 	    class      => $args->{class},
 	    mini_class => $args->{mini_class},
-        memo      => $mini_class->{$args->{mini_class}},
+        memo       => $mini_class->{$args->{mini_class}},
 	    usage_date => $usage_date->strftime($pattern),
 	    created_on => "$time",
 	    updated_on => "$time",
