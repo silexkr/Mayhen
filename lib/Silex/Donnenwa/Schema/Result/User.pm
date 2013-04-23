@@ -165,9 +165,41 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 
 __PACKAGE__->add_unique_constraint("user_name", ["user_name"]);
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-23 22:31:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZtZ1PE7OayszPLGqODvJ7A
+=head2 charges
+
+Type: has_many
+
+Related object: L<Silex::Donnenwa::Schema::Result::Charge>
+
+=cut
+
+__PACKAGE__->has_many(
+  "charges",
+  "Silex::Donnenwa::Schema::Result::Charge",
+  { "foreign.user" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 histories
+
+Type: has_many
+
+Related object: L<Silex::Donnenwa::Schema::Result::History>
+
+=cut
+
+__PACKAGE__->has_many(
+  "histories",
+  "Silex::Donnenwa::Schema::Result::History",
+  { "foreign.user" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-22 16:02:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9RdMtDXc4clcnE03DVnWNg
 
 __PACKAGE__->has_many(
     charges => 'Silex::Donnenwa::Schema::Result::Charge',
