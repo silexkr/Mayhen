@@ -1,0 +1,32 @@
+<form action="[% c.uri_for('/main/insert') %]" method="POST" id="w_form" enctype="multipart/form-data">
+<p>입력 날짜</p>
+<input type="text" name="input_date">
+<p>사용 날짜</p>
+<input type="text" name="usage_date">
+<p>금액</p>
+<input type="text" id="amount" name="amount" value="[% amount %]"></td>
+<p>메모</p>
+<input type="text" name="title" id="title" value="[% title %]">
+<p>분류</p>
+<select name="class">
+<option value="1">silex</option>
+<option value="2">청구</option>
+</select> 
+<p>소분류</p>
+<select name="mini_class">
+<option value="1">식비</option>
+<option value="2">월급</option>
+<option value="3">월세</option>
+<option value="4">통신비</option>
+<option value="5">지식,문화</option>
+<option value="6">생활용품</option>
+<option value="7">세금</option>
+<option value="8">의료,건강</option>
+<option value="9">여가,유흥</option>
+<option value="10">경조사비</option>
+<option value="11">교통비</option>
+<option value="12">기타</option>
+</select> 
+
+	<input type=submit class="btn btn-primary" value="저장">
+</form>

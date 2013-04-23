@@ -1,0 +1,21 @@
+<table class="table table-striped">
+  <thead></thead>
+  <tbody>
+    [% FOREACH list IN lists%]
+    <tr>
+      <td>[% list.user.user_name %]</td>
+      [% IF list.class == '1'%]
+        <td>Silex</td>
+      [% ELSE %]
+        <td>청구</td>
+      [% END %]
+      <td>[% list.title %]</td>
+      <td>[% list.amount %]</td>
+      <td>[% list.usage_date %]</td>
+      <td>[% list.created_on %]</td>
+      <td>[% list.update_on %]</td>
+      <td>[% list.memo %]</td>
+    </tr>
+    [% END %]
+  </tbody>
+</table>
