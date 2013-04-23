@@ -10,10 +10,10 @@
         <td>청구</td>
       [% END %]
       <td>[% list.title %]</td>
-      <td>[% list.amount %]</td>
-      <td>[% list.usage_date %]</td>
-      <td>[% list.created_on %]</td>
-      <td>[% list.update_on %]</td>
+      <td>[% list.amount | comma %]원</td>
+      <td>[% list.usage_date.ymd %]</td>
+      <td>[% list.created_on.ymd %]</td>
+      <td>[% list.update_on.ymd %]</td>
       <td>[% list.memo %]</td>
     </tr>
     [% END %]
