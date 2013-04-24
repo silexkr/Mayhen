@@ -157,6 +157,25 @@ sub cancel :Local :CaptureArgs(1) {
     $c->res->redirect($c->uri_for('/deposit'));
 }
 
+sub refuse :Local :CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
+
+    my $refuse = $self->charge_api->search({ id => { -in
+            => \@target_ids } })->update_all({ status => '2' });
+
+    if ($refuse) {
+        $c->flash->{messages} = 'Success refuse.';
+    }
+    else {
+        $c->flash->{messages} = 'No refuse Item.';
+    }
+
+    $c->res->redirect($c->uri_for('/deposit'));
+}
+
 sub export :Local CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     my @target_ids = split ',', $id;
