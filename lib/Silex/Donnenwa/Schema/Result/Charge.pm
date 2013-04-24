@@ -55,15 +55,6 @@ __PACKAGE__->table("charge");
 
 ì²­êµ¬ ìì±ì
 
-=head2 comment
-
-  data_type: 'varchar'
-  default_value: 'ë´ì© ìì'
-  is_nullable: 0
-  size: 255
-
-ì²­êµ¬ ë©ëª¨
-
 =head2 title
 
   data_type: 'varchar'
@@ -106,6 +97,25 @@ __PACKAGE__->table("charge");
   set_on_create: 1
   set_on_update: 1
 
+=head2 class
+
+  data_type: 'enum'
+  default_value: 1
+  extra: {list => [1,2]}
+  is_nullable: 0
+
+=head2 mini_class
+
+  data_type: 'enum'
+  default_value: 12
+  extra: {list => [1,2,3,4,5,6,7,8,9,10,11,12]}
+  is_nullable: 0
+
+=head2 memo
+
+  data_type: 'text'
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -129,13 +139,6 @@ __PACKAGE__->add_columns(
     extra => { unsigned => 1 },
     is_foreign_key => 1,
     is_nullable => 0,
-  },
-  "comment",
-  {
-    data_type => "varchar",
-    default_value => pack("H*","eb82b4ec9aa920ec9786ec9d8c"),
-    is_nullable => 0,
-    size => 255,
   },
   "title",
   {
@@ -177,6 +180,22 @@ __PACKAGE__->add_columns(
     set_on_create             => 1,
     set_on_update             => 1,
   },
+  "class",
+  {
+    data_type => "enum",
+    default_value => 1,
+    extra => { list => [1, 2] },
+    is_nullable => 0,
+  },
+  "mini_class",
+  {
+    data_type => "enum",
+    default_value => 12,
+    extra => { list => [1 .. 12] },
+    is_nullable => 0,
+  },
+  "memo",
+  { data_type => "text", is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -209,8 +228,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-22 16:02:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Lo4AkqkxG6UaaubcrIvVyQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-23 17:29:08
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3mslSp585qCcu9fW5Jub3A
 
 __PACKAGE__->belongs_to(
     user => 'Silex::Donnenwa::Schema::Result::User',
