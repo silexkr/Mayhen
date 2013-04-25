@@ -79,4 +79,22 @@ sub update {
 	$self->resultset('History')->find({id => $args->{charge_id} })->update(\%row);
 }
 
+sub upgrade {
+    my( $self, $args ) = @_;
+
+    my $row = {};
+    $row->{amount}         = $args->{amount};
+    $row->{user}           = $args->{user};
+    $row->{title}          = $args->{title};
+    $row->{usage_date}     = $args->{usage_date};
+    $row->{created_on}     = $args->{created_on};
+    $row->{class}          = $args->{class};
+    $row->{mini_class}     = $args->{mini_class};
+    $row->{memo}           = $args->{memo};
+    $row->{history_status} = $args->{history_status};
+
+    $row->{updated_on} = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	$self->resultset('History')->create($row);
+}
+
 1;
