@@ -36,11 +36,17 @@ has us_api => (
     isa => 'Silex::Donnenwa::DonAPI::User',
 );
 
+has his_api => (
+    is => 'rw',
+    isa => 'Silex::Donnenwa::DonAPI::History',
+);
+
 sub auto :Private {
     my ($self, $c) = @_;
 
     $self->charge_api($c->model('API')->find('Charge'));
     $self->us_api($c->model('API')->find('User'));
+    $self->his_api($c->model('API')->find('History'));
 
     $c->stash( nav_active => "deposit" );
 }
@@ -54,25 +60,28 @@ sub index :Path :Args(0) {
     my $charger_id = $c->req->params->{charger} || '0';
     my $status     = $c->req->params->{status}  || '0';
 
-    my $from = $c->req->params->{start_date}
-    ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
-    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
+
+    if ($c->req->params->{start_date} && $c->req->params->{end_date}) {
+        my $from = $c->req->params->{start_date}
+        ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
+        : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
 
 
-    my $to   = $c->req->params->{end_date}
-    ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
-    : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
+        my $to   = $c->req->params->{end_date}
+        ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
+        : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
 
+
+        my $pattern = '%Y-%m-%d %H:%M:%S';
+        $cond->{created_on} = {
+            -between => [
+                $from->strftime($pattern),
+                $to->strftime($pattern)
+            ]
+        };
+    }
     $attr->{page} = $page || 1;
     $cond->{user} = $charger_id if $charger_id;
-
-    my $pattern = '%Y-%m-%d %H:%M:%S';
-    $cond->{created_on} = {
-        -between => [
-            $from->strftime($pattern),
-            $to->strftime($pattern)
-        ]
-    };
 
     $cond->{status} = $status ? $status : '2';
 
@@ -117,14 +126,35 @@ sub approval :Local :CaptureArgs(1) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
         foreach my $charge ($target_charges->all) {
-            my $amount_commify = reverse @{ [ $charge->amount ]};
+            my $amount_commify = reverse @{[ $charge->amount ]};
             $amount_commify    =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
             $amount_commify    = reverse $amount_commify;
 
+            my $charge_datas = {};
+            $charge_datas->{amount}         = shift @{[ $charge->amount ]};
+            $charge_datas->{user}           = shift @{[ $charge->user ]};
+            $charge_datas->{title}          = shift @{[ $charge->title ]};
+            $charge_datas->{usage_date}     = shift @{[ $charge->usage_date ]};
+            $charge_datas->{created_on}     = shift @{[ $charge->created_on ]};
+            $charge_datas->{class}          = shift @{[ $charge->class ]};
+            $charge_datas->{mini_class}     = shift @{[ $charge->mini_class ]};
+            $charge_datas->{memo}           = shift @{[ $charge->memo ]};
+            $charge_datas->{history_status} = shift @{[ $charge->id ]};
+
+            $self->his_api->upgrade($charge_datas);
+            my $time = DateTime::Format::ISO8601->parse_datetime($charge_datas->{created_on})->ymd;
+
             #$c->send_mail($charge->user->email,
             $c->send_mail('rumidier@naver.com',
-                "@{[ $charge->title ]} 입금처리",
-                "요청하신 청구건 [  @{[ $charge->title ]} ]( $amount_commify )원 이 입금처리 되었습니다. 다음에 또 이용해주세요.");
+                "Mayhen 입금 거부 메일 [@{[ $charge->title ]}]",
+                "안녕하십니까? Silex 경리봇 Mayhen 입니다.
+
+                $time 일 청구하신 [ @{[ $charge->title ]} ] ($amount_commify)원이 입금 처리되었습니다.
+                자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
+
+                사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
+                감사합니다.
+            ");
         }
     }
     else {
@@ -141,14 +171,59 @@ sub cancel :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $refuse = $self->charge_api->search({ id => { -in
-            => \@target_ids } })->update_all({ status => '1' });
+    my $cancel = $self->charge_api->search({ id => { -in => \@target_ids } })->update_all({ status => '1' });
 
-    if ($refuse) {
+    if ($cancel) {
         $c->flash->{messages} = 'Success Cancel.';
     }
     else {
         $c->flash->{messages} = 'No Cancel Item.';
+    }
+
+    $c->res->redirect($c->uri_for('/deposit'));
+}
+
+sub refuse :Local :CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
+
+    my $target_refuse = $self->charge_api->search({ id => { -in => \@target_ids } });
+    my $refuse = $target_refuse->update_all({ status => '2' });
+
+    if ($refuse) {
+        $self->his_api->search({ history_status => { -in => \@target_ids } })->delete_all();
+        $c->flash->{messages} = 'Success Refuse Deposit.';
+
+        foreach my $charge ($target_refuse->all) {
+            my $amount_commify = reverse @{[ $charge->amount ]};
+            $amount_commify    =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
+            $amount_commify    = reverse $amount_commify;
+            my $time = DateTime::Format::ISO8601->parse_datetime(@{[ $charge->created_on ]})->ymd;
+
+            #$c->send_mail($charge->user->email,
+            $c->send_mail('rumidier@naver.com',
+                "Mayhen 입금 거부 메일 [@{[ $charge->title ]}]",
+                "안녕하십니까? Silex 경리봇 Mayhen 입니다.
+
+                $time 일 청구하신 [  @{[ $charge->title ]} ] ( $amount_commify )원이 입금 취소되었습니다.
+                자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
+
+                사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
+                감사합니다.
+            ");
+        }
+    }
+    else {
+        $c->flash->{messages} = 'No Approval Deposit Item.';
+    }
+
+    if ($refuse) {
+        $c->flash->{messages} = 'Success refuse.';
+    }
+    else {
+        $c->flash->{messages} = 'No refuse Item.';
     }
 
     $c->res->redirect($c->uri_for('/deposit'));

@@ -72,7 +72,7 @@ sub signup_POST :Private {
 
     my $cond = {};
     $cond->{'me.user_name'} = "$user_name";
-    my $name_search = $c->model('DonDB')->resultset('User')->search($cond);
+    my $name_search = $c->model('API')->resultset('User')->search($cond);
     if ($name_search->count) {
         $c->flash(
             messages => 'Using ID again input the New ID',
@@ -83,7 +83,7 @@ sub signup_POST :Private {
 
     $cond = {} if $cond;
     $cond->{'me.email'} = "$email";
-    my $email_search = $c->model('DonDB')->resultset('User')->search($cond);
+    my $email_search = $c->model('API')->resultset('User')->search($cond);
     if ($email_search->count) {
         $c->flash(
             messages      => 'Using email again input the New email',
@@ -93,7 +93,7 @@ sub signup_POST :Private {
     }
 
     my $time    = strftime "%Y-%m-%d %H:%M:%S", localtime;
-    my $created = $c->model('DonDB::User')->create({
+    my $created = $c->model('API')->resultset('User')->create({
         user_name  => $user_name,
         email      => $email,
         password   => $password,

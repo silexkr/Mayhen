@@ -21,15 +21,15 @@
 		<span class="divider">/</span>
 	</li>
 	<li class="active">
-	    [% IF status == "1" %]
-		  <b> 대기 ([% charge_count %])</b>
-	    [% ELSIF status == "2" %]
-	      <b> 승인 ([% approval_count %])</b>
-	    [% ELSIF status == "3" %]
-		  <b> 거부 ([% refuse_count %])</b>
-	    [% ELSE %]
-		  <b> 전체 ([% total_count %])</b>
-	    [% END %]
+        [% IF status == "1" %]
+          <b> 대기 ([% charge_count %])</b>
+        [% ELSIF status == "2" %]
+          <b> 승인 ([% approval_count %])</b>
+        [% ELSIF status == "3" %]
+          <b> 거부 ([% refuse_count %])</b>
+        [% ELSE %]
+          <b> 전체 ([% total_count %])</b>
+        [% END %]
 	</li>
       </ul>
       <!-- 게시물 리스트를 보이기 위한 테이블 -->
@@ -49,30 +49,35 @@
       <tbody>
 	[% FOREACH list IN lists %]
 	  <tr id="[% list.id %]">
+            [% IF c.user.user_name == list.user.user_name %]
 	    <td><input type="checkbox"></td>
-	    <td><a href="[% c.uri_for('/list/view', list.id) %]">[% list.title %]</a></td>
+            [% ELSE %]
+	    <td></td>
+            [% END %]
+	    <td><b>[% list.title %]</b></td>
 	    <td> [% list.user.user_name %] </td>
 	    <td> [% list.created_on.ymd %] </td>
 	    <td> [% list.usage_date.ymd %] </td>
 	    <td><span class="pull-right">[% list.amount | comma %]</span></td>
-	      [% IF list.status == "1" %]
-		  <td> 대기 </td>
-	      [% ELSIF list.status == "2" %]
-		  <td> 승인 </td>
-	      [% ELSIF list.status == "3" %]
-		  <td> 거부 </td>
-	      [% ELSE %]
-		  <td> Error </td>
-	      [% END %]
+            [% IF list.status == "1" %]
+              <td> 대기 </td>
+            [% ELSIF list.status == "2" %]
+              <td> 승인 </td>
+            [% ELSIF list.status == "3" %]
+              <td> 거부 </td>
+            [% ELSE %]
+              <td> Error </td>
+            [% END %]
 	  </tr>
 	[% END %]
       </tbody>
      </table>
       [% PROCESS 'inc/pagination.tt' %]
-      <a href="[% c.uri_for('/list/write') %]" class="btn btn-primary">청구서 작성</a>
       <a class="btn btn-primary" id="do_delete">삭제</a>
-      <a class="btn btn-primary" id="do_approval">승인</a>
-      <a class="btn btn-primary" id="do_refuse">거부</a>
+      [% IF c.user.user_name == 'yongbin' %]
+        <a class="btn btn-primary" id="do_approval">승인</a>
+        <a class="btn btn-primary" id="do_refuse">거부</a>
+      [% END %]
     </div>
   </div>
 </div>

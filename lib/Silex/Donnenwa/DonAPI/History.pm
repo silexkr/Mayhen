@@ -1,4 +1,4 @@
-package Silex::Donnenwa::DonAPI::Charge;
+package Silex::Donnenwa::DonAPI::History;
 use Moose;
 use namespace::autoclean;
 use POSIX;
@@ -8,13 +8,13 @@ with qw/Silex::Donnenwa::Trait::WithDBIC/;
 sub search {
 	my ( $self, $cond, $attr ) = @_;
 
-	return $self->resultset('Charge')->search($cond, $attr);
+	return $self->resultset('History')->search($cond, $attr);
 }
 
 sub find {
 	my ( $self, $args ) = @_;
 
-	return $self->resultset('Charge')->find($args);
+	return $self->resultset('History')->find($args);
 }
 
 sub create {
@@ -25,7 +25,6 @@ sub create {
 	   ? DateTime::Format::ISO8601->parse_datetime($args->{usage_date})
 	   : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
 
-	my $pattern = '%Y-%m-%d %H:%M:%S';
     my $mini_class =  {};
 
     $mini_class = {
@@ -43,19 +42,20 @@ sub create {
         '12' => '기타',
     };
 
+	my $pattern = '%Y-%m-%d %H:%M:%S';
 	my %row  = (
 	    user       => $user_id,
 	    title      => $args->{title},
 	    amount     => $args->{amount},
-        class      => $args->{class},
-        mini_class => $args->{mini_class},
+	    class      => $args->{class},
+	    mini_class => $args->{mini_class},
         memo       => $mini_class->{$args->{mini_class}},
 	    usage_date => $usage_date->strftime($pattern),
 	    created_on => "$time",
 	    updated_on => "$time",
 	);
 
-	$self->resultset('Charge')->create(\%row);
+    $self->resultset('History')->create(\%row);
 }
 
 sub update {
@@ -70,11 +70,31 @@ sub update {
 	    user       => $args->{charge_user},
 	    title      => $args->{title},
 	    comment    => $args->{comment},
+	    class      => $args->{class},
+	    mini_class => $args->{mini_class},
 	    usage_date => $usage_date->strftime($pattern),
 	    updated_on => "$time",
 	);
 
-	$self->resultset('Charge')->find({id => $args->{charge_id} })->update(\%row);
+	$self->resultset('History')->find({id => $args->{charge_id} })->update(\%row);
+}
+
+sub upgrade {
+    my( $self, $args ) = @_;
+
+    my $row = {};
+    $row->{amount}         = $args->{amount};
+    $row->{user}           = $args->{user};
+    $row->{title}          = $args->{title};
+    $row->{usage_date}     = $args->{usage_date};
+    $row->{created_on}     = $args->{created_on};
+    $row->{class}          = $args->{class};
+    $row->{mini_class}     = $args->{mini_class};
+    $row->{memo}           = $args->{memo};
+    $row->{history_status} = $args->{history_status};
+
+    $row->{updated_on} = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	$self->resultset('History')->create($row);
 }
 
 1;

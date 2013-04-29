@@ -1,12 +1,12 @@
 use utf8;
-package Silex::Donnenwa::Schema::Result::Charge;
+package Silex::Donnenwa::Schema::Result::History;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-Silex::Donnenwa::Schema::Result::Charge
+Silex::Donnenwa::Schema::Result::History
 
 =cut
 
@@ -22,11 +22,11 @@ use MooseX::NonMoose;
 use namespace::autoclean;
 extends 'Silex::Donnenwa::Schema::ResultBase';
 
-=head1 TABLE: C<charge>
+=head1 TABLE: C<history>
 
 =cut
 
-__PACKAGE__->table("charge");
+__PACKAGE__->table("history");
 
 =head1 ACCESSORS
 
@@ -53,23 +53,16 @@ __PACKAGE__->table("charge");
   is_foreign_key: 1
   is_nullable: 0
 
-ì²­êµ¬ ìì±ì
+ ìì±ì
 
 =head2 title
 
   data_type: 'varchar'
-  default_value: 'ì ëª© ìì'
-  is_nullable: 0
+  default_value: 'ë´ì©ìì'
+  is_nullable: 1
   size: 255
 
-ì²­êµ¬ ì ëª©
-
-=head2 status
-
-  data_type: 'integer'
-  default_value: 1
-  extra: {unsigned => 1}
-  is_nullable: 0
+ì²­êµ¬ë´ì­
 
 =head2 usage_date
 
@@ -116,6 +109,12 @@ __PACKAGE__->table("charge");
   data_type: 'text'
   is_nullable: 0
 
+=head2 history_status
+
+  data_type: 'integer'
+  default_value: 0
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -143,16 +142,9 @@ __PACKAGE__->add_columns(
   "title",
   {
     data_type => "varchar",
-    default_value => pack("H*","eca09cebaaa920ec9786ec9d8c"),
-    is_nullable => 0,
+    default_value => pack("H*","eb82b4ec9aa9ec9786ec9d8c"),
+    is_nullable => 1,
     size => 255,
-  },
-  "status",
-  {
-    data_type => "integer",
-    default_value => 1,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
   },
   "usage_date",
   {
@@ -196,6 +188,8 @@ __PACKAGE__->add_columns(
   },
   "memo",
   { data_type => "text", is_nullable => 0 },
+  "history_status",
+  { data_type => "integer", default_value => 0, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -228,15 +222,9 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-23 17:29:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3mslSp585qCcu9fW5Jub3A
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-25 11:52:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QiCrJjwRnTLM/jnKmv9jnA
 
-__PACKAGE__->belongs_to(
-    user => 'Silex::Donnenwa::Schema::Result::User',
-    {
-      'foreign.id' => 'self.user'
-    }
-);
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
