@@ -167,21 +167,6 @@ __PACKAGE__->add_unique_constraint("user_name", ["user_name"]);
 
 =head1 RELATIONS
 
-=head2 charges
-
-Type: has_many
-
-Related object: L<Silex::Donnenwa::Schema::Result::Charge>
-
-=cut
-
-__PACKAGE__->has_many(
-  "charges",
-  "Silex::Donnenwa::Schema::Result::Charge",
-  { "foreign.user" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 histories
 
 Type: has_many
@@ -198,8 +183,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-22 16:02:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9RdMtDXc4clcnE03DVnWNg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-04-29 16:49:56
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+g6XwgJjuII+Jb5ZQnojHw
 
 __PACKAGE__->has_many(
     charges => 'Silex::Donnenwa::Schema::Result::Charge',
