@@ -12,11 +12,6 @@ has api => (
     isa => 'Silex::Donnenwa::DonAPI::History',
 );
 
-has char_api => (
-    is => 'rw',
-    isa => 'Silex::Donnenwa::DonAPI::Charge',
-);
-
 =head1 NAME
 
 Silex::Donnenwa::Web::Controller::Main - Catalyst Controller
@@ -38,7 +33,6 @@ sub auto :Private {
     my ( $self, $c ) = @_;
 
     $self->api($c->model('API')->find('History'));
-    $self->char_api($c->model('API')->find('Charge'));
 }
 
 sub index :Path :Args(0) {
@@ -73,7 +67,7 @@ sub insert :Local :Args(0) {
             $self->api->create($c->req->params, $c->user->id);
         }
         else {
-            $self->char_api->create($c->req->params, $c->user->id);
+            $self->api->create($c->req->params, $c->user->id);
         }
 
 

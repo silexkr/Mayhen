@@ -11,13 +11,13 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 has api => (
   is => 'rw',
-  isa => 'Silex::Donnenwa::DonAPI::Charge',
+  isa => 'Silex::Donnenwa::DonAPI::History',
 );
 
 sub auto :Private {
     my ( $self, $c ) = @_;
 
-    $self->api($c->model('API')->find('Charge'));
+    $self->api($c->model('API')->find('History'));
     $c->stash( nav_active => "list" );
 
     return 1;
