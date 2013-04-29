@@ -13,7 +13,7 @@ sub _build_apis {
     my $self = shift;
     my %apis;
 
-    for my $module (qw/Charge User History/) {
+    for my $module (qw/User History/) {
         my $class = __PACKAGE__ . "::$module";
         if (!Class::MOP::is_class_loaded($class)) {
             Class::MOP::load_class($class);
