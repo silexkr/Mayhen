@@ -187,7 +187,6 @@ sub refuse :Local :CaptureArgs(1) {
     my $refuse = $target_refuse->update_all({ status => '2' });
 
     if ($refuse) {
-        $self->his_api->search({ history_status => { -in => \@target_ids } })->delete_all();
         $c->flash->{messages} = 'Success Refuse Deposit.';
 
         foreach my $charge ($target_refuse->all) {
