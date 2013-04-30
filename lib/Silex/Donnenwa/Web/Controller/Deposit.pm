@@ -26,11 +26,6 @@ Catalyst Controller.
 
 =cut
 
-has charge_api => (
-    is => 'rw',
-    isa => 'Silex::Donnenwa::DonAPI::Charge',
-);
-
 has us_api => (
     is => 'rw',
     isa => 'Silex::Donnenwa::DonAPI::User',
@@ -44,7 +39,6 @@ has his_api => (
 sub auto :Private {
     my ($self, $c) = @_;
 
-    $self->charge_api($c->model('API')->find('Charge'));
     $self->us_api($c->model('API')->find('User'));
     $self->his_api($c->model('API')->find('History'));
 
@@ -85,7 +79,7 @@ sub index :Path :Args(0) {
 
     $cond->{status} = $status ? $status : '2';
 
-    my $total_charge = $self->charge_api->search($cond, $attr);
+    my $total_charge = $self->his_api->search($cond, $attr);
 
     my $page_info =
       Data::Pageset->new(
@@ -119,7 +113,7 @@ sub approval :Local :CaptureArgs(1) {
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
     my $target_charges
-        = $self->charge_api->search({ id => { -in => \@target_ids } } );
+        = $self->his_api->search({ id => { -in => \@target_ids } } );
     my $approval = $target_charges->update_all({ status => '4' });
 
     if ($approval) {
@@ -171,7 +165,7 @@ sub cancel :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $cancel = $self->charge_api->search({ id => { -in => \@target_ids } })->update_all({ status => '1' });
+    my $cancel = $self->his_api->search({ id => { -in => \@target_ids } })->update_all({ status => '1' });
 
     if ($cancel) {
         $c->flash->{messages} = 'Success Cancel.';
@@ -189,7 +183,7 @@ sub refuse :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $target_refuse = $self->charge_api->search({ id => { -in => \@target_ids } });
+    my $target_refuse = $self->his_api->search({ id => { -in => \@target_ids } });
     my $refuse = $target_refuse->update_all({ status => '2' });
 
     if ($refuse) {
@@ -238,7 +232,7 @@ sub export :Local CaptureArgs(1) {
     my @charges;
     push @charges, ['제목', '청구자', '금액', '영수증날짜']; # set header
 
-    foreach my $charge ($self->charge_api->search({ id => { -in => \@target_ids } })->all) {
+    foreach my $charge ($self->his_api->search({ id => { -in => \@target_ids } })->all) {
         push @charges, [ $charge->title, $charge->user->user_name, $charge->amount, $charge->usage_date ];
     }
 
