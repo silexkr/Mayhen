@@ -2,9 +2,11 @@
 <p>사용 날짜</p>
 <input type="text" name="usage_date">
 <p>금액</p>
-<input type="text" id="amount" name="amount" value="[% amount %]"></td>
-<p>메모</p>
-<input type="text" name="title" id="title" value="[% title %]">
+<input type="text" id="amount" name="amount"></td>
+<p>제목</p>
+<input type="text" name="title" id="title">
+<p>내용</p>
+<input type="text" name="comment" id="comment">
 <p>분류</p>
 <select name="class">
 <option value="1">silex</option>

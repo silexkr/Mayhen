@@ -19,7 +19,7 @@
           -->
           <a href="[% c.uri_for('/deposit', charger=charge_user.id) %]">
             [% charge_user.user_name %]
-            ([% charge_user.charges_rs(status=2).count %])
+            ([% charge_user.histories_rs(status=2).count %])
           </a>
         </li>
 	  [% END %]

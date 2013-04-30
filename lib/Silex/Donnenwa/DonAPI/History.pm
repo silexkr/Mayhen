@@ -42,17 +42,27 @@ sub create {
         '12' => '기타',
     };
 
+    my $status;
+    if ($args->{class} eq '1') {
+        $status = '4';
+    }
+    else {
+        $status = '1';
+    }
+
 	my $pattern = '%Y-%m-%d %H:%M:%S';
 	my %row  = (
+	    amount     => $args->{amount},
 	    user       => $user_id,
 	    title      => $args->{title},
-	    amount     => $args->{amount},
-	    class      => $args->{class},
-	    mini_class => $args->{mini_class},
-        memo       => $mini_class->{$args->{mini_class}},
 	    usage_date => $usage_date->strftime($pattern),
 	    created_on => "$time",
 	    updated_on => "$time",
+	    class      => $args->{class},
+	    mini_class => $args->{mini_class},
+        memo       => $mini_class->{$args->{mini_class}},
+        comment    => $args->{comment},
+        status     => $status,
 	);
 
     $self->resultset('History')->create(\%row);

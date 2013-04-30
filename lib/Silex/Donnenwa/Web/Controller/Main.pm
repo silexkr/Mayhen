@@ -12,11 +12,6 @@ has api => (
     isa => 'Silex::Donnenwa::DonAPI::History',
 );
 
-has char_api => (
-    is => 'rw',
-    isa => 'Silex::Donnenwa::DonAPI::Charge',
-);
-
 =head1 NAME
 
 Silex::Donnenwa::Web::Controller::Main - Catalyst Controller
@@ -38,7 +33,6 @@ sub auto :Private {
     my ( $self, $c ) = @_;
 
     $self->api($c->model('API')->find('History'));
-    $self->char_api($c->model('API')->find('Charge'));
 }
 
 sub index :Path :Args(0) {
@@ -53,29 +47,23 @@ sub insert :Local :Args(0) {
     if ($c->req->method eq 'POST') {
         my @messages;
 
-        push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
-        push @messages, 'title is required' unless ($c->req->params->{title});
+        push @messages, 'amount is invaild'      if ($c->req->params->{amount} !~ /^\d+$/);
+        push @messages, 'title is required'      unless ($c->req->params->{title});
         push @messages, 'usage_date is required' unless ($c->req->params->{usage_date});
 
         if (@messages) {
             $c->flash(
-                messages => @messages,
-                comment  => $c->req->params->{content},
-                title    => $c->req->params->{title},
-                amount   => $c->req->params->{amount},
+                messages   => @messages,
+                comment    => $c->req->params->{content},
+                title      => $c->req->params->{title},
+                amount     => $c->req->params->{amount},
                 usage_date => $c->req->params->{usage_date},
             );
 
             return $c->res->redirect($c->uri_for('/main/insert'));
         }
 
-        if ($c->req->params->{class} eq '1') {
-            $self->api->create($c->req->params, $c->user->id);
-        }
-        else {
-            $self->char_api->create($c->req->params, $c->user->id);
-        }
-
+        $self->api->create($c->req->params, $c->user->id);
 
         $c->res->redirect($c->uri_for('/main/entries'));
     }
