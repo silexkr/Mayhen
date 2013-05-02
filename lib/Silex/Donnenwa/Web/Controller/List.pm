@@ -18,7 +18,6 @@ sub auto :Private {
     my ( $self, $c ) = @_;
 
     $self->api($c->model('API')->find('History'));
-    $c->stash( nav_active => "list" );
 
     return 1;
 }
@@ -42,6 +41,46 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
+
+    my %attr  = ( 'order_by' => { -desc => 'me.id' } );
+
+    my $rs;
+    my $cond    = {};
+    my $page    = $c->req->params->{page};
+
+    $attr{page} = $page || 1;
+
+    my $id = $c->user->id;
+
+    $cond->{'-and'} = [
+        'me.class' => { 'LIKE' => '2'},
+        'me.user'  => { 'LIKE' => "$id" }
+    ];
+
+
+    my $total_charge = $self->api->search($cond, \%attr);
+
+    my $page_info =
+        Data::Pageset->new(
+            {
+                ( map { $_ => $total_charge->pager->$_ } qw/entries_per_page total_entries current_page/ ),
+                mode          => "slide",
+                pages_per_set => 10,
+            }
+    );
+
+    $c->stash(
+        lists      => [ $total_charge->all ],
+        nav_active => "list",
+        pageset    => $page_info,
+    );
+}
+
+sub admin :Local :Args(0) {
+    my ( $self, $c ) = @_;
+
+    if ($c->req->method eq 'POST') {
+    }
 
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
@@ -75,9 +114,11 @@ sub index :Path :Args(0) {
                 pages_per_set => 10,
             }
     );
+    $c->stash(  );
 
     $c->stash(
         lists          => [ $total_charge->all ],
+        nav_active     => "admin",
         total_count    => $total_count,
         charge_count   => $charge_count,
         approval_count => $approval_count,
