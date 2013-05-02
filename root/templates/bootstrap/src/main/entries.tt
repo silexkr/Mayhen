@@ -19,3 +19,4 @@
     [% END %]
   </tbody>
 </table>
+[% PROCESS 'inc/pagination.tt' %]
