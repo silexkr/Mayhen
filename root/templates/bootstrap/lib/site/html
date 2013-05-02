@@ -23,6 +23,7 @@
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-tooltip.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="/static/scripts/datepicker.js"></script>
   </head>
   <body>
     [% content %]
