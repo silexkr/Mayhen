@@ -1,21 +1,48 @@
-<table class="table table-striped">
-  <thead></thead>
-  <tbody>
-    [% FOREACH list IN lists%]
-    <tr>
-      <td>[% list.user.user_name %]</td>
-      [% IF list.class == '1'%]
-        <td>Silex</td>
-      [% ELSE %]
-        <td>청구</td>
-      [% END %]
-      <td>[% list.title %]</td>
-      <td>[% list.amount | comma %]원</td>
-      <td>[% list.usage_date.ymd %]</td>
-      <td>[% list.created_on.ymd %]</td>
-      <td>[% list.update_on.ymd %]</td>
-      <td>[% list.memo %]</td>
-    </tr>
-    [% END %]
-  </tbody>
-</table>
+<div class="container-fluid">
+  <div class="span10">
+    <form class="well form-search">
+      <fieldset>
+        <label>기간지정</label>
+        <input type="text" id="start_date" name="start_date" placeholder="YYYY-mm-dd" class="datepicker"/>
+        ~
+        <input type="text" id="end_date" name="end_date" placeholder="YYYY-mm-dd" class="datepicker"/>
+        <input type="submit" value="조회" class="btn btn-primary" />
+      </fieldset>
+    </form>
+    <table class="table table-striped">
+      <thead></thead>
+      <tbody>
+        [% SET total_amount = 0 %]
+        [% FOREACH list IN lists%]
+        <tr>
+          <td>[% list.user.user_name %]</td>
+          [% IF list.class == '1'%]
+            <td>Silex</td>
+          [% ELSE %]
+            <td>입금</td>
+          [% END %]
+          <td>[% list.title %]</td>
+          <td>[% list.amount | comma %]원</td>
+          <td>[% list.usage_date.ymd %]</td>
+          <td>[% list.created_on.ymd %]</td>
+          <td>[% list.update_on.ymd %]</td>
+          <td>[% list.memo %]</td>
+          [% total_amount = total_amount + list.amount %]
+        </tr>
+        [% END %]
+        <tr>
+          <td>
+            총합
+          </td>
+          <td></td> <td></td>
+          <td>[% total_amount | comma %]원</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    [% PROCESS 'inc/pagination.tt' %]
+  </div>
+</div>

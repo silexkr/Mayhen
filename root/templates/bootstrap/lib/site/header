@@ -12,9 +12,13 @@
         <ul class="nav">
           <li class="[% nav_active == 'insert' ? 'active' : '' %]"><a href="[% c.uri_for('/main/insert') %]">거래입력</a></li>
           <li class="[% nav_active == 'entries' ? 'active' : '' %]"><a href="[% c.uri_for('/main/entries') %]">거래내역</a></li>
-          <li class="[% nav_active == 'list' ? 'active' : '' %]"><a href="[% c.uri_for('/') %]">청구관리</a></li>
           [% IF c.user.user_name == 'yongbin' %]
+          <li class="[% nav_active == 'list' ? 'active' : '' %]"><a href="[% c.uri_for('/list') %]">청구내역</a></li>
+          [% nav_active %]
+          <li class="[% nav_active == 'admin' ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin') %]">청구관리</a></li>
           <li class="[% nav_active == 'deposit' ? 'active' : '' %]"><a href="[% c.uri_for('/deposit') %]">청구정산</a></li>
+          [% ELSE %]
+          <li class="[% nav_active == 'list' ? 'active' : '' %]"><a href="[% c.uri_for('/') %]">청구내역</a></li>
           [% END %]
         </ul>
         <ul class="nav pull-right">

@@ -43,9 +43,9 @@
     <form class="well form-search">
       <fieldset>
         <label>기간지정</label>
-        <input type="text" id="start_date" name="start_date" placeholder="YYYY-mm-dd" />
+        <input type="text" class="datepicker" id="start_date" name="start_date" placeholder="YYYY-mm-dd" />
         ~
-        <input type="text" id="end_date" name="end_date" placeholder="YYYY-mm-dd" />
+        <input type="text" class="datepicker" id="end_date" name="end_date" placeholder="YYYY-mm-dd" />
         <input type="submit" value="조회" class="btn btn-primary" />
       </fieldset>
     </form>

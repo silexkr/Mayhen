@@ -75,23 +75,48 @@ sub entries :Local :Args(0) {
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $rs;
-    my %cond    = ();
+    my $cond    = {};
     my $page    = $c->req->params->{page};
-    my $status  = $c->req->params->{status} || $c->stash->{"status"} || '0'; #수정 필요
-
-    $attr{page} = $page || 1;
+    my $status  = '4';
 
 
-    my $total_charge = $self->api->search(\%cond, \%attr);
+    $cond->{status} = '4';
+    if ($c->req->params->{start_date} && $c->req->params->{end_date}) {
+        my $from = $c->req->params->{start_date}
+        ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
+        : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
 
-    my $page_info =
-        Data::Pageset->new(
-            {
-                ( map { $_ => $total_charge->pager->$_ } qw/entries_per_page total_entries current_page/ ),
-                mode => "slide",
-                pages_per_set => 10,
-            }
-    );
+
+        my $to   = $c->req->params->{end_date}
+        ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
+        : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
+
+
+        my $pattern = '%Y-%m-%d %H:%M:%S';
+        $cond->{updated_on} = {
+            -between => [
+                $from->strftime($pattern),
+                $to->strftime($pattern)
+            ]
+        };
+    }
+    else {
+        $attr{page} = $page || 1;
+    }
+
+    my $total_charge = $self->api->search($cond, \%attr);
+
+    my $page_info;
+    unless ($c->req->params->{start_date} && $c->req->params->{end_date}) {
+        $page_info =
+            Data::Pageset->new(
+                {
+                    ( map { $_ => $total_charge->pager->$_ } qw/entries_per_page total_entries current_page/ ),
+                    mode => "slide",
+                    pages_per_set => 10,
+                }
+        );
+    }
 
     $c->stash(
         lists          => [ $total_charge->all ],
