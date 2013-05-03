@@ -27,7 +27,7 @@
     <td>[% charge.amount | comma %]</td>
     <td>청구 날짜</td>
     <td>[% charge.created_on.ymd%]</td>
-    <td>사용 날짜</td>
+    <td>등록 날짜</td>
     <td>[% charge.usage_date.ymd%]</td>
   </tr>
   <tr>

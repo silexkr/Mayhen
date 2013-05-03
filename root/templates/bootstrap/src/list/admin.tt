@@ -4,9 +4,9 @@
   </div>
 [% END %]
 
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span2">
+<div class="container">
+  <div class="row">
+    <div class="span1">
       <ul class="nav nav-tabs nav-stacked">
 	<li class="[% status == 0 ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin') %]">전체 ([% total_count %])</a></li>
 	<li class="[% status == 1 ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin', status=1) %]">대기 ([% charge_count %])</a></li>
@@ -15,34 +15,17 @@
       </ul>
     </div>
 
-    <div class="span10">
-      <ul class="breadcrumb">
-	<li>목록
-		<span class="divider">/</span>
-	</li>
-	<li class="active">
-        [% IF status == "1" %]
-          <b> 대기 ([% charge_count %])</b>
-        [% ELSIF status == "2" %]
-          <b> 승인 ([% approval_count %])</b>
-        [% ELSIF status == "3" %]
-          <b> 거부 ([% refuse_count %])</b>
-        [% ELSE %]
-          <b> 전체 ([% total_count %])</b>
-        [% END %]
-	</li>
-      </ul>
-      <!-- 게시물 리스트를 보이기 위한 테이블 -->
+    <div class="span11">
     <table id="charge_list" class="table table-striped table-bordered">
       <thead>
 	<tr>
-	  <th> <input type="checkbox" id="head_checkbox"> </th>
-	  <th> 제목 </th>
-	  <th> 글쓴이 </th>
-	  <th> 청구 날짜 </th>
-	  <th> 사용 날짜 </th>
-	  <th> 금액 </th>
-	  <th> 상태 </th>
+	  <th><input type="checkbox" id="head_checkbox"></th>
+	  <th>상태</th>
+	  <th>제목</th>
+	  <th>글쓴이</th>
+	  <th>청구날짜</th>
+	  <th>사용날짜</th>
+	  <th>금액</th>
 	</tr>
       </thead>
     <!-- 리스트 부분 시작 -->
@@ -50,20 +33,20 @@
 	[% FOREACH list IN lists %]
 	  <tr id="[% list.id %]">
 	    <td><input type="checkbox"></td>
+            [% IF list.status == "1" %]
+              <td>대기</td>
+            [% ELSIF list.status == "2" %]
+              <td>승인</td>
+            [% ELSIF list.status == "3" %]
+              <td>거부</td>
+            [% ELSE %]
+              <td> Error </td>
+            [% END %]
 	    <td><b>[% list.title %]</b></td>
 	    <td> [% list.user.user_name %] </td>
 	    <td> [% list.created_on.ymd %] </td>
 	    <td> [% list.usage_date.ymd %] </td>
 	    <td><span class="pull-right">[% list.amount | comma %]</span></td>
-            [% IF list.status == "1" %]
-              <td> 대기 </td>
-            [% ELSIF list.status == "2" %]
-              <td> 승인 </td>
-            [% ELSIF list.status == "3" %]
-              <td> 거부 </td>
-            [% ELSE %]
-              <td> Error </td>
-            [% END %]
 	  </tr>
 	[% END %]
       </tbody>
