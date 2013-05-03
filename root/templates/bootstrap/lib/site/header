@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <a class="brand" href="[% c.uri_for('/') %]">Donnenwa</a>
+      <a class="brand" href="[% c.uri_for('/') %]">Mayhen</a>
       <div class="nav-collapse">
         <ul class="nav">
           <li class="[% nav_active == 'insert' ? 'active' : '' %]"><a href="[% c.uri_for('/main/insert') %]">거래입력</a></li>

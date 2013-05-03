@@ -1,13 +1,13 @@
-my $DONNENWA_DB          = $ENV{DONNENWA_DB}          || 'dondb';
-my $DONNENWA_DB_USER     = $ENV{DONNENWA_DB_USER}     || 'don';
-my $DONNENWA_DB_PASSWORD = $ENV{DONNENWA_DB_PASSWORD} || 'don';
+my $MAYHEN_DB          = $ENV{MAYHEN_DB}          || 'dondb';
+my $MAYHEN_DB_USER     = $ENV{MAYHEN_DB_USER}     || 'don';
+my $MAYHEN_DB_PASSWORD = $ENV{MAYHEN_DB_PASSWORD} || 'don';
 
 {
-    schema_class => "Silex::Donnenwa::Schema",
+    schema_class => "Silex::Mayhen::Schema",
     connect_info => {
-        dsn               => "dbi:mysql:$DONNENWA_DB:127.0.0.1",
-        user              => $DONNENWA_DB_USER,
-        pass              => $DONNENWA_DB_PASSWORD,
+        dsn               => "dbi:mysql:$MAYHEN_DB:127.0.0.1",
+        user              => $MAYHEN_DB_USER,
+        pass              => $MAYHEN_DB_PASSWORD,
         mysql_enable_utf8  => 1,
     },
     loader_options => {
@@ -18,7 +18,7 @@ my $DONNENWA_DB_PASSWORD = $ENV{DONNENWA_DB_PASSWORD} || 'don';
         use_moose          => 1,
         only_autoclean     => 1,
         col_collision_map  => 'column_%s',
-        result_base_class => 'Silex::Donnenwa::Schema::ResultBase',
+        result_base_class => 'Silex::Mayhen::Schema::ResultBase',
         overwrite_modifications => 1,
         datetime_undef_if_invalid => 1,
         custom_column_info => sub {
