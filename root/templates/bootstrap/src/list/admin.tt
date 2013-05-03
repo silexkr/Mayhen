@@ -8,10 +8,10 @@
   <div class="row-fluid">
     <div class="span2">
       <ul class="nav nav-tabs nav-stacked">
-	<li class="[% status == 0 ? 'active' : '' %]"><a href="[% c.uri_for('/list') %]">전체 ([% total_count %])</a></li>
-	<li class="[% status == 1 ? 'active' : '' %]"><a href="[% c.uri_for('/list', status=1) %]">대기 ([% charge_count %])</a></li>
-	<li class="[% stalus == 2 ? 'active' : '' %]"><a href="[% c.uri_for('/list', status=2) %]">승인 ([% approval_count %])</a></li>
-	<li class="[% status == 3 ? 'active' : '' %]"><a href="[% c.uri_for('/list', status=3) %]">거부 ([% refuse_count %])</a></li>
+	<li class="[% status == 0 ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin') %]">전체 ([% total_count %])</a></li>
+	<li class="[% status == 1 ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin', status=1) %]">대기 ([% charge_count %])</a></li>
+	<li class="[% stalus == 2 ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin', status=2) %]">승인 ([% approval_count %])</a></li>
+	<li class="[% status == 3 ? 'active' : '' %]"><a href="[% c.uri_for('/list/admin', status=3) %]">거부 ([% refuse_count %])</a></li>
       </ul>
     </div>
 
