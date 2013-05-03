@@ -164,11 +164,11 @@ sub write :Local :Args(0) {
 }
 
 sub view :Local :CaptureArgs(1) {
-    my ( $self, $c, $charge_id ) = @_;
+    my ( $self, $c, $history_id ) = @_;
 
-    my $charge = $self->api->find({ id => $charge_id });
+    my $history = $self->api->find({ id => $history_id });
     $c->stash(
-        charge     => $charge,
+        charge     => $history,
     );
 }
 
