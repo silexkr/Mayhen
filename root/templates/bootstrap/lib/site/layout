@@ -2,15 +2,7 @@
   [% PROCESS site/header %]
 </header>
 
-<div class="container">
-  <div class="row">
-    <div id="sidebar" class="span2">
-    </div>
-    <div id="content" class="span10">
-      [% content %]
-    </div>
-  </div>
-</div>
+[% content %]
 
 <footer class="well">
   [% PROCESS site/footer %]
