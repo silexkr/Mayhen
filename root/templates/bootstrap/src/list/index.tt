@@ -37,7 +37,7 @@
           [% ELSE %]
             <td> Error </td>
           [% END %]
-          <td><b>[% list.title %]</b></td>
+	    <td><a href="[% c.uri_for('/list/view', list.id) %]"><b>[% list.title %]</b></td></a>
           <td><span class="pull-right">[% list.amount | comma %]</span></td>
           <td>[% list.created_on.ymd %]</td>
           <td>[% list.usage_date.ymd %]</td>

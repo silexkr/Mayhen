@@ -19,6 +19,7 @@
           <th>금액</th>
           <th>등록날짜</th>
           <th>사용날짜</th>
+          <th>변경날짜</th>
         </tr>
       </thead>
       <tbody>
@@ -32,11 +33,11 @@
           [% END %]
           <td>[% list.memo %]</td>
           <td>[% list.user.user_name %]</td>
-          <td>[% list.title %]</td>
+          <td><a href="[% c.uri_for('/list/view', list.id) %]"><b>[% list.title %]</b></td></a>
           <td>[% list.amount | comma %]</td>
           <td>[% list.usage_date.ymd %]</td>
           <td>[% list.created_on.ymd %]</td>
-          <td>[% list.update_on.ymd %]</td>
+          <td>[% list.updated_on.ymd %]</td>
           [% total_amount = total_amount + list.amount %]
         </tr>
         [% END %]
