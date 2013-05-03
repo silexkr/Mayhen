@@ -1,51 +1,62 @@
-<ul class="breadcrumb">
-  <li>
-    <a href="[% c.uri_for('/list') %]">전체</a>
-    <span class="divder">/</span>
-  </li>
-  <li>
-    [% IF charge.status == 1 %]
-      <a href="[% c.uri_for('/list', status=1) %]">대기</a>
-    [% ELSIF charge.status == 2 %]
-      <a hrel="[% c.uri_for('/list', status=2) %]">승인</a>
-    [% ELSE %]
-      <a href="[% c.uri_for('/list', status=3) %]">거부</a>
-    [% END %]
-    <span class="divder">/</span>
-  </li>
-  <li class="active">상세 내역</li>
-</ul>
-<!-- 게시물 상세 내역을 보이기 위한 테이블 -->
-<table class="table table-striped table-bordered">
-  <tr>
-    <td colspan="8">[% charge.title %]</td>
-  </tr>
-  <tr>
-    <td>작성자</td>
-    <td>[% charge.user.user_name %]</td>
-    <td>금액</td>
-    <td>[% charge.amount | comma %]</td>
-    <td>청구 날짜</td>
-    <td>[% charge.created_on.ymd%]</td>
-    <td>등록 날짜</td>
-    <td>[% charge.usage_date.ymd%]</td>
-  </tr>
-  <tr>
-    <td bgcolor="white" colspan="8" style="table-layout:fixed;">
-      [% charge.comment | replace("\n", "<br/>") %]
-    </td>
-  </tr>
-<!-- 기타 버튼 들 -->
-</table>
-<a href="[% c.uri_for('/list/edit', charge.id) %]" class="btn btn-primary">수정</a>
-[% IF charge.status == 1 %]
-  <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
-  <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
-  <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
-[% ELSIF charge.status == 2 %]
-  <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
-  <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
-[% ELSE %]
-  <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
-  <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
-[% END %]
+<div class="container">
+  <div class="row">
+    <div class="span10">
+      <table class="table table-striped table-bordered">
+        <tr>
+          <td colspan="10">[% charge.title %]</td>
+        </tr>
+        <tr>
+          <td>작성자</td>
+          <td>[% charge.user.user_name %]</td>
+          <td>금액</td>
+          <td>[% charge.amount | comma %]</td>
+          <td>청구 날짜</td>
+          <td>[% charge.created_on.ymd%]</td>
+          <td>등록 날짜</td>
+          <td>[% charge.usage_date.ymd%]</td>
+          <td>상태</td>
+          [% IF charge.status == "1" %]
+            <td> 대기 </td>
+          [% ELSIF charge.status == "2" %]
+            <td> 승인 </td>
+          [% ELSIF charge.status == "3" %]
+            <td> 거부 </td>
+          [% ELSIF charge.status == "4" %]
+            <td> 입금 </td>
+          [% ELSE %]
+            <td> Error </td>
+          [% END %]
+        </tr>
+        <tr>
+          <td bgcolor="white" colspan="10" style="table-layout:fixed;">
+            [% charge.comment | replace("\n", "<br/>") %]
+          </td>
+        </tr>
+      <!-- 기타 버튼 들 -->
+      </table>
+      [% IF c.user.user_name == 'yongbin' %]
+        [% IF charge.user.user_name == c.user.user_name %]
+          [% UNLESS charge.status == '4' %]
+          <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+          <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
+          <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
+          [% END %]
+        [% ELSE %]
+          [% IF charge.status != '4' %]
+          <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+          <a href="[% c.uri_for('/list/refuse', charge.id) %]" class="btn btn-primary">거부</a>
+          [% ELSE %]
+          [% END%]
+        [% END %]
+      [% ELSE %]
+        [% IF charge.user.user_name == c.user.user_name %]
+          [% IF charge.status != '4' %]
+          <a href="[% c.uri_for('/list/delete', charge.id) %]" class="btn btn-primary">삭제</a>
+          [% ELSE %]
+          [% END %]
+        [% END %]
+      [% END %]
+    </div>
+  </div>
+</div>
+<br />
