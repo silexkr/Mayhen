@@ -114,37 +114,36 @@ sub approval :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $target_charges
+    my $target_history
         = $self->his_api->search({ id => { -in => \@target_ids } } );
-    my $approval = $target_charges->update_all({ status => '4' });
+    my $approval = $target_history->update_all({ status => '4' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
 
-        foreach my $charge ($target_charges->all) {
-            my $amount_commify = reverse @{[ $charge->amount ]};
+        foreach my $history ($target_history->all) {
+            my $amount_commify = reverse @{[ $history->amount ]};
             $amount_commify    =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
             $amount_commify    = reverse $amount_commify;
 
-            my $charge_datas = {};
-            $charge_datas->{amount}         = shift @{[ $charge->amount ]};
-            $charge_datas->{user}           = shift @{[ $charge->user ]};
-            $charge_datas->{title}          = shift @{[ $charge->title ]};
-            $charge_datas->{usage_date}     = shift @{[ $charge->usage_date ]};
-            $charge_datas->{created_on}     = shift @{[ $charge->created_on ]};
-            $charge_datas->{class}          = shift @{[ $charge->class ]};
-            $charge_datas->{mini_class}     = shift @{[ $charge->mini_class ]};
-            $charge_datas->{memo}           = shift @{[ $charge->memo ]};
+            my $history_datas = {};
+            $history_datas->{amount}         = shift @{[ $history->amount ]};
+            $history_datas->{user}           = shift @{[ $history->user ]};
+            $history_datas->{title}          = shift @{[ $history->title ]};
+            $history_datas->{usage_date}     = shift @{[ $history->usage_date ]};
+            $history_datas->{created_on}     = shift @{[ $history->created_on ]};
+            $history_datas->{class}          = shift @{[ $history->class ]};
+            $history_datas->{mini_class}     = shift @{[ $history->mini_class ]};
+            $history_datas->{memo}           = shift @{[ $history->memo ]};
 
-            $self->his_api->upgrade($charge_datas);
-            my $time = DateTime::Format::ISO8601->parse_datetime($charge_datas->{created_on})->ymd;
+            $self->his_api->upgrade($history_datas);
+            my $time = DateTime::Format::ISO8601->parse_datetime($history_datas->{created_on})->ymd;
 
-            #$c->send_mail($charge->user->email,
-            $c->send_mail('rumidier@naver.com',
-                "Mayhen 입금 확인 메일 [@{[ $charge->title ]}]",
+            $c->send_mail($history->user->email,
+                "Mayhen 입금 확인 메일 [@{[ $history->title ]}]",
                 "안녕하십니까? Silex 경리봇 Mayhen 입니다.
 
-                $time 일 청구하신 [ @{[ $charge->title ]} ] ($amount_commify)원이 입금 처리되었습니다.
+                $time 일 청구하신 [ @{[ $history->title ]} ] ($amount_commify)원이 입금 처리되었습니다.
                 자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
 
                 사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
@@ -196,8 +195,7 @@ sub refuse :Local :CaptureArgs(1) {
             $amount_commify    = reverse $amount_commify;
             my $time = DateTime::Format::ISO8601->parse_datetime(@{[ $charge->created_on ]})->ymd;
 
-            #$c->send_mail($charge->user->email,
-            $c->send_mail('rumidier@naver.com',
+            $c->send_mail($charge->user->email,
                 "Mayhen 입금 거부 메일 [@{[ $charge->title ]}]",
                 "안녕하십니까? Silex 경리봇 Mayhen 입니다.
 
