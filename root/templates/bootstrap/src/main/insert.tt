@@ -5,7 +5,7 @@
         <label class="control-label"> 분류 </label>
         <div class="controls">
           <select name="class">
-            <option value="1">silex</option>
+            <option value="1">거래</option>
             <option value="2">청구</option>
           </select> 
         </div>
