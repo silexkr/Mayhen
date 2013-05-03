@@ -1,6 +1,6 @@
-my $MAYHEN_DB          = $ENV{MAYHEN_DB}          || 'dondb';
-my $MAYHEN_DB_USER     = $ENV{MAYHEN_DB_USER}     || 'don';
-my $MAYHEN_DB_PASSWORD = $ENV{MAYHEN_DB_PASSWORD} || 'don';
+my $MAYHEN_DB          = $ENV{MAYHEN_DB}          || 'mayhen';
+my $MAYHEN_DB_USER     = $ENV{MAYHEN_DB_USER}     || 'mayhen';
+my $MAYHEN_DB_PASSWORD = $ENV{MAYHEN_DB_PASSWORD} || 'mayhen';
 
 {
     schema_class => "Silex::Mayhen::Schema",

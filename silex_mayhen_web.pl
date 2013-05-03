@@ -6,9 +6,9 @@
         class => "Silex::Mayhen::DonAPI",
         args  => {
             connect_info => {
-                dsn      => $ENV{DB_DON_DSN}      || "dbi:mysql:dondb:127.0.0.1",
-                user     => $ENV{DB_DON_USER}     || "don",
-                password => $ENV{DB_DON_PASSWORD} || "don",
+                dsn      => $ENV{DB_MAYHEN_DSN}      || "dbi:mysql:mayhen:127.0.0.1",
+                user     => $ENV{DB_MAYHEN_USER}     || "mayhen",
+                password => $ENV{DB_MAYHEN_PASSWORD} || "mayhen",
                 RaiseError        => 1,
                 AutoCommit        => 1,
                 mysql_enable_utf8 => 1,
