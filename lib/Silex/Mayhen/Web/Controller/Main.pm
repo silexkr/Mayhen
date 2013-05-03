@@ -64,26 +64,26 @@ sub insert :Local :Args(0) {
         }
 
         if (my $insert = $self->api->create($c->req->params, $c->user->id) ) {
-            #my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
-            #$c->send_mail("supermania\@gmail.com",
-            my $uri;
+            my $uri = "http://mayhen.silex.kr/list/view/".$insert->id;
             my $user = $c->user->user_name;
             my $amount = reverse $c->req->params->{amount};
             $amount =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
             $amount = reverse $amount;
+            my $comment = $c->req->params->{comment} || "추가 내역이 없습니다.";
 
             my $time = strftime "%Y-%m-%d", localtime; #적용 안해주면 GMT 기준으로 보임
 
             if ($c->req->params->{class} eq '1') {
-                $uri = "http://localhost:5002/main/entries";
-
-                $c->send_mail("rumidier\@naver.com",
+                $c->send_mail("supermania\@gmail.com",
                     "[Mayhen] @{[ $c->req->params->{title} ]} 사용 내역",
                     "안녕하십니까? Silex 경리봇 Mayhen 입니다.
 
                     $time 일 $user 님이
                     새로운 거래내역 [ @{[ $c->req->params->{title} ]} ]를 등록하셨습니다.
                     사용 금액은 $amount 원 입니다.
+
+                    $comment
+
                     자세한 사항은 $uri 에서 확인 부탁드립니다.
 
                     사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
@@ -91,14 +91,16 @@ sub insert :Local :Args(0) {
                 );
             }
             else {
-                $uri = "http://localhost:5002/list/amdin";
-                $c->send_mail("rumidier\@naver.com",
+                $c->send_mail("supermania\@gmail.com",
                     "[Mayhen] @{[ $c->req->params->{title} ]} 청구 요청",
                     "안녕하십니까? Silex 경리봇 Mayhen 입니다.
 
                     $time 일 $user 님의
                     새로운 청구건 [ @{[ $c->req->params->{title} ]} ]를 등록하셨습니다.
                     사용 금액은 $amount 원 입니다.
+
+                    $comment
+
                     자세한 사항은$uri 에서 확인 부탁드립니다.
 
                     $user 님은 빠른 시일내에 답변이 오기를 바라십니다.
@@ -109,7 +111,6 @@ sub insert :Local :Args(0) {
                 );
             }
         }
-
 
         $c->res->redirect($c->uri_for('/main/entries'));
     }
