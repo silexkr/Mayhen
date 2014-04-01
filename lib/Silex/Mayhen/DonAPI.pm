@@ -2,6 +2,9 @@ package Silex::Mayhen::DonAPI;
 use Moose;
 use namespace::autoclean;
 use Silex::Mayhen::Schema;
+
+use Class::Load qw( load_class is_class_loaded );
+
 with qw/Silex::Mayhen::Trait::WithAPI Silex::Mayhen::Trait::WithDBIC/;
 
 sub _build_schema {
@@ -15,8 +18,8 @@ sub _build_apis {
 
     for my $module (qw/User History/) {
         my $class = __PACKAGE__ . "::$module";
-        if (!Class::MOP::is_class_loaded($class)) {
-            Class::MOP::load_class($class);
+        if (!is_class_loaded($class)) {
+            load_class($class);
         }
         my $opt = $self->opts->{$module} || {};
         $apis{$module} = $class->new( schema => $self->schema, %{ $opt } );
