@@ -138,17 +138,17 @@ sub approval :Local :CaptureArgs(1) {
 
             $self->his_api->upgrade($history_datas);
             my $time = DateTime::Format::ISO8601->parse_datetime($history_datas->{created_on})->ymd;
-
-            $c->send_mail($history->user->email,
-                "Mayhen 입금 확인 메일 [@{[ $history->title ]}]",
-                "안녕하십니까? Silex 경리봇 Mayhen 입니다.
-
-                $time 일 청구하신 [ @{[ $history->title ]} ] ($amount_commify)원이 입금 처리되었습니다.
-                자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
-
-                사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
-                감사합니다.
-            ");
+# 버그로 잠시 막아놉니다.
+#            $c->send_mail($history->user->email,
+#                "Mayhen 입금 확인 메일 [@{[ $history->title ]}]",
+#                "안녕하십니까? Silex 경리봇 Mayhen 입니다.
+#
+#                $time 일 청구하신 [ @{[ $history->title ]} ] ($amount_commify)원이 입금 처리되었습니다.
+#                자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
+#
+#                사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
+#                감사합니다.
+#            ");
         }
     }
     else {
