@@ -1,9 +1,13 @@
-<header>
-  [% PROCESS site/header %]
-</header>
+[% IF c.user %]
+  <header>
+    [% PROCESS site/header %]
+  </header>
+[% END %]
 
 [% content %]
 
-<footer class="well">
-  [% PROCESS site/footer %]
-</footer>
+[% IF c.user %]
+  <footer class="well">
+    [% PROCESS site/footer %]
+  </footer>
+[% END %]
