@@ -42,9 +42,6 @@ use Text::CSV;
 use Try::Tiny;
 use Const::Fast;
 
-my $SMTPS_USERNAME = 'SET_USERNAME' | '';
-my $SMTPS_PASSWORD = 'SET_PASSWORD' | '';
-
 # Configure the application.
 #
 # Note that settings in silex_web_mayhen.conf (or other external
@@ -64,6 +61,9 @@ __PACKAGE__->config(
 # Start the application
 __PACKAGE__->setup();
 
+const my $SMTPS_USERNAME => 'SET_USERNAME';
+const my $SMTPS_PASSWORD => 'SET_PASSWORD';
+
 sub email_transporter {
     my ($self) = @_;
 
@@ -82,7 +82,7 @@ sub send_mail {
     my $opt     = $self->email_transporter;
     my $message = Email::Simple->create(
         header => [
-            From    => $SMTP_USERNAME,
+            From    => $SMTPS_USERNAME,
             To      => $send_to,
             Subject => $subject,
         ],

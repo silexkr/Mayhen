@@ -13,8 +13,6 @@ has api => (
     isa => 'Silex::Mayhen::DonAPI::History',
 );
 
-const $OWNER_NAME = 'SET_OWNER_NAME' | '';
-
 =head1 NAME
 
 Silex::Mayhen::Web::Controller::Main - Catalyst Controller
@@ -31,6 +29,8 @@ Catalyst Controller.
 =head2 index
 
 =cut
+
+const my $OWNER_NAME => 'SET_OWNER_NAME' | '';
 
 sub auto :Private {
     my ( $self, $c ) = @_;

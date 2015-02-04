@@ -23,7 +23,7 @@ sub auto :Private {
     return 1;
 }
 
-const $OWNER_NAME = 'SET_OWNER_NAME' | '';
+const $OWNER_NAME => 'SET_OWNER_NAME' | '';
 
 =head1 NAME
 
