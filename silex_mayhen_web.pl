@@ -6,9 +6,9 @@
         class => "Silex::Mayhen::DonAPI",
         args  => {
             connect_info => {
-                dsn      => $ENV{DB_MAYHEN_DSN}      || "dbi:mysql:mayhen:127.0.0.1",
-                user     => $ENV{DB_MAYHEN_USER}     || "mayhen",
-                password => $ENV{DB_MAYHEN_PASSWORD} || "mayhen",
+                dsn               => $ENV{DB_MAYHEN_DSN}      || "dbi:mysql:db:127.0.0.1",
+                user              => $ENV{DB_MAYHEN_USER}     || "",
+                password          => $ENV{DB_MAYHEN_PASSWORD} || "",
                 RaiseError        => 1,
                 AutoCommit        => 1,
                 mysql_enable_utf8 => 1,
@@ -38,10 +38,10 @@
         default_realm => 'default',
         realms => {
             default => {
-                class       =>  'SimpleDB',
-                password_type   => 'hashed',
+                class               => 'SimpleDB',
+                password_type       => 'hashed',
                 password_hash_type  => 'SHA-1',
-                user_model  =>  'DBIC::User',
+                user_model          => 'DBIC::User',
             },
         }
     },

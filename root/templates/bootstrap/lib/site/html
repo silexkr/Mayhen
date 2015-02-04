@@ -9,12 +9,16 @@
     <![endif]-->
     <link href="[% c.uri_for('/static/css/screen.css') %]" media="screen, projection" rel="stylesheet" type="text/css" />
     <link href="[% c.uri_for('/static/css/print.css') %]" media="print" rel="stylesheet" type="text/css" />
+    <link href="[% c.uri_for('/static/css/sb-admin-2.css') %]" media="screen,projection" rel="stylesheet" type="text/css" />
+    <link href="[% c.uri_for('/static/css/bootstrap.min.css') %]" media="screen,projection" rel="stylesheet" type="text/css" />
     <!--[if lt IE 8]>
         <link href="[% c.uri_for('/static/css/ie.css') %]" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
     [%- FOREACH css IN csses %]
-    <link rel="stylesheet" href="[% c.uri_for('/static/css/' _ css) %]" type="text/css" />
+
+      <link rel="stylesheet" href="[% c.uri_for('/static/css/' _ css) %]" type="text/css" />
     [%- END %]
+
     <link href="[% c.uri_for('/static/css/datepicker.css') %]" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="/static/scripts/lib/jquery-1.7.min.js"></script>
