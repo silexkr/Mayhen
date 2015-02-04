@@ -5,6 +5,7 @@ use Data::Dumper;
 use Data::Pageset;
 use JSON::XS;
 use POSIX;
+use Const::Fast;
 use utf8;
 
 BEGIN { extends 'Catalyst::Controller'; }
@@ -21,6 +22,8 @@ sub auto :Private {
 
     return 1;
 }
+
+const $OWNER_NAME = 'SET_OWNER_NAME' | '';
 
 =head1 NAME
 
@@ -152,11 +155,10 @@ sub write :Local :Args(0) {
 
         if(my $charge = $self->api->create($c->req->params, $c->user->id)) {
             my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
-# 버그로 잠시 막아놉니다.
-#            $c->send_mail("supermania\@gmail.com",
-#                "[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
-#                "다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.
-#                $uri");
+            $c->send_mail($OWNER_NAME,
+"[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
+"다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.
+                $uri");
         }
 
         $c->res->redirect($c->uri_for('/list'));

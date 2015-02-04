@@ -19,7 +19,6 @@ use Catalyst::Runtime 5.80;
 use Catalyst qw/
     -Debug
     ConfigLoader
-    Unicode::Encoding
 
     StackTrace
 
@@ -36,10 +35,15 @@ our $VERSION = '0.01';
 use utf8;
 use Email::MIME;
 use Email::Sender::Simple 'sendmail';
-use Email::Sender::Transport::SMTP;
+use Email::Sender::Transport::SMTPS;
 use Encode qw/encode_utf8 decode_utf8 encode decode/;
 use MIME::Base64;
 use Text::CSV;
+use Try::Tiny;
+use Const::Fast;
+
+my $SMTPS_USERNAME = 'SET_USERNAME' | '';
+my $SMTPS_PASSWORD = 'SET_PASSWORD' | '';
 
 # Configure the application.
 #
@@ -62,33 +66,34 @@ __PACKAGE__->setup();
 
 sub email_transporter {
     my ($self) = @_;
-    return Email::Sender::Transport::SMTP->new(
-        {
-            host => 'smtp.gmail.com',
-            port => 465,
-            sasl_username => 'silex.money.ball@gmail.com',
-            sasl_password => 'action+vision',
-            ssl  => 1,
-        }
+
+    return Email::Sender::Transport::SMTPS->new(
+        host          => 'smtp.gmail.com',
+        port          => 587,
+        ssl           => 'starttls',
+        sasl_username => $SMTPS_USERNAME,
+        sasl_password => $SMTPS_PASSWORD,
     );
 }
 
 sub send_mail {
     my ($self, $send_to, $subject, $body) = @_;
 
-    my $opt = {
-        transport => $self->email_transporter
-    };
+    my $opt     = $self->email_transporter;
+    my $message = Email::Simple->create(
+        header => [
+            From    => $SMTP_USERNAME,
+            To      => $send_to,
+            Subject => $subject,
+        ],
+        body => $body,
+    );
 
-    my $email = Email::MIME->create(
-            header_str => [
-                From    => "silex.money.ball\@gmail.com",
-                To      => $send_to,
-                Subject => $subject
-            ],
-            body => $body
-        );
-    sendmail($email, $opt);
+    try {
+        sendmail($message, { transport => $opt });
+    } catch {
+        warn "Error sending email: $_";
+    };
 }
 
 =head1 NAME
