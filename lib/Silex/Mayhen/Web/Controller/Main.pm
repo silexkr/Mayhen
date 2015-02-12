@@ -3,7 +3,6 @@ use Moose;
 use namespace::autoclean;
 use Data::Pageset;
 use POSIX;
-use Const::Fast;
 use utf8;
 
 BEGIN { extends 'Catalyst::Controller'; }
@@ -29,8 +28,6 @@ Catalyst Controller.
 =head2 index
 
 =cut
-
-const my $OWNER_NAME => 'SET_OWNER_NAME' | '';
 
 sub auto :Private {
     my ( $self, $c ) = @_;
@@ -77,43 +74,62 @@ sub insert :Local :Args(0) {
             my $time = strftime "%Y-%m-%d", localtime; #적용 안해주면 GMT 기준으로 보임
 
             if ($c->req->params->{class} eq '1') {
-                $c->send_mail($OWNER_NAME,
-"[Mayhen] @{[ $c->req->params->{title} ]} 사용 내역",
-"안녕하십니까? Silex 경리봇 Mayhen 입니다.
+                my $content = sprintf(
+                    "안녕하십니까? Silex 경리봇 Mayhen 입니다.<br />"
+                    . "%s 일 %s 님이<br />"
+                    . "새로운 [ %s ] 거래내역을 등록하셨습니다.<br />"
+                    . "사용 금액은 %s 원 입니다.<br /><br />"
+                    . "자세한 사항은 %s 에서 확인 부탁드립니다.<br />"
+                    . "사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.<br />"
+                    . "감사합니다.<br />",
+                    $time,
+                    $user,
+                    $c->req->params->{title},
+                    $amount,
+                    $uri
+                );
 
-$time 일 $user 님이
-새로운 거래내역 [ @{[ $c->req->params->{title} ]} ]를 등록하셨습니다.
-사용 금액은 $amount 원 입니다.
-
-$comment
-
-자세한 사항은 $uri 에서 확인 부탁드립니다.
-
-사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
-감사합니다.");
+                my $owner_email = $c->config->{owner}{email};
+                $c->notify(
+                    username     => $c->config->{notify}{username},
+                    access_token => $c->config->{notify}{access_token},
+                    type         => 'email',
+                    from         => $c->config->{notify}{from}{email},
+                    to           => $owner_email,
+                    subject      => "[Mayhen] $c->req->params->{title} 사용 내역",
+                    content      => $content
+                );
+                $c->res->redirect($c->uri_for('/main/entries'));
             }
             else {
-                $c->send_mail($OWNER_NAME,
-"[Mayhen] @{[ $c->req->params->{title} ]} 청구 요청",
-"안녕하십니까? Silex 경리봇 Mayhen 입니다.
+                my $content = sprintf(
+                    "안녕하십니까? Silex 경리봇 Mayhen 입니다.<br />"
+                    . "%s 일 %s 님이<br />"
+                    . "새로운 [ %s ] 청구건을 등록하셨습니다.<br />"
+                    . "사용 금액은 %s 원 입니다.<br /><br />"
+                    . "자세한 사항은 %s 에서 확인 부탁드립니다.<br /><br />"
+                    . "사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.<br />"
+                    . "감사합니다.<br />",
+                    $time,
+                    $user,
+                    $c->req->params->{title},
+                    $amount,
+                    $uri
+                );
 
-$time 일 $user 님의
-새로운 청구건 [ @{[ $c->req->params->{title} ]} ]를 등록하셨습니다.
-사용 금액은 $amount 원 입니다.
-
-$comment
-
-자세한 사항은$uri 에서 확인 부탁드립니다.
-
-$user 님은 빠른 시일내에 답변이 오기를 바라십니다.
-사장님 화이팅!
-
-사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
-감사합니다.");
+                my $owner_email = $c->config->{owner}{email};
+                $c->notify(
+                    username     => $c->config->{notify}{username},
+                    access_token => $c->config->{notify}{access_token},
+                    type         => 'email',
+                    from         => $c->config->{notify}{from}{email},
+                    to           => $owner_email,
+                    subject      => "[Mayhen] $c->req->params->{title} 청구 요청",
+                    content      => $content
+                );
+                $c->res->redirect($c->uri_for('/list'));
             }
         }
-
-        $c->res->redirect($c->uri_for('/main/entries'));
     }
 }
 

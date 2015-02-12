@@ -62,11 +62,9 @@ sub index :Path :Args(0) {
         ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{start_date})
         : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 0, minute => 0, second => 0)->subtract( months => 1 );
 
-
         my $to   = $c->req->params->{end_date}
         ? DateTime::Format::ISO8601->parse_datetime($c->req->params->{end_date})
         : DateTime->now( time_zone => 'Asia/Seoul' )->set(hour => 23, minute => 59, second => 59);
-
 
         my $pattern = '%Y-%m-%d %H:%M:%S';
         $cond->{created_on} = {
@@ -114,9 +112,8 @@ sub approval :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $target_history
-        = $self->his_api->search({ id => { -in => \@target_ids } } );
-    my $approval = $target_history->update_all({ status => '4' });
+    my $target_history = $self->his_api->search({ id => { -in => \@target_ids } } );
+    my $approval       = $target_history->update_all({ status => '4' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
@@ -138,16 +135,26 @@ sub approval :Local :CaptureArgs(1) {
 
             $self->his_api->upgrade($history_datas);
             my $time = DateTime::Format::ISO8601->parse_datetime($history_datas->{created_on})->ymd;
-            $c->send_mail($history->user->email,
-"Mayhen 입금 확인 메일 [@{[ $history->title ]}]",
-"안녕하십니까? Silex 경리봇 Mayhen 입니다.
+            my $content = sprintf(
+                "안녕하십니까? Silex 경리봇 Mayhen 입니다.<br />"
+                . "%s일 청구하신 [ %s ] (%s)원이 입금 처리되었습니다.<br />"
+                . "자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.<br /><br />"
+                . "사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.<br />"
+                . "감사합니다.<br />",
+                $time,
+                $history_datas->{title},
+                $amount_commify
+            );
 
-$time 일 청구하신 [ @{[ $history->title ]} ] ($amount_commify)원이 입금 처리되었습니다.
-자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
-
-사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
-감사합니다.
-            ");
+            $c->notify(
+                username     => $c->config->{notify}{username},
+                access_token => $c->config->{notify}{access_token},
+                type         => 'email',
+                from         => $c->config->{notify}{from}{email},
+                to           => $history->user->email,
+                subject      => "Mayhen 입금 확인 메일 [ $history_datas->{title} ]",
+                content      => $content
+            );
         }
     }
     else {
@@ -194,16 +201,26 @@ sub refuse :Local :CaptureArgs(1) {
             $amount_commify    = reverse $amount_commify;
             my $time = DateTime::Format::ISO8601->parse_datetime(@{[ $charge->created_on ]})->ymd;
 
-            $c->send_mail($charge->user->email,
-"Mayhen 입금 거부 메일 [@{[ $charge->title ]}]",
-"안녕하십니까? Silex 경리봇 Mayhen 입니다.
+            my $content = sprintf(
+                "안녕하십니까? Silex 경리봇 Mayhen입니다.<br />"
+                . "%s일 청구하신 [ %s ] (%s)원이 입금 취소되었습니다.<br />"
+                . "자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.<br /><br />"
+                . "사랑과 행복을 전하는 Silex 경리봇 Mayhen이었습니다.<br />"
+                . "감사합니다.<br />",
+                $time,
+                $charge->title,
+                $amount_commify
+            );
 
-$time 일 청구하신 [  @{[ $charge->title ]} ] ( $amount_commify )원이 입금 취소되었습니다.
-자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.
-
-사랑과 행복을 전하는 Silex 경리봇 Mayhen 이었습니다.
-감사합니다.
-            ");
+            $c->notify(
+                username     => $c->config->{notify}{username},
+                access_token => $c->config->{notify}{access_token},
+                type         => 'email',
+                from         => $c->config->{nofity}{from}{email},
+                to           => $charge->user->email,
+                subject      => "Mayhen 입금 거부 메일 [ $charge->title ]",
+                content      => $content
+            );
         }
     }
     else {

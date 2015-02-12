@@ -23,8 +23,6 @@ sub auto :Private {
     return 1;
 }
 
-const $OWNER_NAME => 'SET_OWNER_NAME' | '';
-
 =head1 NAME
 
 Silex::Mayhen::Web::Controller::List - Catalyst Controller
@@ -60,9 +58,7 @@ sub index :Path :Args(0) {
         'me.user'  => { 'LIKE' => "$id" }
     ];
 
-
     my $total_charge = $self->api->search($cond, \%attr);
-
     my $page_info =
         Data::Pageset->new(
             {
@@ -81,9 +77,6 @@ sub index :Path :Args(0) {
 
 sub admin :Local :Args(0) {
     my ( $self, $c ) = @_;
-
-    if ($c->req->method eq 'POST') {
-    }
 
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
@@ -107,7 +100,6 @@ sub admin :Local :Args(0) {
     my $charge_count   = $self->api->search({ status => 1 });
     my $approval_count = $self->api->search({ status => 2 });
     my $refuse_count   = $self->api->search({ status => 3 });
-
 
     my $page_info =
         Data::Pageset->new(
@@ -143,10 +135,10 @@ sub write :Local :Args(0) {
 
         if (@messages) {
             $c->flash(
-                messages => @messages,
-                comment  => $c->req->params->{content},
-                title    => $c->req->params->{title},
-                amount   => $c->req->params->{amount},
+                messages   => @messages,
+                comment    => $c->req->params->{content},
+                title      => $c->req->params->{title},
+                amount     => $c->req->params->{amount},
                 usage_date => $c->req->params->{usage_date},
             );
 
@@ -155,10 +147,24 @@ sub write :Local :Args(0) {
 
         if(my $charge = $self->api->create($c->req->params, $c->user->id)) {
             my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
-            $c->send_mail($OWNER_NAME,
-"[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
-"다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.
-                $uri");
+            my $content = sprintf(
+
+                "안녕하십니까? Silex 경리봇 Mayhen 입니다.\n"
+                . "다음 청구건 [ %s ] 이 등록되었습니다.\n"
+                . "%s",
+                $c->req->params->{title},
+                $uri
+            );
+
+            $c->notify(
+                username     => $c->config->{notify}{username},
+                access_token => $c->config->{notify}{access_token},
+                type         => 'email',
+                from         => $c->config->{from}{email},
+                to           => $c->config->{owner}{email},
+                subject      => "[돈내놔] $c->req->params->{title} 청구 요청",
+                content      => $content
+            );
         }
 
         $c->res->redirect($c->uri_for('/list'));
@@ -170,7 +176,7 @@ sub view :Local :CaptureArgs(1) {
 
     my $history = $self->api->find({ id => $history_id });
     $c->stash(
-        charge     => $history,
+        charge => $history,
     );
 }
 
@@ -198,8 +204,7 @@ sub approval :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
 
-    my $approval = $self->api->search({ id => { -in
-            => \@target_ids } })->update_all({ status => '2' });
+    my $approval = $self->api->search({ id => { -in => \@target_ids } })->update_all({ status => '2' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval.';
@@ -244,11 +249,11 @@ sub edit :Local :CaptureArgs(1) {
 
         if (@messages) {
             $c->flash(
-                    messages   => @messages,
-                    comment    => $c->req->params->{comment},
-                    title      => $c->req->params->{title},
-                    amount     => $c->req->params->{amount},
-                    usage_date => $c->req->params->{usage_date},
+                messages   => @messages,
+                comment    => $c->req->params->{comment},
+                title      => $c->req->params->{title},
+                amount     => $c->req->params->{amount},
+                usage_date => $c->req->params->{usage_date},
             );
 
             return $c->res->redirect($c->uri_for("/list/view/$c->req->params->{charge_id}"));
