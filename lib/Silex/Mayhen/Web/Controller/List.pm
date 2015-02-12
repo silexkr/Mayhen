@@ -123,54 +123,6 @@ sub admin :Local :Args(0) {
     );
 }
 
-sub write :Local :Args(0) {
-    my ( $self, $c ) = @_;
-
-    if ($c->req->method eq 'POST') {
-        my @messages;
-
-        push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
-        push @messages, 'title is required' unless ($c->req->params->{title});
-        push @messages, 'usage_date is required' unless ($c->req->params->{usage_date});
-
-        if (@messages) {
-            $c->flash(
-                messages   => @messages,
-                comment    => $c->req->params->{content},
-                title      => $c->req->params->{title},
-                amount     => $c->req->params->{amount},
-                usage_date => $c->req->params->{usage_date},
-            );
-
-            return $c->res->redirect($c->uri_for('/list/write'));
-        }
-
-        if(my $charge = $self->api->create($c->req->params, $c->user->id)) {
-            my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
-            my $content = sprintf(
-
-                "안녕하십니까? Silex 경리봇 Mayhen 입니다.\n"
-                . "다음 청구건 [ %s ] 이 등록되었습니다.\n"
-                . "%s",
-                $c->req->params->{title},
-                $uri
-            );
-
-            $c->notify(
-                username     => $c->config->{notify}{username},
-                access_token => $c->config->{notify}{access_token},
-                type         => 'email',
-                from         => $c->config->{from}{email},
-                to           => $c->config->{owner}{email},
-                subject      => "[돈내놔] $c->req->params->{title} 청구 요청",
-                content      => $content
-            );
-        }
-
-        $c->res->redirect($c->uri_for('/list'));
-    }
-}
-
 sub view :Local :CaptureArgs(1) {
     my ( $self, $c, $history_id ) = @_;
 
