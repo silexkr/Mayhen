@@ -38,7 +38,7 @@
         </tr>
       <!-- 기타 버튼 들 -->
       </table>
-      [% IF c.user.user_name == 'yongbin' %]
+      [% IF c.user.role == 'master' %]
       <!-- master -->
         [% IF charge.user.user_name == c.user.user_name %]
           [% UNLESS charge.status == '4' %]
