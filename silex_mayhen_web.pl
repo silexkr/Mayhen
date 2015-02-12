@@ -6,9 +6,9 @@
         class => "Silex::Mayhen::DonAPI",
         args  => {
             connect_info => {
-                dsn               => $ENV{DB_MAYHEN_DSN}      || "dbi:mysql:db:127.0.0.1",
-                user              => $ENV{DB_MAYHEN_USER}     || "",
-                password          => $ENV{DB_MAYHEN_PASSWORD} || "",
+                dsn               => $ENV{DB_MAYHEN_DSN}      || "dbi:mysql:set_db_name:127.0.0.1",
+                user              => $ENV{DB_MAYHEN_USER}     || "set_db_user",
+                password          => $ENV{DB_MAYHEN_PASSWORD} || "set_db_pass",
                 RaiseError        => 1,
                 AutoCommit        => 1,
                 mysql_enable_utf8 => 1,
@@ -52,5 +52,16 @@
         storage        => "__path_to(etc/storage/session)__",
         expires        => 86400,
         unlink_on_exit => 0,
+    },
+    notify => {
+        username     => q{set_username},
+        access_token => q{set_access_token},
+        from         => {
+            sms   => q{set_sms_number},
+            email => q{set_send_eamil},
+        },
+    },
+    owner => {
+        email => 'set_owner_email',
     },
 }
