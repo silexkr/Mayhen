@@ -95,7 +95,15 @@ sub notify {
     delete $params{subject} if $params{type} eq 'sms';
 
     my $res = $http->post_form($uri, \%notify_params );
-    $self->log->debug( "notify: type($params{type}), from($params{from}), to($params{to}), ret($res->{status})" );
+    $self->log->debug(
+            "notify:
+            type($params{type}),
+            from($params{from}),
+            to($params{to}),
+            subject($params{subject}),
+            cotent($params{content}),
+            ret($res->{status})"
+    );
 
     return $res->{success};
 }
