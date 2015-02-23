@@ -1,5 +1,5 @@
 $ ->
-  $('#head_checkobx').click ->
+  $('#head_checkbox').click ->
     flag = $(@).is(':checked')
     $(':checkbox').each ->
       if flag then $(@).attr('checked', 'checked')

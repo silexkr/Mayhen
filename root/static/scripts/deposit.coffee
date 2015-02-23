@@ -1,5 +1,5 @@
 $ ->
-  $('#head_checkobx').click ->
+  $('#head_checkbox').click ->
     flag = $(@).is(':checked')
     $(':checkbox').each ->
       if flag then $(@).attr('checked', 'checked')
@@ -8,8 +8,9 @@ $ ->
   $('.btn').click ->
     select_id = $(@).attr("id").substring(3)
 
-    if select_id is 'deposit' then select_id = 'approval'
     selected_charges = []
+    if select_id is 'deposit' then select_id = 'approval'
+    if select_id is 'refuse'  then select_id = 'refuse'
 
     $('#charge_list tr').filter(':has(:checkbox:checked)').each ->
       if $(@).attr('id') isnt undefined
