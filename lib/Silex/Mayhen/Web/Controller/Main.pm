@@ -64,12 +64,13 @@ sub insert :Local :Args(0) {
         }
 
         if (my $insert = $self->api->create($c->req->params, $c->user->id) ) {
-            my $uri = "http://mayhen.silex.kr/list/view/".$insert->id;
-            my $user = $c->user->user_name;
-            my $amount = reverse $c->req->params->{amount};
-            $amount =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
-            $amount = reverse $amount;
+            my $uri     = "http://mayhen.silex.kr/list/view/".$insert->id;
+            my $user    = $c->user->user_name;
             my $comment = $c->req->params->{comment} || "추가 내역이 없습니다.";
+            my $title   = $c->req->params->{title};
+            my $amount  = reverse $c->req->params->{amount};
+            $amount     =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
+            $amount     = reverse $amount;
 
             my $time = strftime "%Y-%m-%d", localtime; #적용 안해주면 GMT 기준으로 보임
 
@@ -84,7 +85,7 @@ sub insert :Local :Args(0) {
                     . "감사합니다.<br />",
                     $time,
                     $user,
-                    $c->req->params->{title},
+                    $title,
                     $amount,
                     $uri
                 );
@@ -96,7 +97,7 @@ sub insert :Local :Args(0) {
                     type         => 'email',
                     from         => $c->config->{notify}{from}{email},
                     to           => $owner_email,
-                    subject      => "[Mayhen] $c->req->params->{title} 사용 내역",
+                    subject      => "[Mayhen] $title 사용 내역",
                     content      => $content
                 );
                 $c->res->redirect($c->uri_for('/main/entries'));
@@ -112,7 +113,7 @@ sub insert :Local :Args(0) {
                     . "감사합니다.<br />",
                     $time,
                     $user,
-                    $c->req->params->{title},
+                    $title,
                     $amount,
                     $uri
                 );
@@ -124,7 +125,7 @@ sub insert :Local :Args(0) {
                     type         => 'email',
                     from         => $c->config->{notify}{from}{email},
                     to           => $owner_email,
-                    subject      => "[Mayhen] $c->req->params->{title} 청구 요청",
+                    subject      => "[Mayhen] $title 청구 요청",
                     content      => $content
                 );
                 $c->res->redirect($c->uri_for('/list'));
@@ -139,10 +140,9 @@ sub entries :Local :Args(0) {
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $rs;
-    my $cond    = {};
-    my $page    = $c->req->params->{page};
-    my $status  = '4';
-
+    my $cond   = {};
+    my $page   = $c->req->params->{page};
+    my $status = '4';
 
     $cond->{status} = '4';
     if ($c->req->params->{start_date} && $c->req->params->{end_date}) {
@@ -176,17 +176,17 @@ sub entries :Local :Args(0) {
             Data::Pageset->new(
                 {
                     ( map { $_ => $total_charge->pager->$_ } qw/entries_per_page total_entries current_page/ ),
-                    mode => "slide",
+                    mode          => "slide",
                     pages_per_set => 10,
                 }
         );
     }
 
     $c->stash(
-        lists          => [ $total_charge->all ],
-        status         => $status,
-        pageset        => $page_info,
-        nav_active     => "entries",
+        lists      => [ $total_charge->all ],
+        status     => $status,
+        pageset    => $page_info,
+        nav_active => "entries",
     );
 }
 

@@ -74,9 +74,8 @@ sub index :Path :Args(0) {
             ]
         };
     }
-    $attr->{page} = $page || 1;
-    $cond->{user} = $charger_id if $charger_id;
-
+    $attr->{page}   = $page || 1;
+    $cond->{user}   = $charger_id if $charger_id;
     $cond->{status} = $status ? $status : '2';
 
     my $total_charge = $self->his_api->search($cond, $attr);
@@ -85,7 +84,7 @@ sub index :Path :Args(0) {
       Data::Pageset->new(
         {
             ( map { $_ => $total_charge->pager->$_} qw/entries_per_page total_entries current_page/ ),
-            mode => "slide",
+            mode          => "slide",
             pages_per_set => 10,
         }
       );
@@ -124,14 +123,14 @@ sub approval :Local :CaptureArgs(1) {
             $amount_commify    = reverse $amount_commify;
 
             my $history_datas = {};
-            $history_datas->{amount}         = shift @{[ $history->amount ]};
-            $history_datas->{user}           = shift @{[ $history->user ]};
-            $history_datas->{title}          = shift @{[ $history->title ]};
-            $history_datas->{usage_date}     = shift @{[ $history->usage_date ]};
-            $history_datas->{created_on}     = shift @{[ $history->created_on ]};
-            $history_datas->{class}          = shift @{[ $history->class ]};
-            $history_datas->{mini_class}     = shift @{[ $history->mini_class ]};
-            $history_datas->{memo}           = shift @{[ $history->memo ]};
+            $history_datas->{amount}     = shift @{[ $history->amount ]};
+            $history_datas->{user}       = shift @{[ $history->user ]};
+            $history_datas->{title}      = shift @{[ $history->title ]};
+            $history_datas->{usage_date} = shift @{[ $history->usage_date ]};
+            $history_datas->{created_on} = shift @{[ $history->created_on ]};
+            $history_datas->{class}      = shift @{[ $history->class ]};
+            $history_datas->{mini_class} = shift @{[ $history->mini_class ]};
+            $history_datas->{memo}       = shift @{[ $history->memo ]};
 
             $self->his_api->upgrade($history_datas);
             my $time = DateTime::Format::ISO8601->parse_datetime($history_datas->{created_on})->ymd;
@@ -157,11 +156,9 @@ sub approval :Local :CaptureArgs(1) {
             );
         }
     }
-    else {
-        $c->flash->{messages} = 'No Approval Deposit Item.';
-    }
-
+    $c->flash->{messages} = 'No Approval Deposit Item.' unless $approval;
     $c->flash->{status} = '4';
+
     $c->res->redirect($c->uri_for("/deposit"));
 }
 
@@ -172,13 +169,7 @@ sub cancel :Local :CaptureArgs(1) {
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
     my $cancel = $self->his_api->search({ id => { -in => \@target_ids } })->update_all({ status => '1' });
-
-    if ($cancel) {
-        $c->flash->{messages} = 'Success Cancel.';
-    }
-    else {
-        $c->flash->{messages} = 'No Cancel Item.';
-    }
+    $c->flash->{messages} = $cancel ? 'Success cancel.' : 'No cancel item.';
 
     $c->res->redirect($c->uri_for('/deposit'));
 }
@@ -190,7 +181,7 @@ sub refuse :Local :CaptureArgs(1) {
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
     my $target_refuse = $self->his_api->search({ id => { -in => \@target_ids } });
-    my $refuse = $target_refuse->update_all({ status => '2' });
+    my $refuse        = $target_refuse->update_all({ status => '3' });
 
     if ($refuse) {
         $c->flash->{messages} = 'Success Refuse Deposit.';
@@ -208,7 +199,7 @@ sub refuse :Local :CaptureArgs(1) {
                 . "사랑과 행복을 전하는 Silex 경리봇 Mayhen이었습니다.<br />"
                 . "감사합니다.<br />",
                 $time,
-                $charge->title,
+                @{[ $charge->title ]},
                 $amount_commify
             );
 
@@ -216,23 +207,14 @@ sub refuse :Local :CaptureArgs(1) {
                 username     => $c->config->{notify}{username},
                 access_token => $c->config->{notify}{access_token},
                 type         => 'email',
-                from         => $c->config->{nofity}{from}{email},
+                from         => $c->config->{notify}{from}{email},
                 to           => $charge->user->email,
-                subject      => "Mayhen 입금 거부 메일 [ $charge->title ]",
+                subject      => "Mayhen 입금 거부 메일 [ @{[ $charge->title ]} ]",
                 content      => $content
             );
         }
     }
-    else {
-        $c->flash->{messages} = 'No Approval Deposit Item.';
-    }
-
-    if ($refuse) {
-        $c->flash->{messages} = 'Success refuse.';
-    }
-    else {
-        $c->flash->{messages} = 'No refuse Item.';
-    }
+    $c->flash->{messages} = 'No Approval Deposit Item.' unless $refuse;
 
     $c->res->redirect($c->uri_for('/deposit'));
 }
@@ -254,9 +236,9 @@ sub export :Local CaptureArgs(1) {
         $c->stash->{'csv'} = { 'data' => [ @charges ] };
         $c->flash->{messages} = 'Success Exported.';
 
-    } else {
-        $c->flash->{messages} = 'Export Failed.';
     }
+    $c->flas->{messages} = 'Export Failed.' unless @charges;
+
     $c->forward('Silex::Mayhen::Web::View::Download::CSV');
 }
 
