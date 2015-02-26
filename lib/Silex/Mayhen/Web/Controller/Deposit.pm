@@ -111,8 +111,8 @@ sub approval :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $target_history = $self->his_api->search({ id => { -in => \@target_ids } } );
-    my $approval       = $target_history->update_all({ status => '4' });
+    my $target_history = $self->his_api->search({ id => { -in => \@target_ids }, status => '2' } );
+    my $approval       = $target_history->update_all({ status => '4' }) if $target_history;
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval Deposit.';
@@ -168,7 +168,7 @@ sub cancel :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $cancel = $self->his_api->search({ id => { -in => \@target_ids } })->update_all({ status => '1' });
+    my $cancel = $self->his_api->search({ id => { -in => \@target_ids }, status => '2' })->update_all({ status => '1' });
     $c->flash->{messages} = $cancel ? 'Success cancel.' : 'No cancel item.';
 
     $c->res->redirect($c->uri_for('/deposit'));
@@ -180,7 +180,7 @@ sub refuse :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
-    my $target_refuse = $self->his_api->search({ id => { -in => \@target_ids } });
+    my $target_refuse = $self->his_api->search({ id => { -in => \@target_ids }, status => 4});
     my $refuse        = $target_refuse->update_all({ status => '3' });
 
     if ($refuse) {

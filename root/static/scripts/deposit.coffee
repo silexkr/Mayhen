@@ -11,6 +11,7 @@ $ ->
     selected_charges = []
     if select_id is 'deposit' then select_id = 'approval'
     if select_id is 'refuse'  then select_id = 'refuse'
+    if select_id is 'cancel'  then select_id = 'cancel'
 
     $('#charge_list tr').filter(':has(:checkbox:checked)').each ->
       if $(@).attr('id') isnt undefined

@@ -22,6 +22,9 @@
       if (select_id === 'refuse') {
         select_id = 'refuse';
       }
+      if (select_id === 'cancel') {
+        select_id = 'cancel';
+      }
       $('#charge_list tr').filter(':has(:checkbox:checked)').each(function() {
         if ($(this).attr('id') !== void 0) {
           return selected_charges.push($(this).attr('id'));
