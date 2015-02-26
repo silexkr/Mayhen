@@ -74,7 +74,7 @@
       <div class="pull-right">
 	<a class="btn btn-primary" id="do_deposit">입금</a>
 	<a class="btn btn-primary" id="do_refuse">입금 취소</a>
-	<a class="btn btn-primary" id="do_return">승인 취소</a>
+	<a class="btn btn-primary" id="do_cancel">승인 취소</a>
       </div>
       [% PROCESS 'inc/pagination.tt' %]
     </div>
