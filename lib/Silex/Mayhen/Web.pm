@@ -71,7 +71,7 @@ sub notify {
     return unless $params{username};
     return unless $params{access_token};
 
-    my $uri   = "http://localhost:5001/api/v1/$params{type}";
+    my $uri   = "http://notify.silex.kr/api/v1/$params{type}";
     my $http  = HTTP::Tiny->new(
         default_headers => {
             accept        => 'application/json',
