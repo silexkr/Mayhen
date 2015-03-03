@@ -11,17 +11,19 @@
       <ul class="nav nav-tabs nav-stacked">
 	<li class="[% deposit_status == 0 ? 'active' : '' %]"><a href="[% c.uri_for('/deposit') %]">전체</a></li>
         [% FOR charge_user IN charge_users %]
-        <li class="[% deposit_status == charge_user.id ? 'active' : '' %]">
-        <!--
-        template 에도 'count' method 가 있고, DBIC 에도 'count'
-        가 있어서, '_rs' 를 붙여서 해결해야 함
-        http://www.perlmonks.org/bare/?node_id=815766
-        -->
-        <a href="[% c.uri_for('/deposit', charger=charge_user.id) %]">
-          [% charge_user.user_name %]
-          ([% charge_user.histories_rs(status=2).count %])
-        </a>
-        </li>
+	  [% IF charge_user.role != 'nonuser' %]
+	    <li class="[% deposit_status == charge_user.id ? 'active' : '' %]">
+	    <!--
+	    template 에도 'count' method 가 있고, DBIC 에도 'count'
+	    가 있어서, '_rs' 를 붙여서 해결해야 함
+	    http://www.perlmonks.org/bare/?node_id=815766
+	    -->
+	      <a href="[% c.uri_for('/deposit', charger=charge_user.id) %]">
+		[% charge_user.user_name %]
+		([% charge_user.histories_rs(status=2).count %])
+	      </a>
+	    </li>
+	  [% END %]
         [% END %]
 	<li><a href="[% c.uri_for('/deposit', status=4) %]">입금처리</a></li>
       </ul>
@@ -72,9 +74,11 @@
         </tbody>
       </table>
       <div class="pull-right">
-	<a class="btn btn-primary" id="do_deposit">입금</a>
-	<a class="btn btn-primary" id="do_refuse">입금 취소</a>
-	<a class="btn btn-primary" id="do_cancel">승인 취소</a>
+        <span class="btn-group">
+	  <a class="btn btn-primary" id="do_deposit">입금</a>
+	  <a class="btn btn-primary" id="do_refuse">입금 취소</a>
+	  <a class="btn btn-primary" id="do_cancel">승인 취소</a>
+	</span>
       </div>
       [% PROCESS 'inc/pagination.tt' %]
     </div>
