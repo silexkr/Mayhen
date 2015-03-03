@@ -17,15 +17,15 @@
 	      Error
 	    [% END %]
 	  )
-	  </td>
+          </td>
         </tr>
         <tr>
           <td>작성자</td>
           <td>[% charge.user.user_name %]</td>
           <td>금액</td>
           <td>[% charge.amount | comma %]</td>
-	</tr>
-	<tr>
+        </tr>
+        <tr>
           <td>청구 날짜</td>
           <td>[% charge.created_on.ymd%]</td>
           <td>사용 날짜</td>
@@ -42,15 +42,21 @@
       <!-- master -->
         [% IF charge.user.user_name == c.user.user_name %]
           [% UNLESS charge.status == '4' %]
-	    <a href="[% c.uri_for('/list/edit',     charge.id) %]" class="btn btn-primary">수정</a>
-	    <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
-	    <a href="[% c.uri_for('/list/refuse',   charge.id) %]" class="btn btn-primary">거부</a>
-	    <a href="[% c.uri_for('/list/delete',   charge.id) %]" class="btn btn-primary">삭제</a>
+          <span class="btn-group">
+            <a href="[% c.uri_for('/list/edit',     charge.id) %]" class="btn btn-primary">수정</a>
+            <a href="[% c.uri_for('/list/delete',   charge.id) %]" class="btn btn-primary">삭제</a>
+          </span>
+          <span class="btn-group">
+            <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+            <a href="[% c.uri_for('/list/refuse',   charge.id) %]" class="btn btn-primary">거부</a>
+          </span>
           [% END %]
         [% ELSE %]
           [% IF charge.status != '4' %]
-	    <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
-	    <a href="[% c.uri_for('/list/refuse',   charge.id) %]" class="btn btn-primary">거부</a>
+          <span class="btn-group">
+            <a href="[% c.uri_for('/list/approval', charge.id) %]" class="btn btn-primary">승인</a>
+            <a href="[% c.uri_for('/list/refuse',   charge.id) %]" class="btn btn-primary">거부</a>
+          </span>
           [% ELSE %]
           [% END%]
         [% END %]
@@ -58,8 +64,10 @@
       <!-- user -->
         [% IF charge.user.user_name == c.user.user_name %]
           [% IF charge.status != '4' %]
-	    <a href="[% c.uri_for('/list/edit',    charge.id) %]" class="btn btn-primary">수정</a>
-	    <a href="[% c.uri_for('/list/delete',  charge.id) %]" class="btn btn-primary">삭제</a>
+          <span class="btn-group">
+            <a href="[% c.uri_for('/list/edit',    charge.id) %]" class="btn btn-primary">수정</a>
+            <a href="[% c.uri_for('/list/delete',  charge.id) %]" class="btn btn-primary">삭제</a>
+          <span class="btn-group">
           [% ELSE %]
           [% END %]
         [% END %]
