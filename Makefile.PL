@@ -6,8 +6,8 @@ use Module::Install::Catalyst; # Complain loudly if you don't have
                                # Catalyst::Devel installed or haven't said
                                # 'make dist' to create a standalone tarball.
 
-name 'Silex-Donnenwa-web';
-all_from 'lib/Silex/Donnenwa/Web.pm';
+name 'Silex-Mayhen-web';
+all_from 'lib/Silex/Mayhen/Web.pm';
 
 requires 'Authen::SASL';
 requires 'Catalyst::Action::RenderView';
