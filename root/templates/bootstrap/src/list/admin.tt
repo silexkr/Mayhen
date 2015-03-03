@@ -42,8 +42,7 @@
 	      [% ELSE %]
 		<td> Error </td>
 	      [% END %]
-	      <td><a href="[% c.uri_for('/list/view', list.id) %]"><b>[% list.title %]</b></td></a>
-
+	      <td><a href="[% c.uri_for('/list/view', list.id) %]"><b>[% list.title %]</b></a></td>
 	      <td> [% list.user.user_name %] </td>
 	      <td> [% list.created_on.ymd %] </td>
 	      <td> [% list.usage_date.ymd %] </td>
@@ -53,8 +52,24 @@
 	</tbody>
       </table>
       <div class="pull-right">
-	<a class="btn btn-primary" id="do_approval">승인</a>
-	<a class="btn btn-primary" id="do_refuse">거부</a>
+	<span class="btn-group">
+	[% IF status == "1" %]
+	  <a class="btn btn-primary" id="do_approval">승인</a>
+	  <a class="btn btn-primary" id="do_refuse">거부</a>
+	[% ELSIF status == "2" %]
+	  <a class="btn btn-primary" id="do_wait">대기</a>
+	  <a class="btn btn-primary" id="do_refuse">거부</a>
+	[% ELSIF status == "3" %]
+	  <a class="btn btn-primary" id="do_wait">대기</a>
+	  <a class="btn btn-primary" id="do_approval">승인</a>
+	[% ELSIF status == "wait" %]
+	  <a class="btn btn-primary" id="do_wait">대기</a>
+	  <a class="btn btn-primary" id="do_approval">승인</a>
+	  <a class="btn btn-primary" id="do_refuse">거부</a>
+	[% ELSE %]
+	  <td> Error </td>
+	[% END %]
+	</span>
       </div>
       <div clss="row">
         [% PROCESS 'inc/pagination.tt' %]

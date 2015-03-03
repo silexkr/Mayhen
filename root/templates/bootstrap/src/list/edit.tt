@@ -1,11 +1,3 @@
-<ul class="breadcrumb">
-  <li>
-    <a href="/list">대기</a>
-  </li>
-  <li class="active">수정</li>
-</ul>
-<!-- 입력된 값을 다음 페이지로 넘기기 위해 form을 만든다. -->
-
 [% IF messages %]
   [% FOR message IN messages %]
     <div class="alert">
@@ -33,6 +25,50 @@
 	</div>
       </div>
       <div class="form-group form-group-sm">
+	<label class="col-sm-2 control-label">분류</label>
+	<div class="col-sm-2">
+          <select name="class">
+	    [% IF editer.class == '1' %]
+	      <option value="1" selected>거래</option>
+	      <option value="2">청구</option>
+	    [% ELSIF editer.class == '2' %]
+	      <option value="1">거래</option>
+	      <option value="2" selected>청구</option>
+	    [% END %]
+          </select>
+	</div>
+      </div>
+      <div class="form-group form-group-sm">
+	<label class="col-sm-2 control-label">소분류</label>
+	<div class="col-sm-2">
+            <select name="mini_class">
+	    [% mini_count = 1 %]
+	    [% mini_class = [
+		'식비',
+		'월급',
+		'월세',
+		'통신비',
+		'지식,문화',
+		'생활용품',
+		'세금',
+		'의료,건강',
+		'여가,유흥',
+		'경조사비',
+		'교통비',
+		'기타' ]
+	    %]
+	    [% FOR class IN mini_class %]
+	      [% IF mini_count == editer.mini_class %]
+              <option value="[% count %]" selected>[% class %]</option>
+	      [% ELSE %]
+              <option value="[% count %]">[% class %]</option>
+	      [% END %]
+	      [% mini_count = mini_count + 1 %]
+	    [% END %]
+            </select>
+	</div>
+      </div>
+      <div class="form-group form-group-sm">
 	<label class="col-sm-2 control-label">사용날짜</label>
 	<div class="col-sm-2">
 	  <input type="text" class="form-control usage_date" id="usage_date" name="usage_date" value="[% editer.usage_date.ymd %]">
@@ -57,4 +93,4 @@
     </form>
   </div>
 </div>
-<script type="text/javascript" src="[% c.uri_for('/static/scripts/list.write.js') %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/scripts/list.js') %]"></script>

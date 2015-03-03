@@ -23,8 +23,6 @@ sub auto :Private {
     return 1;
 }
 
-const $OWNER_NAME => 'SET_OWNER_NAME' | '';
-
 =head1 NAME
 
 Silex::Mayhen::Web::Controller::List - Catalyst Controller
@@ -60,9 +58,7 @@ sub index :Path :Args(0) {
         'me.user'  => { 'LIKE' => "$id" }
     ];
 
-
     my $total_charge = $self->api->search($cond, \%attr);
-
     my $page_info =
         Data::Pageset->new(
             {
@@ -82,23 +78,20 @@ sub index :Path :Args(0) {
 sub admin :Local :Args(0) {
     my ( $self, $c ) = @_;
 
-    if ($c->req->method eq 'POST') {
-    }
-
     my %attr  = ( 'order_by' => { -desc => 'me.id' } );
 
     my $rs;
     my %cond    = ();
     my $page    = $c->req->params->{page};
-    my $status  = $c->req->params->{status} || $c->stash->{"status"} || '0'; #수정 필요
+    my $status  = $c->req->params->{status} ? $c->req->params->{status} : 'wait'; #수정 필요
 
     $attr{page} = $page || 1;
 
-    if ($status) {
-        %cond = ( status => $status);
+    if ($status && $status ne 'wait') {
+        %cond = ( status => $status );
     }
     else {
-        %cond = ( status => {'!=', '4'});
+        %cond = ( status => {'!=', '4'} );
     }
 
     my $total_charge = $self->api->search(\%cond, \%attr);
@@ -108,16 +101,14 @@ sub admin :Local :Args(0) {
     my $approval_count = $self->api->search({ status => 2 });
     my $refuse_count   = $self->api->search({ status => 3 });
 
-
     my $page_info =
         Data::Pageset->new(
             {
                 ( map { $_ => $total_charge->pager->$_ } qw/entries_per_page total_entries current_page/ ),
-                mode => "slide",
-                pages_per_set => 10,
+                  mode          => "slide",
+                  pages_per_set => 10,
             }
     );
-    $c->stash(  );
 
     $c->stash(
         lists          => [ $total_charge->all ],
@@ -131,60 +122,27 @@ sub admin :Local :Args(0) {
     );
 }
 
-sub write :Local :Args(0) {
-    my ( $self, $c ) = @_;
-
-    if ($c->req->method eq 'POST') {
-        my @messages;
-
-        push @messages, 'amount is invaild' if ($c->req->params->{amount} !~ /^\d+$/);
-        push @messages, 'title is required' unless ($c->req->params->{title});
-        push @messages, 'usage_date is required' unless ($c->req->params->{usage_date});
-
-        if (@messages) {
-            $c->flash(
-                messages => @messages,
-                comment  => $c->req->params->{content},
-                title    => $c->req->params->{title},
-                amount   => $c->req->params->{amount},
-                usage_date => $c->req->params->{usage_date},
-            );
-
-            return $c->res->redirect($c->uri_for('/list/write'));
-        }
-
-        if(my $charge = $self->api->create($c->req->params, $c->user->id)) {
-            my $uri = sprintf "http://don.silex.kr/view/%s", $charge->id;
-            $c->send_mail($OWNER_NAME,
-"[돈내놔] @{[ $c->req->params->{title} ]} 청구 요청",
-"다음 청구건 [ @{[ $c->req->params->{title} ]} ] 이 등록되었습니다. 신속한 처리를 부탁드립니다.
-                $uri");
-        }
-
-        $c->res->redirect($c->uri_for('/list'));
-    }
-}
-
 sub view :Local :CaptureArgs(1) {
     my ( $self, $c, $history_id ) = @_;
 
     my $history = $self->api->find({ id => $history_id });
     $c->stash(
-        charge     => $history,
+        charge => $history,
     );
 }
 
 sub delete :Local :CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
+
+    $c->flash->{messages} = 'No Deleted Item.' unless $id;
+    $c->res->redirect($c->uri_for('/list')) unless $id;
     my @target_ids = split ',', $id;
 
     return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
 
-    my $charge = $self->api->search({ id => { -in => \@target_ids } })->delete_all;
-
+    my $charge = $self->api->search({ id => { -in => \@target_ids }, -and => {-not => {status => [ '2,','4' ]}} })->delete_all;
     if ($charge) {
         $c->flash->{messages} = 'Success Deleted.';
-
     } else {
         $c->flash->{messages} = 'No Deleted Item.';
     }
@@ -198,8 +156,7 @@ sub approval :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
 
-    my $approval = $self->api->search({ id => { -in
-            => \@target_ids } })->update_all({ status => '2' });
+    my $approval = $self->api->search({ id => { -in => \@target_ids }, status => '1' })->update_all({ status => '2' });
 
     if ($approval) {
         $c->flash->{messages} = 'Success Approval.';
@@ -209,7 +166,7 @@ sub approval :Local :CaptureArgs(1) {
     }
 
     $c->stash->{status} = '2';
-    $c->res->redirect($c->uri_for('/list'));
+    $c->res->redirect($c->uri_for('/list/admin'));
 }
 
 sub refuse :Local :CaptureArgs(1) {
@@ -218,8 +175,7 @@ sub refuse :Local :CaptureArgs(1) {
 
     return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
 
-    my $refuse = $self->api->search({ id => { -in
-            => \@target_ids } })->update_all({ status => '3' });
+    my $refuse = $self->api->search({ id => { -in => \@target_ids } })->update_all({ status => '3' });
 
     if ($refuse) {
         $c->flash->{messages} = 'Success Refuse.';
@@ -229,7 +185,26 @@ sub refuse :Local :CaptureArgs(1) {
     }
 
     $c->stash->{status} = '3';
-    $c->res->redirect($c->uri_for('/list'));
+    $c->res->redirect($c->uri_for('/list/admin'));
+}
+
+sub wait :Local :CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    my @target_ids = split ',', $id;
+
+    return $c->res->redirect($c->uri_for('/list')) unless @target_ids;
+
+    my $refuse = $self->api->search({ id => { -in => \@target_ids }, -not => {status => '4' } })->update_all({ status => '1' });
+
+    if ($refuse) {
+        $c->flash->{messages} = 'Success Wait status.';
+    }
+    else {
+        $c->flash->{messages} = 'Don\'t chaged item.';
+    }
+
+    $c->stash->{status} = '1';
+    $c->res->redirect($c->uri_for('/list/admin'));
 }
 
 sub edit :Local :CaptureArgs(1) {
@@ -244,11 +219,11 @@ sub edit :Local :CaptureArgs(1) {
 
         if (@messages) {
             $c->flash(
-                    messages   => @messages,
-                    comment    => $c->req->params->{comment},
-                    title      => $c->req->params->{title},
-                    amount     => $c->req->params->{amount},
-                    usage_date => $c->req->params->{usage_date},
+                messages   => @messages,
+                comment    => $c->req->params->{comment},
+                title      => $c->req->params->{title},
+                amount     => $c->req->params->{amount},
+                usage_date => $c->req->params->{usage_date},
             );
 
             return $c->res->redirect($c->uri_for("/list/view/$c->req->params->{charge_id}"));

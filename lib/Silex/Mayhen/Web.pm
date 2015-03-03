@@ -38,9 +38,9 @@ use Email::Sender::Simple 'sendmail';
 use Email::Sender::Transport::SMTPS;
 use Encode qw/encode_utf8 decode_utf8 encode decode/;
 use MIME::Base64;
+use HTTP::Tiny;
 use Text::CSV;
 use Try::Tiny;
-use Const::Fast;
 
 # Configure the application.
 #
@@ -61,39 +61,51 @@ __PACKAGE__->config(
 # Start the application
 __PACKAGE__->setup();
 
-const my $SMTPS_USERNAME => 'SET_USERNAME';
-const my $SMTPS_PASSWORD => 'SET_PASSWORD';
+sub notify {
+    my ($self, %params) = @_;
 
-sub email_transporter {
-    my ($self) = @_;
+    return unless $params{type} && $params{type} =~ m/^sms|email$/;
+    return unless $params{from};
+    return unless $params{to};
+    return unless $params{content};
+    return unless $params{username};
+    return unless $params{access_token};
 
-    return Email::Sender::Transport::SMTPS->new(
-        host          => 'smtp.gmail.com',
-        port          => 587,
-        ssl           => 'starttls',
-        sasl_username => $SMTPS_USERNAME,
-        sasl_password => $SMTPS_PASSWORD,
-    );
-}
-
-sub send_mail {
-    my ($self, $send_to, $subject, $body) = @_;
-
-    my $opt     = $self->email_transporter;
-    my $message = Email::Simple->create(
-        header => [
-            From    => $SMTPS_USERNAME,
-            To      => $send_to,
-            Subject => $subject,
-        ],
-        body => $body,
+    my $uri   = "http://notify.silex.kr/api/v1/$params{type}";
+    my $http  = HTTP::Tiny->new(
+        default_headers => {
+            accept        => 'application/json',
+            authorization => sprintf(
+                'Basic %s',
+                encode_base64(
+                    $params{username} . q{:} . $params{access_token},
+                    q{},
+                ),
+            ),
+        },
     );
 
-    try {
-        sendmail($message, { transport => $opt });
-    } catch {
-        warn "Error sending email: $_";
-    };
+    my %notify_params = (
+        to      => $params{to},
+        from    => $params{from},
+        subject => $params{subject},
+        content => $params{content},
+    );
+
+    delete $params{subject} if $params{type} eq 'sms';
+
+    my $res = $http->post_form($uri, \%notify_params );
+    $self->log->debug(
+            "notify:
+            type($params{type}),
+            from($params{from}),
+            to($params{to}),
+            subject($params{subject}),
+            cotent($params{content}),
+            ret($res->{status})"
+    );
+
+    return $res->{success};
 }
 
 =head1 NAME

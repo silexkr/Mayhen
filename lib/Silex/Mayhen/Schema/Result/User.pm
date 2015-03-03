@@ -81,6 +81,13 @@ __PACKAGE__->table("user");
   set_on_create: 1
   set_on_update: 1
 
+=head2 role
+
+  data_type: 'varchar'
+  default_value: 'user'
+  is_nullable: 0
+  size: 255
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -124,6 +131,13 @@ __PACKAGE__->add_columns(
     is_nullable               => 0,
     set_on_create             => 1,
     set_on_update             => 1,
+  },
+  "role",
+  {
+    data_type => "varchar",
+    default_value => "user",
+    is_nullable => 0,
+    size => 255,
   },
 );
 
@@ -183,8 +197,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-05-02 16:45:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ewwp5rBp+ev+KLf/WMuiHw
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2015-02-11 16:21:40
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pXLjG0HE5yTUKAvwb7AJ1g
 
 __PACKAGE__->has_many(
     charges => 'Silex::Mayhen::Schema::Result::Charge',
