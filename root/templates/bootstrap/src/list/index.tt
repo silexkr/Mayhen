@@ -10,7 +10,9 @@
       <thead>
         <tr>
           <th><input type="checkbox" id="head_checkbox"></th>
-          <th>변경</th>
+          <th>상태</th>
+          <th>분류</th>
+          <th>소분류</th>
           <th>제목</th>
           <th>금액</th>
           <th>청구 날짜</th>
@@ -21,7 +23,7 @@
       <tbody>
         [% FOREACH list IN lists %]
         <tr id="[% list.id %]">
-          [% IF list.status != "4" %]
+          [% IF list.status != "4" and list.status != "2" %]
           <td><input type="checkbox"></td>
           [% ELSE %]
           <td></td>
@@ -37,7 +39,28 @@
           [% ELSE %]
             <td> Error </td>
           [% END %]
-	    <td><a href="[% c.uri_for('/list/view', list.id) %]"><b>[% list.title %]</b></td></a>
+          <td>[% mini_class.$x %] </td>
+	  [% IF    list.class == "1" %]
+	    <td> 거래 </td>
+	  [% ELSIF list.class == "2" %]
+	    <td> 청구 </td>
+	  [% END %]
+	  [% mini_class = [
+	   '식비',
+	   '월급',
+	   '월세',
+	   '통신비',
+	   '지식,문화',
+	   '생활용품',
+	   '세금',
+	   '의료,건강',
+	   '여가,유흥',
+	   '경조사비',
+	   '교통비',
+	   '기타'
+	  ] %]
+	  [% x = list.mini_class %]
+	  <td><a href="[% c.uri_for('/list/view', list.id) %]"><b>[% list.title %]</b></td></a>
           <td><span class="pull-right">[% list.amount | comma %]</span></td>
           <td>[% list.created_on.ymd %]</td>
           <td>[% list.usage_date.ymd %]</td>
@@ -45,8 +68,10 @@
         [% END %]
       </tbody>
     </table>
+    <div class="pull-right">
+      <a class="btn btn-primary" id="do_delete">삭제</a>
+    </div>
     [% PROCESS 'inc/pagination.tt' %]
-    <a class="btn btn-primary" id="do_delete">삭제</a>
   </div>
 </div>
 <br/>
