@@ -90,7 +90,7 @@ sub index :Path :Args(0) {
       );
 
     my $user_names = $self->us_api->search(
-        {},
+        { role => {'!=', 'nonuser'} },
         {
             columns => [ qw/ user_name id / ],
         }
@@ -181,7 +181,7 @@ sub refuse :Local :CaptureArgs(1) {
     return $c->res->redirect($c->uri_for("/deposit")) unless @target_ids;
 
     my $target_refuse = $self->his_api->search({ id => { -in => \@target_ids }, status => 4});
-    my $refuse        = $target_refuse->update_all({ status => '3' });
+    my $refuse        = $target_refuse->update_all({ status => '2' });
 
     if ($refuse) {
         $c->flash->{messages} = 'Success Refuse Deposit.';
@@ -194,7 +194,7 @@ sub refuse :Local :CaptureArgs(1) {
 
             my $content = sprintf(
                 "안녕하십니까? Silex 경리봇 Mayhen입니다.<br />"
-                . "%s일 청구하신 [ %s ] (%s)원이 입금 취소되었습니다.<br />"
+                . "%s일 청구하신 [ %s ] (%s)원이 입금 취소되어 승인 상태로 전환되었습니다.<br />"
                 . "자세한 문의 사항은 관리자에게 문의해 주시기 바랍니다.<br /><br />"
                 . "사랑과 행복을 전하는 Silex 경리봇 Mayhen이었습니다.<br />"
                 . "감사합니다.<br />",
@@ -215,8 +215,7 @@ sub refuse :Local :CaptureArgs(1) {
         }
     }
     $c->flash->{messages} = 'No Approval Deposit Item.' unless $refuse;
-
-    $c->res->redirect($c->uri_for('/deposit'));
+    $c->res->redirect($c->uri_for("/deposit",{ status => '4'} ));
 }
 
 sub export :Local CaptureArgs(1) {
