@@ -24,7 +24,10 @@
       return location.href = "/list/" + select_id + "/" + selected_charges;
     });
     window.prettyPrint && prettyPrint();
-    return $('#start_date, #end_date').datepicker({
+    $('#start_date, #end_date').datepicker({
+      format: 'yyyy-mm-dd'
+    });
+    return $('#usage_date').datepicker({
       format: 'yyyy-mm-dd'
     });
   });

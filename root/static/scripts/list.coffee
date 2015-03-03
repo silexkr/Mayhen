@@ -17,3 +17,5 @@ $ ->
   window.prettyPrint and prettyPrint()
   $('#start_date, #end_date').datepicker
     format: 'yyyy-mm-dd'
+  $('#usage_date').datepicker
+    format: 'yyyy-mm-dd'
